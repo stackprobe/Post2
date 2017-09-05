@@ -1,0 +1,63 @@
+<html>
+<body>
+
+<form action="/test01/Echo.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>ここを押してね</button>
+</form>
+
+<form action="Echo.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>ここを押してね</button>
+</form>
+
+<form action="Echo.cgi" method="POST">
+<p>お名前：
+<input type="text" name="namae" value="太郎" size="20"/>
+</p>
+<p>OS：
+<input type="radio" name="OS" value="win" checked="checked"/>
+Windows
+<input type="radio" name="OS" value="mac"/>
+Machintosh
+<input type="radio" name="OS" value="unix"/>
+Unix </p>
+<p>
+<input type="submit" name="submit" value="送信"/>
+</p>
+</form>
+
+<form action="/test01/noop.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>noop</button>
+</form>
+
+<form action="/test01/error.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>error</button>
+</form>
+
+<form action="/test01/errorm.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>errorm</button>
+</form>
+
+<form action="/test01/batch.cgi" method="POST">
+<input name="input-name-01" value="input-value-01"/>
+<input name="input-name-02" value="input-value-02"/>
+<input name="input-name-03" value="input-value-03"/>
+<button>batch</button>
+</form>
+
+</body>
+</html>

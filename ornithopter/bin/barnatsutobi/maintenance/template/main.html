@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>バー夏の扉HPメンテナンス</title>
+<style type="text/css">
+<!--
+body
+{
+	font-family: 'メイリオ';
+	font-size: medium;
+	line-height: 200%;
+}
+input[type="submit"]
+{
+	font-family: 'メイリオ';
+	font-size: medium;
+	padding: 10px 30px;
+}
+input[type="text"]
+{
+	font-family: 'メイリオ';
+	font-size: medium;
+}
+textarea
+{
+	font-family: 'メイリオ';
+	font-size: medium;
+}
+-->
+</style>
+</head>
+<body>
+バー夏の扉HPメンテナンス
+
+<form method="POST" action="update.cgi" accept-charset="Shift_JIS">
+
+<hr/>
+お知らせ / タイトル：
+<br/>
+<input type="text" name="oshirase-title" value="<% oshirase-title %>"/>
+<br/>
+
+<hr/>
+お知らせ / 本文：
+<br/>
+<textarea name="oshirase-body" rows="10" cols="50"><% oshirase-body %></textarea>
+<br/>
+
+<hr/>
+お知らせ / 日時：
+<br/>
+<input type="text" name="oshirase-stamp" value="<% oshirase-stamp %>"/>
+<br/>
+
+<hr/>
+<input type="submit"/>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+
+	<style type="text/css">
+	<!--
+	a
+	{
+		color: white;
+		font-family: メイリオ;
+		font-size: 30px;
+		line-height: 120%;
+		text-decoration: none;
+	}
+	a:hover
+	{
+		color: yellow;
+	}
+	a:visited
+	{
+		color: white;
+	}
+	body
+	{
+		color: black;
+		font-family: メイリオ;
+		font-size: 30px;
+		line-height: 120%;
+	}
+	input[type=submit]
+	{
+		font-family: メイリオ;
+		font-size: 40px;
+		width: 60%;
+		height: 100px;
+	}
+	input[type=text], input[type=password]
+	{
+		font-family: メイリオ;
+		font-size: 30px;
+		width: 60%;
+		height: 50px;
+	}
+	td
+	{
+		color: white;
+		font-family: メイリオ;
+		font-size: 30px;
+		line-height: 120%;
+		text-decoration: none;
+	}
+	-->
+	</style>
+
+<title>biato_test</title>
+</head>
+<body>
+これはテストページです。
+<table width="100%">
+
+	<tr>
+	<td width="100%" height="100" align="center" bgcolor="#4477cc">
+登録
+	</td>
+	</tr>
+
+<form method="POST" action="touroku.cgi">
+
+	<tr>
+	<td width="50%" style="padding: 10% 5% 2% 5%;">
+	<table width="100%" height="100%">
+		<tr>
+		<td style="border-radius: 50px; padding: 5% 5% 5% 5%;" bgcolor="#2255aa">
+<br/>
+<center>掲載情報</center><br/>
+<br/>
+●　お店の名前：　<input type="text" name="namae"/><br/>
+<br/>
+●　お店の場所：　<input type="text" name="basho"/><br/>
+<br/>
+●　募集内容　：　<input type="text" name="naiyou"/><br/>
+<br/>
+●　ｍａｉｌ　：　<input type="text" name="mail"/><br/>
+<br/>
+●　ｌｉｎｅ　：　<input type="text" name="line"/><br/>
+<br/>
+●　電話番号　：　<input type="text" name="tel"/><br/>
+<br/>
+		</td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+
+	<tr>
+	<td width="50%" style="padding: 2% 5% 7% 5%;">
+	<table width="100%" height="100%">
+		<tr>
+		<td style="border-radius: 50px; padding: 5% 5% 5% 5%;" bgcolor="#227777">
+<br/>
+<center>あなたの情報</center><br/>
+<br/>
+●　氏名　　　：　<input type="text" name="shimei"/><br/>
+<br/>
+●　住所　　　：　<input type="text" name="juusho"/><br/>
+<br/>
+●　連絡先　　：　<input type="text" name="juusho-tel"/><br/>
+<br/>
+●　パスワード：　<input type="password" name="password"/><br/>
+<br/>
+		</td>
+		</tr>
+	</table>
+	</td>
+	</tr>
+
+	<tr>
+	<td align="center">
+	<input type="submit" value="上記の内容で求人を掲載する"/>
+	</td>
+	</tr>
+
+<input type="hidden" name="command" value="touroku"/>
+</form>
+
+</table>
+<br/>
+<br/>
+<br/>
+<div align="right">これはテストページです。</div>
+</body>
+</html>

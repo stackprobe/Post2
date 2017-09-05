@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<style type="text/css">
+<!--
+body
+{
+	font-family: 'メイリオ';
+}
+-->
+</style>
+</head>
+<body>
+ACCESS COUNTER : <span id="access-counter">0</span>, <span id="access-counter2">0</span>
+
+<script type="text/javascript">
+
+function go_access_counter() {
+	var xmlHttp;
+
+	if(window.XMLHttpRequest) {
+		xmlHttp = new XMLHttpRequest();
+	} else {
+		if(window.ActiveXOBject) {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		} else {
+			xmlHttp = null;
+		}
+	}
+
+	xmlHttp.onreadystatechange = checkResponse;
+	xmlHttp.open("POST", "/AccessCounter/opt/test.cgi");
+	xmlHttp.send(null);
+
+	function checkResponse() {
+		if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			var node = document.getElementById("access-counter");
+			node.innerHTML = xmlHttp.responseText;
+		}
+	}
+}
+
+function go_access_counter2() {
+	var xmlHttp;
+
+	if(window.XMLHttpRequest) {
+		xmlHttp = new XMLHttpRequest();
+	} else {
+		if(window.ActiveXOBject) {
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		} else {
+			xmlHttp = null;
+		}
+	}
+
+	xmlHttp.onreadystatechange = checkResponse;
+	xmlHttp.open("POST", "/AccessCounter/opt/test2.cgi");
+	xmlHttp.send(null);
+
+	function checkResponse() {
+		if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			var node = document.getElementById("access-counter2");
+			node.innerHTML = xmlHttp.responseText;
+		}
+	}
+}
+
+go_access_counter();
+go_access_counter2();
+
+</script>
+
+</body>
+</html>

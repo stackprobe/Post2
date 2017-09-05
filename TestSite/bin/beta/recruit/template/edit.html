@@ -1,0 +1,23 @@
+<html>
+<body>
+プロフィール入力<br/>
+<form method="POST" action="edit-reg.cgi">
+<input type="hidden" name="ident" value="<% Ident %>"/>
+登録者氏名:
+<input type="text" name="master-name" value="<% MasterName %>"/><br/>
+登録者カナ:
+<input type="text" name="master-kana" value="<% MasterKana %>"/><br/>
+店舗名:
+<input type="text" name="tenpo-name" value="<% TenpoName %>"/><br/>
+店舗場所:
+<input type="text" name="tenpo-basho" value="<% TenpoBasho %>"/><br/>
+店舗連絡先:
+<input type="text" name="tenpo-tel" value="<% TenpoTel %>"/><br/>
+<select name="status">
+<option value="KOUKAI"   <% Selected_KOUKAI %>   >公開</option>
+<option value="HIKOUKAI" <% Selected_HIKOUKAI %> >非公開</option>
+</select><br/>
+<input type="submit" value="更新"/>
+</form>
+</body>
+</html>
