@@ -28,7 +28,7 @@ static autoList_t *ParseRHtml(char *rHtml)
 
 		*q = '\0';
 		p = strx(p);
-		p = replaceLine(p, "640x640", "160x160", 0);
+//		p = replaceLine(p, "640x640", "160x160", 0); // del @ 2018.1.21
 
 		addElement(images, (uint)p);
 
