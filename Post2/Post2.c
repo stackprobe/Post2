@@ -157,6 +157,7 @@ static autoList_t *DPH_Values;
 static uint64 DPH_BodySize;
 static int DPH_Chunked;
 static char *DPH_ReqType;
+static int DPH_Expect100Continue;
 
 static void DPH_ParseLines(void)
 {
@@ -256,6 +257,10 @@ static void DPH_CheckFields(void)
 		{
 			DPH_ReqType = strx(getLine(DPH_Values, index));
 		}
+		else if(!_stricmp(key, "Expect") && !_stricmp(getLine(DPH_Values, index), "100-continue"))
+		{
+			DPH_Expect100Continue = 1;
+		}
 	}
 }
 static void DoParseHeader(void)
@@ -308,6 +313,8 @@ static void DoParseHeader(void)
 
 	if(!DPH_ReqType)
 		DPH_ReqType = strx("");
+
+	errorCase(DPH_Expect100Continue); // Expect: 100-continue ”ñ‘Î‰ž
 
 	writeOneLineNoRet_b(METHOD_FILE, DPH_Method);
 	writeOneLineNoRet_b(REQ_PATH_FILE, DPH_Path);
