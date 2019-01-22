@@ -106,7 +106,7 @@ static void ReadBody(void)
 	{
 		errorCase(getSize(Req.Body) < RPos + BoundaryLen);
 
-		if(!memcmp(b(Req.Body) + RPos, Boundary, BoundaryLen))
+		if(!memcmp(b_(Req.Body) + RPos, Boundary, BoundaryLen))
 			break;
 
 		addByte(PartBody, NextChar());
