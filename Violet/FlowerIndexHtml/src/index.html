@@ -1,0 +1,181 @@
+<html>
+<head>
+<script>
+
+window.onload = function() {
+	var fwh = 300;
+	var stores = [];
+	var k = 250;
+	var m = 0;
+	var rk = 0.0;
+	var xk = 0.0;
+	var yk = 0.0;
+
+	for(var i = 0; i < 100; i++) {
+		var store = {};
+
+		store.r = Math.random() * 360.0;
+		store.x = (window.innerWidth  - fwh) / 2.0;
+		store.y = (window.innerHeight - fwh) / 2.0;
+		store.mxya = 5.0 + Math.random() * 5.0;
+		store.ra = (Math.random() - 0.5) * 5.0;
+		store.xa = (Math.random() - 0.5) * 2.0 * store.mxya;
+		store.ya = (Math.random() - 0.5) * 2.0 * store.mxya;
+
+		var img = document.createElement("img");
+
+		img.src = [
+			"flowers/flower301-00.png", // @res
+			"flowers/flower301-10.png", // @res
+			"flowers/flower301-01.png", // @res
+			"flowers/flower301-11.png", // @res
+			"flowers/flower302-00.png", // @res
+			"flowers/flower302-10.png", // @res
+			"flowers/flower302-01.png", // @res
+			"flowers/flower302-11.png", // @res
+		][Math.floor(Math.random() * 8.0)];
+
+		img.style.opacity = 0.8;
+		img.style.position = "fixed";
+		img.style.transform = "rotate(" + Math.round(store.r) + "deg)";
+		img.style.left = Math.round(store.x) + "px";
+		img.style.top  = Math.round(store.y) + "px";
+
+		document.body.appendChild(img);
+
+		store.img = img;
+
+		stores.push(store);
+	}
+
+	setInterval(function() {
+		var sl = -fwh;
+		var st = -fwh;
+		var sr = window.innerWidth;
+		var sb = window.innerHeight;
+
+		for(var i = 0; i < stores.length; i++) {
+			var store = stores[i];
+
+			store.ra += (Math.random() - 0.5) * 0.2 + rk;
+			store.xa += (Math.random() - 0.5) * 0.2 + xk;
+			store.ya += (Math.random() - 0.5) * 0.2 + yk;
+
+			store.ra = Math.min(Math.max(store.ra, -5.0),  5.0);
+			store.xa = Math.min(Math.max(store.xa, -store.mxya), store.mxya);
+			store.ya = Math.min(Math.max(store.ya, -store.mxya), store.mxya);
+
+			store.r += store.ra;
+			store.x += store.xa;
+			store.y += store.ya;
+
+			if(store.x < sl) {
+				store.x = sr;
+			}
+			else if(sr < store.x) {
+				store.x = sl;
+			}
+
+			if(store.y < st) {
+				store.y = sb;
+			}
+			else if(sb < store.y) {
+				store.y = st;
+			}
+
+			if(store.R < 0.0) {
+				store.R += 360.0;
+			}
+			else if(360.0 < store.R) {
+				store.R -= 360.0;
+			}
+
+			store.img.style.transform = "rotate(" + Math.round(store.r) + "deg)";
+			store.img.style.left = Math.round(store.x) + "px";
+			store.img.style.top  = Math.round(store.y) + "px";
+		}
+
+		if(1 <= k) {
+			k--;
+		}
+		else {
+			k = 250;
+			rk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
+			xk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
+			yk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
+		}
+
+		if(0 <= m) {
+			m++;
+
+			if(m == 1) {
+				var t = document.getElementsByClassName("title")[0];
+
+				t.innerText = "ornithopter";
+			}
+			else if(m == 150) {
+				var p = document.getElementsByClassName("panel")[0];
+				var t = document.getElementsByClassName("title")[0];
+				var tr = t.getBoundingClientRect();
+				var tw = tr.width;
+
+				p.style.width = (tw + 50) + "px";
+				p.style.opacity = 0.5;
+			}
+			else if(m == 200) {
+				var t = document.getElementsByClassName("title")[0];
+
+				t.style.top = "50%";
+				t.style.opacity = 0.8;
+
+				m = -1;
+			}
+		}
+	},
+	20
+	);
+}
+
+</script>
+<style>
+
+body {
+	overflow-x: hidden;
+	overflow-y: hidden;
+	background-color: #000;
+	margin: 0px;
+}
+
+.panel {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100px;
+	height: 100%;
+	background-color: #000;
+	opacity: 0.0;
+	z-index: 1;
+	transition: all 5s cubic-bezier(0.0, 0.3, 0.2, 1.0);
+}
+
+.title {
+	position: fixed;
+	left: 25px;
+	top: 70%;
+	color: #fff;
+	opacity: 0.0;
+	z-index: 2;
+	transition: all 2s cubic-bezier(0.0, 0.3, 0.2, 1.0);
+	font: normal 90px "Century Gothic";
+	transform: translateY(-50%);
+}
+
+</style>
+</head>
+<body>
+<div class="panel">
+</div>
+<div class="title">
+</div>
+</body>
+</html>

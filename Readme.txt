@@ -1,9 +1,5 @@
 Post2
 =====
 
-サーバー
-
-http://barnatsutobi.dip.jp
-
-http://ornithopter.myhome.cx
+多目的？サーバーです。
 
