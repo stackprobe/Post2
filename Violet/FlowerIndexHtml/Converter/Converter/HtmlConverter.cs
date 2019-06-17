@@ -19,9 +19,7 @@ namespace Charlotte
 			string[] lines = File.ReadAllLines(this.InputHtmlFile, StringTools.ENCODING_SJIS);
 
 			lines = ResolveResource(lines);
-			lines = WrapScript(lines); // 1
-			lines = WrapScript(lines); // 2
-			lines = WrapScript(lines); // 3
+			lines = WrapScript(lines);
 
 			File.WriteAllLines(this.OutputHtmlFile, lines, StringTools.ENCODING_SJIS);
 		}
