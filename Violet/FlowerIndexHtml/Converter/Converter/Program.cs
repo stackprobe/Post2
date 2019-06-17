@@ -32,10 +32,11 @@ namespace Charlotte
 
 			// ----
 
-			HtmlConverter hc = new HtmlConverter();
-
-			hc.InputHtmlFile = @"src\index.html";
-			hc.OutputHtmlFile = @"out\index.html";
+			HtmlConverter hc = new HtmlConverter()
+			{
+				InputHtmlFile = @"src\index.html",
+				OutputHtmlFile = @"out\index.html",
+			};
 
 			hc.Perform();
 		}

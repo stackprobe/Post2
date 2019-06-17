@@ -17,6 +17,47 @@ namespace Charlotte
 		public void Perform()
 		{
 			string[] lines = File.ReadAllLines(this.InputHtmlFile, StringTools.ENCODING_SJIS);
+
+			lines = ResolveResource(lines);
+			lines = WrapScript(lines); // 1
+			lines = WrapScript(lines); // 2
+			lines = WrapScript(lines); // 3
+
+			File.WriteAllLines(this.OutputHtmlFile, lines, StringTools.ENCODING_SJIS);
+		}
+
+		private string[] WrapScript(string[] lines)
+		{
+			List<string> before = new List<string>();
+			List<string> scriptLines = new List<string>();
+			List<string> after = new List<string>();
+			List<string> dest = before;
+
+			for (int index = 0; index < lines.Length; index++)
+			{
+				if (IsEndScript(lines[index]))
+					dest = after;
+
+				dest.Add(lines[index]);
+
+				if (IsStartScript(lines[index]))
+					dest = scriptLines;
+			}
+			string script = string.Join("\r\n", scriptLines);
+
+			script = new Base64Unit().Encode(Encoding.UTF8.GetBytes(script));
+			script = "eval(decodeURIComponent(escape(atob(\"" + script + "\"))));";
+
+			dest = new List<string>();
+			dest.AddRange(before);
+			dest.Add(script);
+			dest.AddRange(after);
+
+			return dest.ToArray();
+		}
+
+		private string[] ResolveResource(string[] lines)
+		{
 			List<string> dest = new List<string>();
 			bool inScript = false;
 
@@ -24,25 +65,22 @@ namespace Charlotte
 			{
 				string line = fLine;
 
-				if (line == "</script>")
+				if (IsEndScript(line))
 				{
 					inScript = false;
 				}
 				if (inScript)
 				{
-					StringTools.Island resFilePfx = StringTools.GetIsland(line, "@res:");
-
-					if (resFilePfx != null)
+					if (line.EndsWith("// @res"))
 					{
-						string resFile = resFilePfx.Right;
+						StringTools.Enclosed literal = StringTools.GetEnclosed(line, "\"", "\"");
+						string resFile = literal.Inner;
 
-						// xxx ファイルタイプはpng固定
+						resFile = Path.Combine(Path.GetDirectoryName(this.InputHtmlFile), resFile);
 
-						line = "\"data:image/png;base64," + new Base64Unit().Encode(File.ReadAllBytes(resFile)) + "\",";
-					}
-					else
-					{
-						line = EncodeLiteral(line);
+						string dataUrl = "data:" + GetFileType(resFile) + ";base64," + new Base64Unit().Encode(File.ReadAllBytes(resFile));
+
+						line = literal.Left + dataUrl + literal.Right;
 					}
 					dest.Add(line);
 				}
@@ -50,36 +88,34 @@ namespace Charlotte
 				{
 					dest.Add(line);
 				}
-				if (line == "<script>")
+				if (IsStartScript(line))
 				{
 					inScript = true;
 				}
 			}
-			File.WriteAllLines(this.OutputHtmlFile, dest, StringTools.ENCODING_SJIS);
+			return dest.ToArray();
 		}
 
-		private static string EncodeLiteral(string line)
+		private static bool IsStartScript(string line)
 		{
-			StringBuilder buff = new StringBuilder();
-			bool inLiteral = false;
+			return line == "<script>";
+		}
 
-			foreach (char chr in line)
-			{
-				if (chr == '"') // xxx この辺適当...
-				{
-					buff.Append(chr);
-					inLiteral = inLiteral == false;
-				}
-				else if (inLiteral)
-				{
-					buff.Append(string.Format("\\u{0:x4}", (int)chr));
-				}
-				else
-				{
-					buff.Append(chr);
-				}
-			}
-			return buff.ToString();
+		private static bool IsEndScript(string line)
+		{
+			return line == "</script>";
+		}
+
+		private static string GetFileType(string file)
+		{
+			string ext = Path.GetExtension(file).ToLower();
+
+			if (ext == ".png")
+				return "image/png";
+
+			// ここへ追加
+
+			throw new Exception("Unknown extension: " + ext);
 		}
 	}
 }
