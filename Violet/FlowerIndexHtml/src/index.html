@@ -191,6 +191,21 @@ window.onload = function() {
 
 		window.getSelection().empty();
 	};
+
+	var ff = window.navigator.userAgent.toLowerCase().indexOf("firefox") != -1; // ? firefox
+
+	if(ff) {
+		var tag = document.createElement("div");
+
+		tag.style.position = "fixed";
+		tag.style.left   = "0px";
+		tag.style.top    = "0px";
+		tag.style.width  = "100%";
+		tag.style.height = "100%";
+		tag.style.opacity = 0.0;
+
+		document.body.appendChild(tag);
+	}
 }
 
 </script>
