@@ -30,15 +30,25 @@ namespace Charlotte
 		{
 			Directory.SetCurrentDirectory(ExtraTools.GetHomeDir());
 
-			// ----
-
-			HtmlConverter hc = new HtmlConverter()
 			{
-				InputHtmlFile = @"src\index.html",
-				OutputHtmlFile = @"out\index.html",
-			};
+				HtmlConverter hc = new HtmlConverter()
+				{
+					InputHtmlFile = @"src\index.html",
+					OutputHtmlFile = @"out\index.html",
+				};
 
-			hc.Perform();
+				hc.Perform();
+			}
+
+			{
+				HtmlConverter hc = new HtmlConverter()
+				{
+					InputHtmlFile = @"src2\GeTunnel.html",
+					OutputHtmlFile = @"out\GeTunnel.html",
+				};
+
+				hc.Perform();
+			}
 		}
 	}
 }

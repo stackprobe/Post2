@@ -18,6 +18,7 @@ namespace Charlotte
 		{
 			string[] lines = File.ReadAllLines(this.InputHtmlFile, StringTools.ENCODING_SJIS);
 
+			lines = ResolveErase(lines);
 			lines = ResolveResource(lines);
 			lines = WrapScript(lines);
 
@@ -31,20 +32,20 @@ namespace Charlotte
 			List<string> after = new List<string>();
 			List<string> dest = before;
 
-			for (int index = 0; index < lines.Length; index++)
+			foreach (string line in lines)
 			{
-				if (IsEndScript(lines[index]))
-					dest = after;
-
-				dest.Add(lines[index]);
-
-				if (IsStartScript(lines[index]))
+				if (line == "// @encodeBgn")
 					dest = scriptLines;
+				else if (line == "// @encodeEnd")
+					dest = after;
+				else
+					dest.Add(line);
 			}
 			string script = string.Join("\r\n", scriptLines);
 
-			script = new Base64Unit().Encode(Encoding.UTF8.GetBytes(script));
-			script = "eval(decodeURIComponent(escape(atob(\"" + script + "\"))));";
+			script = ScriptToBase64(script);
+			script = new string(script.Reverse().ToArray());
+			script = "eval(decodeURIComponent(escape(atob(\"" + script + "\".split(\"\").reverse().join(\"\")))));";
 
 			dest = new List<string>();
 			dest.AddRange(before);
@@ -52,6 +53,19 @@ namespace Charlotte
 			dest.AddRange(after);
 
 			return dest.ToArray();
+		}
+
+		private string ScriptToBase64(string script)
+		{
+			for (; ; )
+			{
+				string ret = new Base64Unit().Encode(Encoding.UTF8.GetBytes(script));
+
+				if (ret.EndsWith("=") == false)
+					return ret;
+
+				script += " ";
+			}
 		}
 
 		private string[] ResolveResource(string[] lines)
@@ -114,6 +128,17 @@ namespace Charlotte
 			// ここへ追加
 
 			throw new Exception("Unknown extension: " + ext);
+		}
+
+		private string[] ResolveErase(string[] lines)
+		{
+			List<string> dest = new List<string>();
+
+			foreach (string line in lines)
+				if (line.EndsWith("// @erase") == false)
+					dest.Add(line);
+
+			return dest.ToArray();
 		}
 	}
 }
