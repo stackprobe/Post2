@@ -317,6 +317,10 @@ function AddWall(ts, td, ms, z) {
 			tag.style.top = td + "%";
 			tag.style.backgroundColor = MakeColor();
 		},
+		4500,
+		function() {
+			tag.style.boxShadow = "0px 0px 50px 50px rgba(0, 0, 0, 0.3)";
+		},
 	]);
 }
 

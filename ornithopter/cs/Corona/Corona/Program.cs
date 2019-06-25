@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using Charlotte.Tools;
+using System.Threading;
 
 namespace Charlotte
 {
@@ -18,10 +19,11 @@ namespace Charlotte
 			ProcMain.CUIMain(new Program().Main2, APP_IDENT, APP_TITLE);
 
 #if DEBUG
-			//if (ProcMain.CUIError)
+			if (ProcMain.CUIError)
 			{
-				Console.WriteLine("Press ENTER.");
-				Console.ReadLine();
+				Thread.Sleep(2000);
+				//Console.WriteLine("Press ENTER.");
+				//Console.ReadLine();
 			}
 #endif
 		}
@@ -41,30 +43,21 @@ namespace Charlotte
 			if (ar.HasArgs())
 				throw new Exception("不明なコマンド引数");
 
-			RootGround.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0];
-			RootGround.I.Method = File.ReadAllLines("Method.htt2dat", Encoding.ASCII)[0];
-			RootGround.I.Path = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0];
-			RootGround.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0];
-
-
-
-			// TODO Post2側で正規化されているっぽいので、この下不要？？？
-
-			CommonUtils.ToFairLine(ref RootGround.I.IP);
-			CommonUtils.ToFairLine(ref RootGround.I.Method);
-			CommonUtils.ToFairLine(ref RootGround.I.Path);
-			CommonUtils.ToFairLine(ref RootGround.I.HTTP_Version);
+			RootGround.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			RootGround.I.Method = File.ReadAllLines("Method.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			RootGround.I.Path = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			RootGround.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
 
 			Console.WriteLine("IP: " + RootGround.I.IP);
 			Console.WriteLine("Method: " + RootGround.I.Method);
 			Console.WriteLine("Path: " + RootGround.I.Path);
 			Console.WriteLine("HTTP_Version: " + RootGround.I.HTTP_Version);
 
-			RootGround.I.PathQuery = new PathQuery(RootGround.I.Path); // Pathは正規化済みなので、PathQueryも正規化済み。
+			RootGround.I.PathQuery = new PathQuery(RootGround.I.Path);
 
 			{
-				string[] keys = File.ReadAllLines("HeaderKeys.htt2dat", Encoding.ASCII);
-				string[] values = File.ReadAllLines("HeaderValues.htt2dat", Encoding.ASCII);
+				string[] keys = File.ReadAllLines("HeaderKeys.htt2dat", Encoding.ASCII); // 正規化済み @ Post2
+				string[] values = File.ReadAllLines("HeaderValues.htt2dat", Encoding.ASCII); // 正規化済み @ Post2
 
 				if (keys.Length != values.Length)
 					throw null; // 想定外
@@ -73,9 +66,6 @@ namespace Charlotte
 				{
 					string key = keys[index];
 					string value = values[index];
-
-					CommonUtils.ToFairLine(ref key);
-					CommonUtils.ToFairLine(ref value);
 
 					Console.WriteLine("Header: " + key + " ⇒ " + value);
 
@@ -86,18 +76,18 @@ namespace Charlotte
 			RootGround.I.Body = File.ReadAllBytes("Body.htt2dat");
 
 			{
-				string command = RootGround.I.PathQuery.Query["q"]; // PathQueryは正規化済みなので、commandも正規化済み。
-				IService service = RootGround.I.ServiceDistributor.GetService(command);
+				string serviceName = RootGround.I.PathQuery.Query["sn"];
+				IService service = RootGround.I.ServiceDistributor.GetService(serviceName);
 
 				string sPrm = JsonTools.ToJsonString(RootGround.I.Body);
-				CommonUtils.ToFairText(ref sPrm);
+				sPrm = JString.ToJString(sPrm, true, true, true, true);
 				Console.WriteLine("prm: " + sPrm);
 				object prm = JsonTools.Decode(sPrm);
 
 				object ret = service.Perform(prm);
 
 				string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
-				CommonUtils.ToFairText(ref sRet);
+				//sRet = JString.ToJString(sRet, true, true, true, true);
 				Console.WriteLine("ret: " + sRet);
 				RootGround.I.ResBody = Encoding.UTF8.GetBytes(sRet);
 			}

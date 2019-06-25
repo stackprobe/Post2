@@ -1,50 +1,66 @@
 <html>
 <head>
-<script>
+<script type="module">
 
-var BackgroundImageSrcList;
-var CurrBackgroundImageSrcIndex;
-var BackBack;
-var BackFront;
+// @encodeBgn
+
+import "./res/script/common.js";
 
 var Z_BACK_BACK = 1;
 var Z_BACK_BACK_NEXT = 2;
 var Z_BACK_FRONT = 3;
 var Z_BACK_FRONT_NEXT = 4;
 var Z_PANEL = 5;
-var Z_TEXT = 6;
+var Z_CONTROL = 6;
+var Z_TEXT = 7;
 
-window.onload = function() {
-	Request([
-		"background-image-src-list",
-	],
-	[],
-	function(ret) {
-		BackgroundImageSrcList = ret;
-		CurrBackgroundImageSrcIndex = Math.floor(Math.random() * BackgroundImageSrcList.length);
-		BackBack  = Create("div");
-		BackFront = Create("div");
+var BackgroundImageSrcList;
+var CurrBackgroundImageSrcIndex;
+var BackBack  = null;
+var BackFront = null;
 
-		BackBack .style.zIndex = Z_BACK_BACK;
-		BackFront.style.zIndex = Z_BACK_FRONT;
+function Main() {
+	ENG_Add([
 
+	]);
 
-
-		SetScenario([
-			100,
-			function() {
-
-
-
-			},
-		]);
+	ENG_AddResized(function() {
+		// TODO
 	});
+}
+
+function ChangeBackgroundImage() {
+	var lastBB = BackBack;
+	var lastBF = BackFront;
+
+	CurrBackgroundImageSrcIndex = Math.floor(Math.random() * BackgroundImageSrcList.length);
+
+	BackBack = document.createElement("img");
+	BackBack.style.opacity = 0.5;
+	BackBack.style.zIndex = Z_BACK_BACK_NEXT;
+
+	BackFront = document.createElement("img");
+	BackFront.style.zIndex = Z_BACK_FRONT_NEXT;
+
+	ChangeBackgroundImageSize();
+
+	document.body.appendChild(BackBack);
+	document.body.appendChild(BackFront);
 
 	SetScenario([
 		100,
 		function() {
+			//
 		},
 	]);
+}
+
+function ChangeBackgroundImageSize() {
+	if(BackBack == null) {
+		return;
+	}
+
+
 }
 
 function SetScenario(scenario) {
@@ -85,17 +101,11 @@ function Request(prm, def, next) {
 		}
 	};
 
-	xhr.open("POST", "/corona/corona?q=index");
+	xhr.open("POST", "/corona/corona?sn=index");
 	xhr.send(JSON.stringify(prm));
 }
 
-function Create(name) {
-	var tag = document.createElement(name);
-
-	tag.style.position = "fixed";
-
-	return tag;
-}
+// @encodeEnd
 
 </script>
 <style>
@@ -109,8 +119,8 @@ body {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: hidden;
-	background-color: #fff;
-	color: #000;
+	background-color: #000;
+	color: #fff;
 }
 
 </style>
