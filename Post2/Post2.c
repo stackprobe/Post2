@@ -408,6 +408,14 @@ static void DoService(void)
 {
 	char *file = readText_b(REQ_PATH_FILE);
 
+	// ÉNÉGÉäÅ[èúãé
+	{
+		char *q = strchr(file, '?');
+
+		if(q)
+			*q = '\0';
+	}
+
 	file = lineToFairRelPath_x(file, strlen(RootDir));
 	file = combine_cx(RootDir, file);
 	file = changeExt_xc(file, "exe");
