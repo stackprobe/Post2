@@ -1,10 +1,10 @@
 <html>
 <head>
-<script type="module">
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="module.js" charset="Shift_JIS"></script>
+<script>
 
 // @encodeBgn
-
-import "./res/script/common.js";
 
 var Z_BACK_BACK = 1;
 var Z_BACK_BACK_NEXT = 2;
@@ -85,24 +85,6 @@ function AddScenarioPart(t, f, next) {
 		t
 		);
 	};
-}
-
-function Request(prm, def, next) {
-	var xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function() {
-		if(xhr.readyState == 4) {
-			if(xhr.status == 200) {
-				next(JSON.parse(xhr.responseText));
-			}
-			else {
-				next(def);
-			}
-		}
-	};
-
-	xhr.open("POST", "/corona/corona?sn=index");
-	xhr.send(JSON.stringify(prm));
 }
 
 // @encodeEnd

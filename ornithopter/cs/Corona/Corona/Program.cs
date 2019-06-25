@@ -79,15 +79,14 @@ namespace Charlotte
 				string serviceName = RootGround.I.PathQuery.Query["sn"];
 				IService service = RootGround.I.ServiceDistributor.GetService(serviceName);
 
-				string sPrm = JsonTools.ToJsonString(RootGround.I.Body);
-				sPrm = JString.ToJString(sPrm, true, true, true, true);
+				JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
+				object prm = JsonTools.Decode(RootGround.I.Body);
+				string sPrm = JsonTools.Encode(prm);
 				Console.WriteLine("prm: " + sPrm);
-				object prm = JsonTools.Decode(sPrm);
 
 				object ret = service.Perform(prm);
 
 				string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
-				//sRet = JString.ToJString(sRet, true, true, true, true);
 				Console.WriteLine("ret: " + sRet);
 				RootGround.I.ResBody = Encoding.UTF8.GetBytes(sRet);
 			}
