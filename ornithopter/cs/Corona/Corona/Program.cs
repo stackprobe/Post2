@@ -44,8 +44,23 @@ namespace Charlotte
 			RootGround.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0];
 			RootGround.I.Method = File.ReadAllLines("Method.htt2dat", Encoding.ASCII)[0];
 			RootGround.I.Path = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0];
-			RootGround.I.PathQuery = new PathQuery(RootGround.I.Path);
 			RootGround.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0];
+
+
+
+			// TODO Post2側で正規化されているっぽいので、この下不要？？？
+
+			CommonUtils.ToFairLine(ref RootGround.I.IP);
+			CommonUtils.ToFairLine(ref RootGround.I.Method);
+			CommonUtils.ToFairLine(ref RootGround.I.Path);
+			CommonUtils.ToFairLine(ref RootGround.I.HTTP_Version);
+
+			Console.WriteLine("IP: " + RootGround.I.IP);
+			Console.WriteLine("Method: " + RootGround.I.Method);
+			Console.WriteLine("Path: " + RootGround.I.Path);
+			Console.WriteLine("HTTP_Version: " + RootGround.I.HTTP_Version);
+
+			RootGround.I.PathQuery = new PathQuery(RootGround.I.Path); // Pathは正規化済みなので、PathQueryも正規化済み。
 
 			{
 				string[] keys = File.ReadAllLines("HeaderKeys.htt2dat", Encoding.ASCII);
@@ -59,6 +74,11 @@ namespace Charlotte
 					string key = keys[index];
 					string value = values[index];
 
+					CommonUtils.ToFairLine(ref key);
+					CommonUtils.ToFairLine(ref value);
+
+					Console.WriteLine("Header: " + key + " ⇒ " + value);
+
 					RootGround.I.HeaderPairs.Add(key, value);
 				}
 			}
@@ -66,13 +86,20 @@ namespace Charlotte
 			RootGround.I.Body = File.ReadAllBytes("Body.htt2dat");
 
 			{
-				string command = RootGround.I.PathQuery.Query["q"];
-				object prm = JsonTools.Decode(RootGround.I.Body);
+				string command = RootGround.I.PathQuery.Query["q"]; // PathQueryは正規化済みなので、commandも正規化済み。
 				IService service = RootGround.I.ServiceDistributor.GetService(command);
+
+				string sPrm = JsonTools.ToJsonString(RootGround.I.Body);
+				CommonUtils.ToFairText(ref sPrm);
+				Console.WriteLine("prm: " + sPrm);
+				object prm = JsonTools.Decode(sPrm);
 
 				object ret = service.Perform(prm);
 
-				RootGround.I.ResBody = Encoding.UTF8.GetBytes(JsonTools.Encode(ObjectTree.Conv(ret)));
+				string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
+				CommonUtils.ToFairText(ref sRet);
+				Console.WriteLine("ret: " + sRet);
+				RootGround.I.ResBody = Encoding.UTF8.GetBytes(sRet);
 			}
 
 			RootGround.I.ResHeaderPairs.Add(new string[] { "Content-Type", "application/json" });

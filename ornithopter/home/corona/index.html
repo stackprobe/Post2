@@ -2,8 +2,99 @@
 <head>
 <script>
 
-window.onload = function() {
+var BackgroundImageSrcList;
+var CurrBackgroundImageSrcIndex;
+var BackBack;
+var BackFront;
 
+var Z_BACK_BACK = 1;
+var Z_BACK_BACK_NEXT = 2;
+var Z_BACK_FRONT = 3;
+var Z_BACK_FRONT_NEXT = 4;
+var Z_PANEL = 5;
+var Z_TEXT = 6;
+
+window.onload = function() {
+	Request([
+		"background-image-src-list",
+	],
+	[],
+	function(ret) {
+		BackgroundImageSrcList = ret;
+		CurrBackgroundImageSrcIndex = Math.floor(Math.random() * BackgroundImageSrcList.length);
+		BackBack  = Create("div");
+		BackFront = Create("div");
+
+		BackBack .style.zIndex = Z_BACK_BACK;
+		BackFront.style.zIndex = Z_BACK_FRONT;
+
+
+
+		SetScenario([
+			100,
+			function() {
+
+
+
+			},
+		]);
+	});
+
+	SetScenario([
+		100,
+		function() {
+		},
+	]);
+}
+
+function SetScenario(scenario) {
+	var next = function() { };
+
+	for(var i = scenario.length - 2; 0 <= i; i -= 2) {
+		next = AddScenarioPart(
+			scenario[i + 0],
+			scenario[i + 1],
+			next
+			);
+	}
+	next();
+}
+
+function AddScenarioPart(t, f, next) {
+	return function() {
+		setTimeout(function() {
+			f();
+			next();
+		},
+		t
+		);
+	};
+}
+
+function Request(prm, def, next) {
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status == 200) {
+				next(JSON.parse(xhr.responseText));
+			}
+			else {
+				next(def);
+			}
+		}
+	};
+
+	xhr.open("POST", "/corona/corona?q=index");
+	xhr.send(JSON.stringify(prm));
+}
+
+function Create(name) {
+	var tag = document.createElement(name);
+
+	tag.style.position = "fixed";
+
+	return tag;
 }
 
 </script>

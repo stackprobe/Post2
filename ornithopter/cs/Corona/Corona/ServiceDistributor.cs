@@ -18,6 +18,7 @@ namespace Charlotte
 
 		public ServiceDistributor()
 		{
+			this.Add("index", new Services.Index.Service());
 			this.Add("sample/game", new Services.Sample.Game.Service());
 			this.Add("sample/uploader", new Services.Sample.Uploader.Service());
 			this.Add("test-service/echo", new Services.TestService.Echo.Service());
