@@ -6,21 +6,16 @@ using Charlotte.Tools;
 
 namespace Charlotte
 {
-	public class RootGround
+	public class HTTPRequest
 	{
-		public static RootGround I;
-
-		public ServiceDistributor ServiceDistributor = new ServiceDistributor();
+		public static HTTPRequest I;
 
 		public string IP;
 		public string Method;
+		public string URLPath;
 		public string Path;
-		public PathQuery PathQuery;
+		public Dictionary<string, string> Query = DictionaryTools.CreateIgnoreCase<string>();
 		public string HTTP_Version;
 		public Dictionary<string, string> HeaderPairs = DictionaryTools.CreateIgnoreCase<string>();
-		public byte[] Body;
-
-		public byte[] ResBody = new byte[0];
-		public List<string[]> ResHeaderPairs = new List<string[]>();
 	}
 }

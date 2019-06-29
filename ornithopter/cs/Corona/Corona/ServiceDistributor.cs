@@ -18,10 +18,18 @@ namespace Charlotte
 
 		public ServiceDistributor()
 		{
+			// ---- 共通 ----
+
+			this.Add("save", new Services.SaveLoad.Service.Save());
+			this.Add("load", new Services.SaveLoad.Service.Load());
+
+			// ---- ページ固有 ----
+
 			this.Add("index", new Services.Index.Service());
-			this.Add("sample/game", new Services.Sample.Game.Service());
 			this.Add("sample/uploader", new Services.Sample.Uploader.Service());
 			this.Add("test-service/echo", new Services.TestService.Echo.Service());
+
+			// ----
 		}
 
 		private void Add(string command, IService service)

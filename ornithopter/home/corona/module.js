@@ -235,6 +235,24 @@ function Rose_SortIgnoreCase(lines, comp) {
 	});
 }
 
+function Rose_Request(sn, prm, def, next) {
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status == 200) {
+				next(JSON.parse(xhr.responseText));
+			}
+			else {
+				next(def);
+			}
+		}
+	};
+
+	xhr.open("POST", "/corona/corona?sn=" + sn);
+	xhr.send(JSON.stringify(prm));
+}
+
 var Rose_Event_Queue = [];
 var Rose_Event_Hashed = new Map();
 var Rose_Event_UI = null;

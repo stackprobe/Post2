@@ -44,12 +44,12 @@ function @@_Interval() {
 	}
 }
 
-function @@_Add(q) {
-	@@_Queues.push(q);
+function @@_Add(routine) {
+	@@_Queues.push(routine);
 }
 
-function @@_Set(key, q) {
-	@@_Hashed.set(key, q);
+function @@_Set(key, routine) {
+	@@_Hashed.set(key, routine);
 }
 
 function @@_SetUI(routine) {

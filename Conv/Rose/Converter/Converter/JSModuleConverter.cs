@@ -34,6 +34,7 @@ namespace Charlotte
 		{
 			List<string> ptns = new List<string>();
 
+			// @@, @@^, @@^^, @@^^^, ...
 			{
 				string coName = CommonUtils.PathToCoName(file, rootDir);
 				string ptn = "@@";

@@ -231,20 +231,47 @@ function @@_SortIgnoreCase(lines, comp) {
 	});
 }
 
-function @@_Request(sn, prm, def, next) {
+function @@_Request(sn, prm, def, reaction) {
 	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatechange = function() {
-		if(xhr.readyState == 4) {
-			if(xhr.status == 200) {
-				next(JSON.parse(xhr.responseText));
+	@@_Event_Chain_Add(function(next) {
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState == 4) {
+				next();
 			}
-			else {
-				next(def);
-			}
+		};
+	});
+
+	@@_Event_Chain_Post(function() {
+		if(xhr.status == 200) {
+			reaction(JSON.parse(xhr.responseText));
 		}
-	};
+		else {
+			reaction(def);
+		}
+	});
 
 	xhr.open("POST", "/corona/corona?sn=" + sn);
 	xhr.send(JSON.stringify(prm));
+}
+
+function @@_Forward(url, prm) {
+	@@_Request("save", prm, [ "" ], function(ret) {
+		var q = ret[0];
+
+		if(q == "") {
+			alert("save error");
+		}
+		else {
+			document.location = url + "?q=" + q;
+		}
+	});
+}
+
+function @@_Forwarded(reaction) {
+	var q = window.location.search.substring(3);
+
+	@@_Request("load", [ q ], [], function(ret) {
+		reaction(ret);
+	});
 }

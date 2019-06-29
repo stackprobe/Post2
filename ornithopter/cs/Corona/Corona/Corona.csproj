@@ -50,18 +50,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonUtils.cs" />
     <Compile Include="IService.cs" />
-    <Compile Include="PathInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RootGround.cs" />
+    <Compile Include="HTTPRequest.cs" />
     <Compile Include="ServiceDistributor.cs" />
     <Compile Include="Services\Index\Service.cs" />
-    <Compile Include="Services\Sample\Game\Service.cs" />
+    <Compile Include="Services\Sample\Uploader\Room.cs" />
+    <Compile Include="Services\Sample\Uploader\Consts.cs" />
     <Compile Include="Services\Sample\Uploader\Service.cs" />
+    <Compile Include="Services\Sample\Uploader\Session.cs" />
+    <Compile Include="Services\SaveLoad\Consts.cs" />
+    <Compile Include="Services\SaveLoad\Ground.cs" />
+    <Compile Include="Services\SaveLoad\Service.cs" />
     <Compile Include="Services\TestService\Echo\Service.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

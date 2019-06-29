@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+function Main() {
+	var s = window.location.search;
+
+	// s は ?q=99999... のはず。
+
+//	s = s.substring(s.indexOf('=', 1) + 1);
+	s = s.substring(3);
+
+	Rose_Request("load", [ s ], [], function(ret) {
+		document.body.innerText = JSON.stringify(ret);
+	});
+}
+
+</script>
+</head>
+<body>
+</body>
+</html>

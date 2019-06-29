@@ -19,22 +19,19 @@ namespace Charlotte
 			ProcMain.CUIMain(new Program().Main2, APP_IDENT, APP_TITLE);
 
 #if DEBUG
-			if (ProcMain.CUIError)
+			//if (ProcMain.CUIError)
 			{
-				Thread.Sleep(2000);
-				//Console.WriteLine("Press ENTER.");
-				//Console.ReadLine();
+				Console.WriteLine("Press ENTER.");
+				Console.ReadLine();
 			}
 #endif
 		}
 
 		private void Main2(ArgsReader ar)
 		{
-			RootGround.I = new RootGround();
-
 			if (ar.ArgIs("/DISK-YELLOW"))
 			{
-				foreach (IService service in RootGround.I.ServiceDistributor.GetAllService())
+				foreach (IService service in new ServiceDistributor().GetAllService())
 				{
 					service.DiskYellow();
 				}
@@ -43,17 +40,19 @@ namespace Charlotte
 			if (ar.HasArgs())
 				throw new Exception("不明なコマンド引数");
 
-			RootGround.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0]; // 正規化済み @ Post2
-			RootGround.I.Method = File.ReadAllLines("Method.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
-			RootGround.I.Path = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
-			RootGround.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			HTTPRequest.I = new HTTPRequest();
 
-			Console.WriteLine("IP: " + RootGround.I.IP);
-			Console.WriteLine("Method: " + RootGround.I.Method);
-			Console.WriteLine("Path: " + RootGround.I.Path);
-			Console.WriteLine("HTTP_Version: " + RootGround.I.HTTP_Version);
+			HTTPRequest.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			HTTPRequest.I.Method = File.ReadAllLines("Method.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			HTTPRequest.I.URLPath = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
+			HTTPRequest.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
 
-			RootGround.I.PathQuery = new PathQuery(RootGround.I.Path);
+			Console.WriteLine("IP: " + HTTPRequest.I.IP);
+			Console.WriteLine("Method: " + HTTPRequest.I.Method);
+			Console.WriteLine("URLPath: " + HTTPRequest.I.URLPath);
+			Console.WriteLine("HTTP_Version: " + HTTPRequest.I.HTTP_Version);
+
+			ParsePathQuery();
 
 			{
 				string[] keys = File.ReadAllLines("HeaderKeys.htt2dat", Encoding.ASCII); // 正規化済み @ Post2
@@ -69,18 +68,18 @@ namespace Charlotte
 
 					Console.WriteLine("Header: " + key + " ⇒ " + value);
 
-					RootGround.I.HeaderPairs.Add(key, value);
+					HTTPRequest.I.HeaderPairs.Add(key, value);
 				}
 			}
 
-			RootGround.I.Body = File.ReadAllBytes("Body.htt2dat");
-
 			{
-				string serviceName = RootGround.I.PathQuery.Query["sn"];
-				IService service = RootGround.I.ServiceDistributor.GetService(serviceName);
+				byte[] body = File.ReadAllBytes("Body.htt2dat");
+
+				string serviceName = HTTPRequest.I.Query["sn"];
+				IService service = new ServiceDistributor().GetService(serviceName);
 
 				JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
-				object prm = JsonTools.Decode(RootGround.I.Body);
+				object prm = JsonTools.Decode(body);
 				string sPrm = JsonTools.Encode(prm);
 				Console.WriteLine("prm: " + sPrm);
 
@@ -88,13 +87,42 @@ namespace Charlotte
 
 				string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
 				Console.WriteLine("ret: " + sRet);
-				RootGround.I.ResBody = Encoding.UTF8.GetBytes(sRet);
+				byte[] resBody = Encoding.UTF8.GetBytes(sRet);
+
+				File.WriteAllBytes("ResBody.htt2dat", resBody);
 			}
 
-			RootGround.I.ResHeaderPairs.Add(new string[] { "Content-Type", "application/json" });
+			File.WriteAllLines("ResHeader.htt2dat", new string[]
+			{
+				"Content-Type: application/json",
+			});
+		}
 
-			File.WriteAllBytes("ResBody.htt2dat", RootGround.I.ResBody);
-			File.WriteAllLines("ResHeader.htt2dat", RootGround.I.ResHeaderPairs.Select(v => v[0] + ": " + v[1]));
+		private void ParsePathQuery()
+		{
+			int queryIndex = HTTPRequest.I.URLPath.IndexOf('?');
+
+			if (queryIndex == -1)
+			{
+				HTTPRequest.I.Path = HTTPRequest.I.URLPath;
+			}
+			else
+			{
+				HTTPRequest.I.Path = HTTPRequest.I.URLPath.Substring(0, queryIndex);
+
+				string query = HTTPRequest.I.URLPath.Substring(queryIndex + 1);
+				string[] qTkns = query.Split('&');
+
+				foreach (string qTkn in qTkns)
+				{
+					string[] qPair = qTkn.Split('=');
+
+					if (qPair.Length == 2)
+					{
+						HTTPRequest.I.Query.Add(qPair[0], qPair[1]);
+					}
+				}
+			}
 		}
 	}
 }
