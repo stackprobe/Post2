@@ -56,8 +56,7 @@
 
 		... を更新する。
 
-		★ ResHeader.htt2dat に Content-Type を追加すること。
-		★ ResHeader.htt2dat の最後の空行は不要。
+		★ ResHeader.htt2dat に Content-Type を追加すること。最後の空行は不要
 		★ ResBody.htt2dat のサイズを Content-Length にする。
 */
 

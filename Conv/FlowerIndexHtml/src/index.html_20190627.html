@@ -8,7 +8,7 @@
 window.onload = function() {
 	var fwh = 250;
 	var stores = [];
-	var k = 300;
+	var k = 250;
 	var m = 0;
 	var rk = 0.0;
 	var xk = 0.0;
@@ -20,8 +20,8 @@ window.onload = function() {
 		store.r = Math.random() * 360.0;
 		store.x = (window.innerWidth  - fwh) / 2.0;
 		store.y = (window.innerHeight - fwh) / 2.0;
-		store.mxya = 4.0 + Math.random() * 4.0;
-		store.ra = (Math.random() - 0.5) * 4.0;
+		store.mxya = 5.0 + Math.random() * 5.0;
+		store.ra = (Math.random() - 0.5) * 5.0;
 		store.xa = (Math.random() - 0.5) * 2.0 * store.mxya;
 		store.ya = (Math.random() - 0.5) * 2.0 * store.mxya;
 
@@ -40,7 +40,7 @@ window.onload = function() {
 
 		img.style.opacity = 0.8;
 		img.style.position = "fixed";
-		img.style.transform = "rotate(" + store.r + "deg)";
+		img.style.transform = "rotate(" + Math.round(store.r) + "deg)";
 		img.style.left = Math.round(store.x) + "px";
 		img.style.top  = Math.round(store.y) + "px";
 
@@ -51,7 +51,7 @@ window.onload = function() {
 		stores.push(store);
 	}
 
-	SetAnimeLoop(function() {
+	setInterval(function() {
 		var sl = -fwh;
 		var st = -fwh;
 		var sr = window.innerWidth;
@@ -60,11 +60,11 @@ window.onload = function() {
 		for(var i = 0; i < stores.length; i++) {
 			var store = stores[i];
 
-			store.ra += (Math.random() - 0.5) * 0.15 + rk;
-			store.xa += (Math.random() - 0.5) * 0.15 + xk;
-			store.ya += (Math.random() - 0.5) * 0.15 + yk;
+			store.ra += (Math.random() - 0.5) * 0.2 + rk;
+			store.xa += (Math.random() - 0.5) * 0.2 + xk;
+			store.ya += (Math.random() - 0.5) * 0.2 + yk;
 
-			if(4.0 < Math.abs(store.ra)) {
+			if(5.0 < Math.abs(store.ra)) {
 				store.ra *= 0.9;
 			}
 			if(store.mxya < Math.abs(store.xa)) {
@@ -73,6 +73,9 @@ window.onload = function() {
 			if(store.mxya < Math.abs(store.ya)) {
 				store.ya *= 0.9;
 			}
+//			store.ra = Math.min(Math.max(store.ra, -5.0),  5.0);
+//			store.xa = Math.min(Math.max(store.xa, -store.mxya), store.mxya);
+//			store.ya = Math.min(Math.max(store.ya, -store.mxya), store.mxya);
 
 			store.r += store.ra;
 			store.x += store.xa;
@@ -99,7 +102,7 @@ window.onload = function() {
 				store.R -= 360.0;
 			}
 
-			store.img.style.transform = "rotate(" + store.r + "deg)";
+			store.img.style.transform = "rotate(" + Math.round(store.r) + "deg)";
 			store.img.style.left = Math.round(store.x) + "px";
 			store.img.style.top  = Math.round(store.y) + "px";
 		}
@@ -108,10 +111,10 @@ window.onload = function() {
 			k--;
 		}
 		else {
-			k = 300;
-			rk = Math.random() < 0.1 ? 0.0 : (Math.random() - 0.5) * 0.04;
-			xk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.04;
-			yk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.04;
+			k = 250;
+			rk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
+			xk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
+			yk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.05;
 		}
 
 		if(0 <= m) {
@@ -140,7 +143,9 @@ window.onload = function() {
 				m = -1;
 			}
 		}
-	});
+	},
+	20
+	);
 
 	document.body.onclick = function(event) {
 		var x = event.pageX;
@@ -204,27 +209,6 @@ window.onload = function() {
 
 		document.body.appendChild(tag);
 	}
-}
-
-var AnimeFrame;
-var AnimeTime = 0;
-
-function SetAnimeLoop(f) {
-	AnimeFrame = f;
-	setTimeout(function() { AnimeLoop(); }, 0);
-}
-
-function AnimeLoop() {
-	var currTime = new Date().getTime();
-
-	AnimeTime = Math.max(AnimeTime, currTime - 100);
-	AnimeTime = Math.min(AnimeTime, currTime + 100);
-
-	if(AnimeTime < currTime) {
-		AnimeFrame();
-		AnimeTime += 16; // target to 60 hz
-	}
-	requestAnimationFrame(AnimeLoop);
 }
 
 // @encodeEnd

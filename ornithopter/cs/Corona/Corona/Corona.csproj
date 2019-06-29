@@ -50,12 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeforeDLIntervent.cs" />
+    <Compile Include="IIntervent.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="HTTPRequest.cs" />
     <Compile Include="ServiceDistributor.cs" />
     <Compile Include="Services\Index\Service.cs" />
+    <Compile Include="Services\Sample\Uploader\Intervent.cs" />
     <Compile Include="Services\Sample\Uploader\Room.cs" />
     <Compile Include="Services\Sample\Uploader\Consts.cs" />
     <Compile Include="Services\Sample\Uploader\Service.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Services\SaveLoad\Ground.cs" />
     <Compile Include="Services\SaveLoad\Service.cs" />
     <Compile Include="Services\TestService\Echo\Service.cs" />
+    <Compile Include="Utils\DenebolaToolkit.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

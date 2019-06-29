@@ -29,6 +29,11 @@ namespace Charlotte
 
 		private void Main2(ArgsReader ar)
 		{
+			if (ar.ArgIs("/BEFORE-DL"))
+			{
+				new BeforeDLIntervent().Perform();
+				return;
+			}
 			if (ar.ArgIs("/DISK-YELLOW"))
 			{
 				foreach (IService service in new ServiceDistributor().GetAllService())

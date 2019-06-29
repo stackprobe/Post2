@@ -21,7 +21,9 @@ namespace Charlotte.Services.Sample.Uploader
 		public const string ROOMS_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Rooms.txt";
 
 		public const int ACCESS_KEY_LEN_MAX = 300;
-		public const int ROOM_NAME_LEN_MAX = 300;
+		public const int ROOM_TITLE_LEN_MAX = 300;
+		public const int ROOM_IDENT_LEN_MAX = 100;
+		public const int LOCAL_FILE_LEN_MAX = 100;
 
 		public const string SESSIONS_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Sessions.txt";
 
