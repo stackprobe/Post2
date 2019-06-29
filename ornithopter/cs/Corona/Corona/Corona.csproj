@@ -67,6 +67,7 @@
     <Compile Include="Services\SaveLoad\Ground.cs" />
     <Compile Include="Services\SaveLoad\Service.cs" />
     <Compile Include="Services\TestService\Echo\Service.cs" />
+    <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\DenebolaToolkit.cs" />
   </ItemGroup>
   <ItemGroup />

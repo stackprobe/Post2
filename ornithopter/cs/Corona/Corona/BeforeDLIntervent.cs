@@ -35,6 +35,10 @@ namespace Charlotte
 			});
 		}
 
+		public const string RECV_FILE = "Recv.httdat";
+		public const string TARGET_FILE = "Target.httgetdat";
+		public const string TARGET_CONTENT_TYPE_FILE = "TargetContentType.httgetdat";
+
 		public void Perform()
 		{
 			if (
@@ -44,7 +48,7 @@ namespace Charlotte
 				)
 				throw new Exception("恐らく Get.exe から呼ばれていません。");
 
-			string targetFile = File.ReadAllLines("Target.httgetdat")[0];
+			string targetFile = File.ReadAllLines(TARGET_FILE)[0];
 
 			if (1000 < new FileInfo(targetFile).Length) // 小さいファイル以外は無視
 				return;

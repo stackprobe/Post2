@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using Charlotte.Tools;
 using System.Threading;
+using Charlotte.Utils;
 
 namespace Charlotte
 {
