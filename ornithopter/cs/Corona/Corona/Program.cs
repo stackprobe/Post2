@@ -53,10 +53,10 @@ namespace Charlotte
 			HTTPRequest.I.URLPath = File.ReadAllLines("Path.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
 			HTTPRequest.I.HTTP_Version = File.ReadAllLines("HTTP_Version.htt2dat", Encoding.ASCII)[0]; // 正規化済み @ Post2
 
-			Console.WriteLine("IP: " + HTTPRequest.I.IP);
-			Console.WriteLine("Method: " + HTTPRequest.I.Method);
-			Console.WriteLine("URLPath: " + HTTPRequest.I.URLPath);
-			Console.WriteLine("HTTP_Version: " + HTTPRequest.I.HTTP_Version);
+			ProcMain.WriteLog("IP: " + HTTPRequest.I.IP);
+			ProcMain.WriteLog("Method: " + HTTPRequest.I.Method);
+			ProcMain.WriteLog("URLPath: " + HTTPRequest.I.URLPath);
+			ProcMain.WriteLog("HTTP_Version: " + HTTPRequest.I.HTTP_Version);
 
 			ParsePathQuery();
 
@@ -72,7 +72,7 @@ namespace Charlotte
 					string key = keys[index];
 					string value = values[index];
 
-					Console.WriteLine("Header: " + key + " ⇒ " + value);
+					ProcMain.WriteLog("Header: " + key + " ⇒ " + value);
 
 					HTTPRequest.I.HeaderPairs.Add(key, value);
 				}
@@ -87,21 +87,30 @@ namespace Charlotte
 				JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
 				object prm = JsonTools.Decode(body);
 				string sPrm = JsonTools.Encode(prm);
-				Console.WriteLine("prm: " + sPrm);
+				ProcMain.WriteLog("prm: " + sPrm);
 
-				object ret = service.Perform(prm);
+				try
+				{
+					object ret = service.Perform(prm);
 
-				string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
-				Console.WriteLine("ret: " + sRet);
-				byte[] resBody = Encoding.UTF8.GetBytes(sRet);
+					string sRet = JsonTools.Encode(ObjectTree.Conv(ret));
+					ProcMain.WriteLog("ret: " + sRet);
+					byte[] resBody = Encoding.UTF8.GetBytes(sRet);
 
-				File.WriteAllBytes("ResBody.htt2dat", resBody);
+					File.WriteAllBytes("ResBody.htt2dat", resBody);
+
+					File.WriteAllLines("ResHeader.htt2dat", new string[]
+					{
+						"Content-Type: application/json",
+					});
+				}
+				catch (Exception e)
+				{
+					ProcMain.WriteLog(e);
+
+					File.WriteAllText("ResHeaderFirstLine.htt2dat", "HTTP/1.1 400 Or 500\r\n", Encoding.ASCII);
+				}
 			}
-
-			File.WriteAllLines("ResHeader.htt2dat", new string[]
-			{
-				"Content-Type: application/json",
-			});
 		}
 
 		private void ParsePathQuery()

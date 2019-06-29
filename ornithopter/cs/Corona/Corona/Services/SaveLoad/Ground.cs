@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Charlotte.Tools;
+using Charlotte.Utils;
 
 namespace Charlotte.Services.SaveLoad
 {
@@ -20,7 +21,7 @@ namespace Charlotte.Services.SaveLoad
 		private class FileData
 		{
 			public string File;
-			public long WroteTime;
+			public long WroteDateTime;
 		}
 
 		private static void DeleteDeadData()
@@ -28,13 +29,13 @@ namespace Charlotte.Services.SaveLoad
 			FileData[] files = Directory.GetFiles(Consts.DATA_DIR).Select(v => new FileData()
 			{
 				File = v,
-				WroteTime = new FileInfo(v).LastWriteTime.Ticks / 10000000L, // 100ns -> 秒
+				WroteDateTime = DateTimeToSec.ToDateTime(new FileInfo(v).LastWriteTime),
 			})
 			.ToArray();
 
 			Array.Sort(files, (a, b) =>
 			{
-				int ret = LongTools.Comp(a.WroteTime, b.WroteTime);
+				int ret = LongTools.Comp(a.WroteDateTime, b.WroteDateTime);
 
 				if (ret != 0)
 					return ret;
@@ -43,14 +44,14 @@ namespace Charlotte.Services.SaveLoad
 				return ret;
 			});
 
-			long currTime = DateTime.Now.Ticks / 10000000L;
-			long deadTime = currTime - (long)Consts.DATA_LIFESPAN_SEC;
+			long currDateTime = DateTimeToSec.Now.GetDateTime();
+			long expireDateTime = DateTimeToSec.ToDateTime(DateTimeToSec.ToSec(currDateTime) - Consts.DATA_LIFESPAN_SEC);
 
 			for (int index = 0; index < files.Length; index++)
 			{
-				bool dead = index + Consts.DATA_NUM_MAX < files.Length || files[index].WroteTime < deadTime;
+				bool deleting = index + Consts.DATA_NUM_MAX < files.Length || files[index].WroteDateTime < expireDateTime;
 
-				if (dead == false)
+				if (deleting == false)
 					break;
 
 				FileTools.Delete(files[index].File);

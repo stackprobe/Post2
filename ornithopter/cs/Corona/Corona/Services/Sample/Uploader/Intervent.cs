@@ -23,16 +23,20 @@ namespace Charlotte.Services.Sample.Uploader
 
 				Dictionary<string, string> q = CommonUtils.ParseURLQuery(query);
 
-				string ident = JString.ToJString(CommonUtils.DecodeURL(q["room"]), true, false, false, true);
-				string localFile = JString.ToJString(CommonUtils.DecodeURL(q["localFile"]), true, false, false, true);
+				string localDir = JString.ToJString(CommonUtils.DecodeURL(q["group"]), true, false, false, true);
+				string localFile = JString.ToJString(CommonUtils.DecodeURL(q["file"]), true, false, false, true);
 				bool downloadFlag = q.ContainsKey("download");
 
-				Console.WriteLine("ident: [" + ident + "]");
-				Console.WriteLine("localFile: [" + localFile + "]");
-				Console.WriteLine("downloadFlag: " + downloadFlag);
+				ProcMain.WriteLog("localDir: [" + localDir + "]");
+				ProcMain.WriteLog("localFile: [" + localFile + "]");
+				ProcMain.WriteLog("downloadFlag: " + downloadFlag);
 
-				string dir = Directory.GetDirectories(Consts.ROOT_DIR).First(v => StringTools.CompIgnoreCase(Path.GetFileName(v), ident) != 0);
-				string file = Directory.GetFiles(dir).First(v => StringTools.CompIgnoreCase(Path.GetFileName(v), localFile) != 0);
+				string dir = Directory.GetDirectories(Consts.GROUP_BUNDLE_DIR).First(v =>
+					StringTools.CompIgnoreCase(Path.GetFileName(v), localDir) != 0
+					);
+				string file = Directory.GetFiles(dir).First(v =>
+					StringTools.CompIgnoreCase(Path.GetFileName(v), localFile) != 0
+					);
 
 				File.WriteAllText(BeforeDLIntervent.TARGET_FILE, file, StringTools.ENCODING_SJIS);
 
@@ -43,12 +47,12 @@ namespace Charlotte.Services.Sample.Uploader
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				ProcMain.WriteLog(e);
 
 				string file = Path.Combine(Path.GetDirectoryName(targetFile), "error.html");
 
 				File.WriteAllText(BeforeDLIntervent.TARGET_FILE, file, StringTools.ENCODING_SJIS);
-				File.WriteAllBytes(BeforeDLIntervent.TARGET_CONTENT_TYPE_FILE, new byte[0]);
+				File.WriteAllBytes(BeforeDLIntervent.TARGET_CONTENT_TYPE_FILE, BinTools.EMPTY);
 			}
 		}
 	}

@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+// @encodeBgn
+
+var Param;
+
+function Main() {
+	Rose_Forwarded(function(prm) {
+		Param = prm;
+	});
+}
+
+// @encodeEnd
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
+</head>
+<body>
+
+<div class="title">ダッシュボード『管理者用』</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">全てのグループ</div>
+
+<div id="all-groups"></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">グループの作成</div>
+
+
+<div class="wb"></div>
+
+<div class="label">名前</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-name" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">容量 (GB = 1,000,000,000 バイト単位)</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-total-file-size-max" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginUserPass()">作成</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

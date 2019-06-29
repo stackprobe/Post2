@@ -235,16 +235,16 @@ function Rose_SortIgnoreCase(lines, comp) {
 	});
 }
 
-function Rose_Request(sn, prm, def, next) {
+function Rose_Request(sn, prm, def, reaction) {
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
 		if(xhr.readyState == 4) {
 			if(xhr.status == 200) {
-				next(JSON.parse(xhr.responseText));
+				reaction(JSON.parse(xhr.responseText));
 			}
 			else {
-				next(def);
+				reaction(def);
 			}
 		}
 	};
@@ -253,104 +253,41 @@ function Rose_Request(sn, prm, def, next) {
 	xhr.send(JSON.stringify(prm));
 }
 
-var Rose_Event_Queue = [];
-var Rose_Event_Hashed = new Map();
-var Rose_Event_UI = null;
+function Rose_Forward(url, prm) {
+	Rose_Request("save", prm, [ "" ], function(ret) {
+		var q = ret[0];
 
-window.onload = function() {
-	Rose_Event_Main();
+		if(q == "") {
+			alert("save error");
+		}
+		else {
+			document.location = url + "?q=" + q;
+		}
+	});
 }
 
-function Rose_Event_Main() {
-	setInterval(Rose_Event_Interval, 100);
+function Rose_Forwarded(reaction) {
+	var q = window.location.search.substring(3);
 
+	Rose_Request("load", [ q ], [], function(ret) {
+		reaction(ret);
+	});
+}
+
+window.onload = function() {
 	Main(); // external
 }
 
-function Rose_Event_Interval() {
-	if(Rose_Event_Chain_IsBusy()) {
-		// noop
+var Rose_Resize_Events = [];
+
+function Rose_Resize_Add(f) {
+	Rose_Resize_Events.push(f);
+}
+
+window.resize = function() {
+	for(var i = 0; i < Rose_Resize_Events.length; i++) {
+		Rose_Resize_Events[i]();
 	}
-	else if(1 <= Rose_Event_Queue.length) {
-		var q = Rose_Event_Queue;
-
-		Rose_Event_Queue = [];
-
-		for(var i = 0; i < q.length; i++) {
-			q[i]();
-		}
-	}
-	else {
-		var keys = Rose_GetMapKeys(Rose_Event_Hashed);
-
-		if(1 <= keys.length) {
-			var m = Rose_Event_Hashed;
-
-			Rose_Event_Hashed = new Map();
-
-			for(var i = 0; i < keys.length; i++) {
-				m.get(keys[i])();
-			}
-		}
-		else if(Rose_Event_UI != null) {
-			Rose_Event_UI();
-			Rose_Event_UI = null;
-		}
-	}
-}
-
-function Rose_Event_Add(q) {
-	Rose_Event_Queues.push(q);
-}
-
-function Rose_Event_Set(key, q) {
-	Rose_Event_Hashed.set(key, q);
-}
-
-function Rose_Event_SetUI(routine) {
-	Rose_Event_UI = routine;
-}
-
-var Rose_Event_Chain_Chain = [];
-
-function Rose_Event_Chain_IsBusy() {
-	return 1 <= Rose_Event_Chain_Chain.length;
-}
-
-function Rose_Event_Chain_Fire() {
-	if(1 <= Rose_Event_Chain_Chain.length) {
-		Rose_Event_Chain_Chain.shift()(Rose_Event_Chain_Fire);
-	}
-}
-
-function Rose_Event_Chain_Add(routine) {
-	Rose_Event_Chain_Chain.push(routine);
-	Rose_Event_Chain_Chain.push(function(next) {
-		next();
-	});
-
-	if(Rose_Event_Chain_Chain.length == 2) {
-		Rose_Event_Chain_FireChain();
-	}
-}
-
-function Rose_Event_Chain_Post(routine) {
-	Rose_Event_Chain_Add(function(next) {
-		routine();
-		next();
-	});
-}
-
-var Rose_Event_Resize_Events = [];
-
-window.onresize = function() {
-	for(var i = 0; i < Rose_Event_Resize_Events.length; i++) {
-		Rose_Event_Resize_Events[i]();
-	}
-}
-
-function Rose_Event_Resize_Add(routine) {
-	Rose_Event_Resize_Events.push(routine);
 }
 
 // @encodeEnd

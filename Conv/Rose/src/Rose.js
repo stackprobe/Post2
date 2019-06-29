@@ -234,22 +234,16 @@ function @@_SortIgnoreCase(lines, comp) {
 function @@_Request(sn, prm, def, reaction) {
 	var xhr = new XMLHttpRequest();
 
-	@@_Event_Chain_Add(function(next) {
-		xhr.onreadystatechange = function() {
-			if(xhr.readyState == 4) {
-				next();
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status == 200) {
+				reaction(JSON.parse(xhr.responseText));
 			}
-		};
-	});
-
-	@@_Event_Chain_Post(function() {
-		if(xhr.status == 200) {
-			reaction(JSON.parse(xhr.responseText));
+			else {
+				reaction(def);
+			}
 		}
-		else {
-			reaction(def);
-		}
-	});
+	};
 
 	xhr.open("POST", "/corona/corona?sn=" + sn);
 	xhr.send(JSON.stringify(prm));
@@ -274,4 +268,8 @@ function @@_Forwarded(reaction) {
 	@@_Request("load", [ q ], [], function(ret) {
 		reaction(ret);
 	});
+}
+
+window.onload = function() {
+	Main(); // external
 }

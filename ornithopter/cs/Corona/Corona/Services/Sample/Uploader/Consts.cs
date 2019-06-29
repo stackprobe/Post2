@@ -8,28 +8,32 @@ namespace Charlotte.Services.Sample.Uploader
 {
 	public class Consts
 	{
-		/// <summary>
-		/// この直下にルーム(ディレクトリ)を配置する。
-		/// ルームの直下にファイルを配置する。
-		/// </summary>
-		public const string ROOT_DIR = @"C:\appdata\Post2.Corona.Sample.Uploader";
+		public const string GROUP_BUNDLE_DIR = @"C:\appdata\Post2.Corona.Sample.Uploader";
 
 		public const long TOTAL_FILE_SIZE_MAX = 138000000000L; // 138 GB
-		public const int ROOM_NUM_MAX = 1000;
+
+		public const string ACCESS_KEY_LOCAL_FILE = "access-key.txt";
+		public const string GROUP_INFO_LOCAL_FILE = "info.txt";
+		public const string FILE_BUNDLE_LOCAL_DIR = "oh";
+		public const string FILE_DUE_BUNDLE_LOCAL_FILE = "due.txt";
+
+		public const int GROUP_NUM_MAX = 1000;
 		public const int FILE_NUM_MAX = 1000;
 
-		public const string ROOMS_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Rooms.txt";
-
+		public const int GROUP_LOCAL_DIR_LEN_MAX = 50; // ダウンロード用 url のパスの一部になる。
+		public const int GROUP_NAME_LEN_MAX = 300;
 		public const int ACCESS_KEY_LEN_MAX = 300;
-		public const int ROOM_TITLE_LEN_MAX = 300;
-		public const int ROOM_IDENT_LEN_MAX = 100;
-		public const int LOCAL_FILE_LEN_MAX = 100;
 
-		public const string SESSIONS_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Sessions.txt";
+		public const string SESSION_BUNDLE_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Session.txt";
 
 		public const int SESSION_NUM_MAX = 1000;
 		public const int SESSION_TIMEOUT_SEC = 86400;
 
 		////// ///// ////// ///////////////////// / ///////////////////////////////////////////////////////////////////////////////// // $_git:secret
+
+		// ----
+
+		public const string S_TRUE = "true";
+		public const string S_FALSE = "false";
 	}
 }

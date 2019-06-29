@@ -7,7 +7,7 @@
 // @encodeBgn
 
 function Main() {
-	// TODO ???
+	// noop
 }
 
 function LoginUserPass() {
@@ -25,17 +25,17 @@ function LoginAccessKey() {
 	Login(accessKey);
 }
 
-funcrion Login(accessKey) {
-	Rose_Request("sample/uploader/login", [ accessKey ], [ "" ], function(ret) {
+function Login(accessKey) {
+	Rose_Request("sample/uploader&c=login", [ accessKey ], [ "" ], function(ret) {
 		var sessionKey = ret[0];
 		var supervisorMode = ret[1];
 
 		if(sessionKey == "") {
-			alert("login error");
+			alert("ログイン出来ません。");
 		}
 		else {
-			Rose_Forward(supervisorMode ? "supervisor.html" : "dashboard.html", {
-				sessionKey: sessionKey,
+			Rose_Forward((supervisorMode ? "supervisor-" : "") + "dashboard.html", {
+				SessionKey: sessionKey,
 			});
 		}
 	});
@@ -44,19 +44,61 @@ funcrion Login(accessKey) {
 // @encodeEnd
 
 </script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
 </head>
 <body>
 
-<h1>ログイン画面(仮)</h1>
+<div class="title">ログイン</div>
 
-user: <input id="user" type="text"></input><br/>
-pass: <input id="pass" type="text"></input><br/>
+<div class="wb"></div>
+<div class="wb"></div>
 
-<button onclick="LoginUserPass()">Login</button><br/>
 
-access-key: <input id="access-key" type="text"></input><br/>
 
-<button onclick="LoginAccessKey()">Login</button><br/>
+<div class="subtitle">ユーザー名とパスワードでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">ユーザー名</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="user" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">パスワード</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="pass" type="password"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginUserPass()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">アクセスキーでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">アクセスキー</input></div>
+<div class="input"><input class="input-text" id="access-key" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginAccessKey()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
 
 </body>
 </html>

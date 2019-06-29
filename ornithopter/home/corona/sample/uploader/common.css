@@ -1,0 +1,73 @@
+body {
+	font: normal 16px "Yu Gothic";
+	margin: 0px;
+}
+
+div {
+	padding: 0px 0px 0px 50px;
+}
+
+.wb {
+	height: 50px;
+}
+
+.wb-s {
+	height: 5px;
+}
+
+.title {
+	font-size: 32px;
+	color: #fff;
+	background-color: #799;
+}
+
+.subtitle {
+	border-bottom: solid 1px #799;
+}
+
+.label {
+}
+
+.input {
+}
+
+.input:focus {
+}
+
+.input-button {
+	color: #fff;
+	cursor: pointer;
+	background-color: #08f;
+	border: 2px solid #08f;
+	border-radius: 5px;
+	box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
+	height: 50px;
+	outline: 0;
+	padding: 0px 20px;
+	transition: 0.2s;
+}
+
+.input-button:focus {
+	background-color: #2af;
+	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+}
+
+.input-button:hover {
+	color: #08f;
+	background-color: #fff;
+}
+
+.input-text {
+	color: #00f;
+	background-color: #f8ffff;
+	border: solid 1px #888;
+	border-radius: 5px;
+	transition: 0.2s;
+	padding: 20px;
+	width: 700px;
+}
+
+.input-text:focus {
+	outline: 0;
+	box-shadow: 0 0 10px 5px rgba(0, 128, 255, 0.1);
+}

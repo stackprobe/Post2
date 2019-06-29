@@ -6,30 +6,69 @@
 
 // @encodeBgn
 
-var Prm;
+var Param;
 
 function Main() {
 	Rose_Forwarded(function(prm) {
-		Prm = prm;
-		Main2();
+		Param = prm;
 	});
-}
-
-function Main2() {
-	// TODO ???
 }
 
 // @encodeEnd
 
 </script>
+<style>
+
+@import url("common.css");
+
+</style>
 </head>
 <body>
 
-<h1>ダッシュボード(仮)</h1>
+<div class="title">ダッシュボード</div>
 
-<div id="droparea">
+<div class="wb"></div>
+<div class="wb"></div>
 
-</div>
+
+
+<div class="subtitle">ユーザー名とパスワードでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">ユーザー名</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="user" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">パスワード</input></div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="pass" type="password"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginUserPass()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">アクセスキーでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">アクセスキー</input></div>
+<div class="input"><input class="input-text" id="access-key" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginAccessKey()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
 
 
 
