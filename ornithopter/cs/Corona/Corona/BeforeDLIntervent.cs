@@ -9,61 +9,30 @@ namespace Charlotte
 {
 	public class BeforeDLIntervent
 	{
-		private class InterventInfo
-		{
-			public string Pattern;
-			public IIntervent Intervent;
-		}
-
-		private List<InterventInfo> Infos = new List<InterventInfo>();
-
-		public BeforeDLIntervent()
-		{
-			// ----
-
-			this.Add("{c54bae94-712d-4065-b4be-ff6a7e518ac6}", new Services.Sample.Uploader.Intervent());
-
-			// ----
-		}
-
-		private void Add(string targetPtn, IIntervent intervent)
-		{
-			this.Infos.Add(new InterventInfo()
-			{
-				Pattern = targetPtn,
-				Intervent = intervent,
-			});
-		}
-
 		public const string RECV_FILE = "Recv.httdat";
 		public const string TARGET_FILE = "Target.httgetdat";
 		public const string TARGET_CONTENT_TYPE_FILE = "TargetContentType.httgetdat";
 
-		public void Perform()
+		public static void Perform()
 		{
 			if (
 				File.Exists("IP.httdat") == false ||
 				File.Exists("Recv.httdat") == false ||
 				File.Exists("Send.httdat") == false
 				)
-				throw new Exception("恐らく Get.exe から呼ばれていません。");
+				throw new Exception("このプログラムは Get.exe から呼び出されます。");
 
-			string targetFile = File.ReadAllLines(TARGET_FILE)[0];
+			string targetPath = File.ReadAllLines(TARGET_FILE)[0];
 
-			if (1000 < new FileInfo(targetFile).Length) // 小さいファイル以外は無視
+			if (StringTools.EndsWithIgnoreCase(targetPath, ".alt.txt") == false)
 				return;
 
-			byte[] targetData = File.ReadAllBytes(targetFile);
-			string target = JString.ToJString(File.ReadAllBytes(targetFile), false, false, false, false);
+			string intervateClassName = File.ReadAllLines(targetPath, Encoding.ASCII)[0];
+			Type intervateClass = Type.GetType(intervateClassName);
+			ReflectTools.MethodUnit intervateCtor = ReflectTools.GetConstructor(intervateClass);
+			IIntervent intervate = (IIntervent)intervateCtor.Construct(new object[0]);
 
-			foreach (InterventInfo info in this.Infos)
-			{
-				if (info.Pattern == target)
-				{
-					info.Intervent.BeforeDL();
-					break;
-				}
-			}
+			intervate.BeforeDL();
 		}
 	}
 }

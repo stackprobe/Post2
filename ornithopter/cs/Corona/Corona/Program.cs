@@ -32,7 +32,7 @@ namespace Charlotte
 		{
 			if (ar.ArgIs("/BEFORE-DL"))
 			{
-				new BeforeDLIntervent().Perform();
+				BeforeDLIntervent.Perform();
 				return;
 			}
 			if (ar.ArgIs("/DISK-YELLOW"))

@@ -48,7 +48,7 @@ namespace Charlotte.Services.Sample.Uploader
 				string file = Path.Combine(Path.GetDirectoryName(targetFile), "error.html");
 
 				File.WriteAllText(BeforeDLIntervent.TARGET_FILE, file, StringTools.ENCODING_SJIS);
-				File.WriteAllBytes(BeforeDLIntervent.TARGET_CONTENT_TYPE_FILE, BinTools.EMPTY);
+				File.WriteAllText(BeforeDLIntervent.TARGET_CONTENT_TYPE_FILE, "\n", Encoding.ASCII); // 空のファイルにしてはならない。
 			}
 		}
 	}
