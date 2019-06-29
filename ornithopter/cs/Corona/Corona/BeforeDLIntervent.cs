@@ -44,7 +44,7 @@ namespace Charlotte
 				)
 				throw new Exception("恐らく Get.exe から呼ばれていません。");
 
-			string targetFile = File.ReadAllLines("Download.txt")[0];
+			string targetFile = File.ReadAllLines("Target.httgetdat")[0];
 
 			if (1000 < new FileInfo(targetFile).Length) // 小さいファイル以外は無視
 				return;

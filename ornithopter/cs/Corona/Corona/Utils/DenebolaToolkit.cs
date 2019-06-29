@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Charlotte.Tools;
 using System.IO;
+using Charlotte.Tools;
 
 // ^ sync @ DenebolaToolkit
 
@@ -34,9 +34,11 @@ namespace Charlotte.Utils
 
 				File.WriteAllLines(argsFile, args, StringTools.ENCODING_SJIS);
 
-				ProcessTools.Start(@"C:\Factory\Bodewig\DenebolaTools\FairLocalPath.exe", "//R \"" + argsFile + "\"").WaitForExit();
+				ProcessTools.Start(@"C:\Factory\Bodewig\DenebolaToolkit\FairLocalPath.exe", "//R \"" + argsFile + "\"").WaitForExit();
 
-				string[] outLines = File.ReadAllLines(outFile).Where(v => v.StartsWith(molp)).Select(v => v.Substring(molp.Length)).ToArray();
+				string[] outLines = File.ReadAllLines(outFile, StringTools.ENCODING_SJIS)
+					.Where(v => v.StartsWith(molp))
+					.Select(v => v.Substring(molp.Length)).ToArray();
 
 				if (outLines.Length != 1)
 					throw null; // 想定外
