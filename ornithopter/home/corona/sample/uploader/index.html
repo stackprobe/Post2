@@ -28,12 +28,13 @@ function LoginAccessKey() {
 funcrion Login(accessKey) {
 	Rose_Request("sample/uploader/login", [ accessKey ], [ "" ], function(ret) {
 		var sessionKey = ret[0];
+		var supervisorMode = ret[1];
 
 		if(sessionKey == "") {
 			alert("login error");
 		}
 		else {
-			Rose_Forward("dashboard.html", {
+			Rose_Forward(supervisorMode ? "supervisor.html" : "dashboard.html", {
 				sessionKey: sessionKey,
 			});
 		}
