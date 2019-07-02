@@ -49,7 +49,7 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				ProcMain.WriteLog(e);
 
-				string file = Path.Combine(Path.GetDirectoryName(targetFile), "error.html");
+				string file = Path.Combine(Path.GetDirectoryName(targetFile), "dl-error.html");
 
 				File.WriteAllText(BeforeDLIntervent.TARGET_FILE, file, StringTools.ENCODING_SJIS);
 				File.WriteAllBytes(BeforeDLIntervent.TARGET_CONTENT_TYPE_FILE, BinTools.EMPTY);

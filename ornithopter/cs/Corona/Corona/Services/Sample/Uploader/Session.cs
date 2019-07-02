@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Charlotte.Utils;
 using Charlotte.Tools;
+using Charlotte.Utils;
 
 namespace Charlotte.Services.Sample.Uploader
 {

@@ -273,3 +273,7 @@ function @@_Forwarded(reaction) {
 window.onload = function() {
 	Main(); // external
 }
+
+function @@_Get(id) {
+	return document.getElementById(id);
+}

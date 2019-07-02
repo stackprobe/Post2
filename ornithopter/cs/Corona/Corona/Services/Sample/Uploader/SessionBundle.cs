@@ -14,6 +14,9 @@ namespace Charlotte.Services.Sample.Uploader
 
 		public SessionBundle()
 		{
+			if (File.Exists(Consts.SESSION_BUNDLE_FILE) == false)
+				File.WriteAllBytes(Consts.SESSION_BUNDLE_FILE, BinTools.EMPTY);
+
 			this.Sessions = ArrayTools.ToList(File.ReadAllLines(Consts.SESSION_BUNDLE_FILE, StringTools.ENCODING_SJIS).Select(v =>
 			{
 				string[] tokens = v.Split('\t').ToArray();
@@ -47,9 +50,9 @@ namespace Charlotte.Services.Sample.Uploader
 			long currDateTime = DateTimeToSec.Now.GetDateTime();
 			long expireDateTime = DateTimeToSec.ToDateTime(DateTimeToSec.ToSec(currDateTime) - Consts.SESSION_TIMEOUT_SEC);
 
-			Console.WriteLine("SessionBundle.Slim()");
-			Console.WriteLine("現在日時 ⇒ " + currDateTime);
-			Console.WriteLine("期限切れ ⇒ " + expireDateTime);
+			ProcMain.WriteLog("SessionBundle.Slim()");
+			ProcMain.WriteLog("現在日時 ⇒ " + currDateTime);
+			ProcMain.WriteLog("期限切れ ⇒ " + expireDateTime);
 
 			this.Sessions.RemoveAll(v => v.LastAccessedDateTime < expireDateTime);
 		}

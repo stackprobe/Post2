@@ -13,6 +13,9 @@ namespace Charlotte.Services.Sample.Uploader
 
 		public GroupBundle()
 		{
+			if (Directory.Exists(Consts.GROUP_BUNDLE_DIR) == false)
+				FileTools.CreateDir(Consts.GROUP_BUNDLE_DIR);
+
 			this.LiteGroups = ArrayTools.ToList(Directory.GetDirectories(Consts.GROUP_BUNDLE_DIR).Select(v => new LiteGroup(v)));
 
 			this.LiteGroups.Sort((a, b) => StringTools.Comp(a.AccessKey, b.AccessKey));
@@ -23,7 +26,7 @@ namespace Charlotte.Services.Sample.Uploader
 			int ret = 0;
 
 			foreach (LiteGroup liteGroup in this.LiteGroups)
-				ret += liteGroup.GetGroup().GetFileBundle().GetFiles().Length;
+				ret += liteGroup.GetGroup().GetFileBundle().Files.Length;
 
 			return ret;
 		}

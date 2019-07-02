@@ -10,24 +10,21 @@ namespace Charlotte.Services.Sample.Uploader
 	public class FileBundle
 	{
 		public string Dir;
+		public string[] Files;
 
 		public FileBundle(string dir)
 		{
-			this.Dir = dir;
-		}
+			this.Dir = FileTools.MakeFullPath(dir);
 
-		public string[] GetFiles()
-		{
-			string[] files = Directory.GetFiles(this.Dir).ToArray();
-			Array.Sort(files, StringTools.CompIgnoreCase);
-			return files;
+			this.Files = Directory.GetFiles(this.Dir).ToArray();
+			Array.Sort(this.Files, StringTools.CompIgnoreCase);
 		}
 
 		public long GetTotalFileSize()
 		{
 			long ret = 0L;
 
-			foreach (string file in this.GetFiles())
+			foreach (string file in this.Files)
 				ret += new FileInfo(file).Length;
 
 			return ret;

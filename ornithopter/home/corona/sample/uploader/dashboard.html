@@ -6,12 +6,106 @@
 
 // @encodeBgn
 
-var Param;
+var P;
 
 function Main() {
 	Rose_Forwarded(function(prm) {
-		Param = prm;
+		P = prm;
+		Main2();
 	});
+}
+
+function Main2() {
+	Rose_Request("sample/uploader&c=dashboard", [ P.SessionKey, null ], null, function(ret) {
+		if(ret == null) {
+			alert("ダッシュボードの取得に失敗しました。");
+			return;
+		}
+
+		var status = ret[0];
+
+		Rose_Get("title").innerText = "『" + status[0] + "』のダッシュボード";
+
+		Rose_Get("status").innerHTML = "グループ名 = " + status[0] +
+			"<br/>容量 = " + status[1] + " バイト" +
+			"<br/>使用量 = " + status[2] + " バイト (使用率 = " + (status[2] / status[1]) + ")" +
+			"<br/>空き領域 = " + status[3] + " バイト" +
+			"<br/>ファイル数 = " + status[4] +
+			"<br/>ローカルディレクトリ名 = " + status[5] +
+			"<br/>アクセスキー = ●●●●●";
+
+		var upFiles = ret[1];
+
+		for(var i = 0; i < upFiles.length; i++) {
+			var upFile = upFiles[i];
+
+			AddUpFile({
+				LocalFile        : upFile[0],
+				Size             : upFile[1],
+				UploadedDateTime : upFile[2],
+			});
+		}
+	});
+}
+
+function AddUpFile(upFile) {
+	{
+		var div = document.createElement("div");
+
+		div.className = "label";
+		div.innerHTML = "ファイル名 = " + upFile.LocalFile + "<br/>サイズ = " + upFile.Size + " バイト<br/>アップロード日時 = " + upFile.UploadedDateTime;
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "詳細";
+		button.onclick = function() { EditFile(upFile); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+}
+
+function EditUpFile(upFile) {
+	P.UpFile = upFile;
+
+	Rose_Forward("edit-file.html", P);
+}
+
+function Upload() {
+	// TODO
+}
+
+function Reload() {
+	Rose_Forward("dashboard.html", P); // reload
+}
+
+function EditGroup() {
+	// TODO
 }
 
 // @encodeEnd
@@ -22,49 +116,51 @@ function Main() {
 @import url("common.css");
 
 </style>
+<title>uploader simple-page</title>
 </head>
 <body>
 
-<div class="title">ダッシュボード</div>
+<div class="title" id="title">『』のダッシュボード</div>
 
 <div class="wb"></div>
 <div class="wb"></div>
 
 
 
-<div class="subtitle">ユーザー名とパスワードでログイン</div>
+<div class="subtitle">アップロード</div>
 
 <div class="wb"></div>
 
-<div class="label">ユーザー名</input></div>
-<div class="wb-s"></div>
-<div class="input"><input class="input-text" id="user" type="text"></input></div>
-
-<div class="wb"></div>
-
-<div class="label">パスワード</input></div>
-<div class="wb-s"></div>
-<div class="input"><input class="input-text" id="pass" type="password"></input></div>
-
-<div class="wb"></div>
-
-<div class="input"><button class="input-button" onclick="LoginUserPass()">ログイン</button></div>
+<div class="input"><button class="input-button" onclick="Upload()">アップロード</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>
 
 
 
-<div class="subtitle">アクセスキーでログイン</div>
+<div class="subtitle">アップロードされているファイル</div>
 
 <div class="wb"></div>
 
-<div class="label">アクセスキー</input></div>
-<div class="input"><input class="input-text" id="access-key" type="text"></input></div>
+<div class="input"><button class="input-button" onclick="Reload()">再取得 (ページ再読込)</button></div>
 
 <div class="wb"></div>
 
-<div class="input"><button class="input-button" onclick="LoginAccessKey()">ログイン</button></div>
+<div id="end-of-uploaded-file"></div>
+
+<div class="wb"></div>
+
+
+
+<div class="subtitle">基本情報</div>
+
+<div class="wb"></div>
+
+<div class="label" id="status"></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="EditGroup()">編集</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

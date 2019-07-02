@@ -15,10 +15,9 @@ namespace Charlotte.Services.Sample.Uploader
 		public const string ACCESS_KEY_LOCAL_FILE = "access-key.txt";
 		public const string GROUP_INFO_LOCAL_FILE = "info.txt";
 		public const string FILE_BUNDLE_LOCAL_DIR = "oh";
-		public const string FILE_DUE_BUNDLE_LOCAL_FILE = "due.txt";
 
-		public const int GROUP_NUM_MAX = 1000;
-		public const int FILE_NUM_MAX = 1000;
+		public const int GROUP_NUM_MAX = 30;
+		public const int FILE_NUM_MAX = 108;
 
 		public const int GROUP_LOCAL_DIR_LEN_MAX = 50; // ダウンロード用 url のパスの一部になる。
 		public const int GROUP_NAME_LEN_MAX = 300;
@@ -26,8 +25,8 @@ namespace Charlotte.Services.Sample.Uploader
 
 		public const string SESSION_BUNDLE_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Session.txt";
 
-		public const int SESSION_NUM_MAX = 1000;
-		public const int SESSION_TIMEOUT_SEC = 86400;
+		public const int SESSION_NUM_LMT = 100;
+		public const int SESSION_TIMEOUT_SEC = 3600;
 
 		////// ///// ////// ///////////////////// / ///////////////////////////////////////////////////////////////////////////////// // $_git:secret
 

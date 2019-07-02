@@ -16,5 +16,21 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			return str == Consts.S_TRUE;
 		}
+
+		public static void CheckLength(string str, int minlen, int maxlen, string description)
+		{
+			if (str.Length < minlen || maxlen < str.Length)
+			{
+				throw new Exception(description + " --> length error: " + str.Length + ", " + minlen + ", " + maxlen);
+			}
+		}
+
+		public static void CheckRange(long value, long minval, long maxval, string description)
+		{
+			if (value < minval || maxval < value)
+			{
+				throw new Exception(description + " --> range error: " + value + ", " + minval + ", " + maxval);
+			}
+		}
 	}
 }

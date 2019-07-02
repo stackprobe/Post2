@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+// @encodeBgn
+
+var P;
+
+function Main() {
+	Rose_Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	Rose_Get("group-local-dir").value           = P.Group.LocalDir;
+	Rose_Get("group-access-key").value          = P.Group.AccessKey;
+	Rose_Get("group-name").value                = P.Group.Name;
+	Rose_Get("group-total-file-size-max").value = P.Group.TotalFileSizeMax;
+}
+
+function Ok() {
+	var prm = {
+		CurrAccessKey    : P.Group.AccessKey,
+		LocalDir         : Rose_Get("group-local-dir").value,
+		AccessKey        : Rose_Get("group-access-key").value,
+		Name             : Rose_Get("group-name").value,
+		TotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
+	};
+
+	Rose_Request("sample/uploader&c=supervisor-edit-group", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			alert("グループの編集に失敗しました。");
+		}
+		else {
+			Rose_Forward("supervisor-dashboard.html", P);
+		}
+	});
+}
+
+function Cancel() {
+	Rose_Forward("supervisor-dashboard.html", P);
+}
+
+function DeleteGroup() {
+	Rose_Request("sample/uploader&c=supervisor-delete-group", [ P.SessionKey, P.Group.AccessKey ], null, function(ret) {
+		if(ret == null) {
+			alert("グループの削除に失敗しました。");
+		}
+		else {
+			Rose_Forward("supervisor-dashboard.html", P);
+		}
+	});
+}
+
+// @encodeEnd
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
+</head>
+<body>
+
+<div class="title">グループの編集『管理者用』</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">編集項目</div>
+
+<div class="wb"></div>
+
+<div class="label">ローカルディレクトリ名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-local-dir" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">アクセスキー　※ユーザー名とパスワードは半角コロンで区切って指定する。例 ⇒ scott:tiger</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-access-key" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">グループ名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-name" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">容量 [Byte]</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-total-file-size-max" type="text"></input></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Ok()">OK</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Cancel()">キャンセル</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">特殊な操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="DeleteGroup()">このグループを削除する</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

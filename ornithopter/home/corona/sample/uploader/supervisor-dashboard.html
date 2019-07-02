@@ -6,11 +6,97 @@
 
 // @encodeBgn
 
-var Param;
+var P;
 
 function Main() {
 	Rose_Forwarded(function(prm) {
-		Param = prm;
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	Rose_Request("sample/uploader&c=supervisor-dashboard", [ P.SessionKey, null ], [ [ -1, -1, -1 ], [] ], function(ret) {
+		var status = ret[0];
+
+		Rose_Get("status").innerHTML = "現在の総ファイル数 = " + status[0] + "<br/>現在の総ファイルサイズ = " + status[1] + " バイト<br/>現在の総グループ数 = " + status[2];
+
+		var groups = ret[1];
+
+		for(var i = 0; i < groups.length; i++) {
+			var group = groups[i];
+
+			AddGroup({
+				LocalDir         : group[0],
+				AccessKey        : group[1],
+				Name             : group[2],
+				TotalFileSizeMax : group[3],
+			});
+		}
+	});
+}
+
+function AddGroup(group) {
+	{
+		var div = document.createElement("div");
+
+		div.className = "label";
+		div.innerHTML = "ローカルディレクトリ = " + group.LocalDir + "<br/>アクセスキー = " + group.AccessKey + "<br/>グループ名 = " + group.Name + "<br/>容量 = " + group.TotalFileSizeMax + " バイト";
+
+		document.body.insertBefore(div, Rose_Get("end-of-group"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		document.body.insertBefore(div, Rose_Get("end-of-group"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "編集";
+		button.onclick = function() { EditGroup(group); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		document.body.insertBefore(div, Rose_Get("end-of-group"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb";
+
+		document.body.insertBefore(div, Rose_Get("end-of-group"));
+	}
+}
+
+function EditGroup(group) {
+	P.Group = group;
+
+	Rose_Forward("supervisor-edit-group.html", P);
+}
+
+function CreateGroup() {
+	var prm = {
+		Name             : Rose_Get("group-name").value,
+		TotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
+	};
+
+	Rose_Request("sample/uploader&c=supervisor-create-group", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			alert("グループの作成に失敗しました。");
+		}
+		else {
+			Rose_Forward("supervisor-dashboard.html", P); // reload
+		}
 	});
 }
 
@@ -33,33 +119,44 @@ function Main() {
 
 
 
-<div class="subtitle">全てのグループ</div>
-
-<div id="all-groups"></div>
+<div class="subtitle">ステータス</div>
 
 <div class="wb"></div>
+
+<div class="label" id="status"></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">全てのグループ</div>
+
+<div class="wb"></div>
+
+<div id="end-of-group"></div>
+
 <div class="wb"></div>
 
 
 
 <div class="subtitle">グループの作成</div>
 
-
 <div class="wb"></div>
 
-<div class="label">名前</input></div>
+<div class="label">名前</div>
 <div class="wb-s"></div>
 <div class="input"><input class="input-text" id="group-name" type="text"></input></div>
 
 <div class="wb"></div>
 
-<div class="label">容量 (GB = 1,000,000,000 バイト単位)</input></div>
+<div class="label">容量 [Byte]</div>
 <div class="wb-s"></div>
 <div class="input"><input class="input-text" id="group-total-file-size-max" type="text"></input></div>
 
 <div class="wb"></div>
 
-<div class="input"><button class="input-button" onclick="LoginUserPass()">作成</button></div>
+<div class="input"><button class="input-button" onclick="CreateGroup()">作成</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

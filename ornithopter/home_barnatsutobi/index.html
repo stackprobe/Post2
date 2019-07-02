@@ -2,39 +2,82 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS"/>
 <meta name="description" content="新宿ゴールデン街5番街【夏の扉】です。チャージ600円 20時～翌5時頃まで、(月曜)休。初めての方もお気軽にどうぞ。よろしくお願いします。"/>
+<style type="text/css">
 
-	<style type="text/css">
-	<!--
-	a
-	{
-		color: black;
-		text-decoration: none;
-	}
-	a:hover
-	{
-		color: #d70035;
-	}
-	a:visited
-	{
-		color: black;
-	}
-	body
-	{
-		color: black;
-		font-family: メイリオ;
-		font-size: large;
-		line-height: 200%;
-		margin: 0;
-	}
-	td
-	{
-		color: black;
-		padding: 40px;
-		text-align: center;
-	}
-	-->
-	</style>
+body {
+	color: black;
+	font-family: メイリオ;
+	font-size: large;
+	line-height: 200%;
+	margin: 0;
+}
 
+td {
+	color: black;
+	padding: 40px;
+	text-align: center;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #d70035;
+}
+
+a:visited {
+	color: black;
+}
+
+</style>
+<script>
+
+function go_access_counter() {
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status == 200) {
+				document.getElementById("access-counter").innerHTML = xhr.responseText;
+			}
+			else {
+				console.log(xhr.status);
+			}
+		}
+	};
+
+	xhr.open("POST", "AccessCounter/opt/barnatsutobi.cgi");
+	xhr.send(null);
+}
+
+function go_oshirase() {
+	var xhr = new XMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if(xhr.readyState == 4) {
+			if(xhr.status == 200) {
+				document.getElementById("oshirase").innerHTML = xhr.responseText;
+			}
+			else {
+				console.log(xhr.status);
+			}
+		}
+	};
+
+	xhr.open("POST", "barnatsutobi/reference/oshirase.cgi");
+	xhr.send(null);
+}
+
+window.onload = function() {
+	go_access_counter();
+	go_oshirase();
+
+	UpdateTwitter();
+}
+
+</script>
 <title>バー夏の扉 新宿ゴールデン街 五番街</title>
 </head>
 <body>
@@ -42,36 +85,7 @@
 <img src="top.jpg" width="100%"/>
 
 <div style="font-size: small;">&nbsp;Access Counter : <span id="access-counter">now loading...</span></div>
-<script type="text/javascript">
 
-function go_access_counter() {
-	var xmlHttp;
-
-	if(window.XMLHttpRequest) {
-		xmlHttp = new XMLHttpRequest();
-	} else {
-		if(window.ActiveXOBject) {
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		} else {
-			xmlHttp = null;
-		}
-	}
-
-	xmlHttp.onreadystatechange = checkResponse;
-	xmlHttp.open("POST", "AccessCounter/opt/barnatsutobi.cgi");
-	xmlHttp.send(null);
-
-	function checkResponse() {
-		if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			var node = document.getElementById("access-counter");
-			node.innerHTML = xmlHttp.responseText;
-		}
-	}
-}
-
-go_access_counter();
-
-</script>
 <!-- shinobi ct2
 <script type="text/javascript" src="http://ct2.kusakage.com/sc/1717578"></script>
 <noscript><a href="http://ct2.kusakage.com/gg/1717578"><img src="http://ct2.kusakage.com/ll/1717578" border="0" alt="カウンター" /></a></noscript>
@@ -159,10 +173,14 @@ go_access_counter();
 	data-widget-id="664870379253424128"
 	width="100%">Tweets</a>
 <script>
-!function(d,s,id){
-var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
-if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}
-}(document,"script","twitter-wjs");
+
+function UpdateTwitter() {
+	!function(d,s,id){
+	var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+	if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}
+	}(document,"script","twitter-wjs");
+}
+
 </script>
 
 </td>
@@ -184,36 +202,6 @@ now loading...
 </td>
 </tr>
 </table>
-<script type="text/javascript">
-
-function go_oshirase() {
-	var xmlHttp;
-
-	if(window.XMLHttpRequest) {
-		xmlHttp = new XMLHttpRequest();
-	} else {
-		if(window.ActiveXOBject) {
-			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-		} else {
-			xmlHttp = null;
-		}
-	}
-
-	xmlHttp.onreadystatechange = checkResponse;
-	xmlHttp.open("POST", "barnatsutobi/reference/oshirase.cgi");
-	xmlHttp.send(null);
-
-	function checkResponse() {
-		if(xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-			var node = document.getElementById("oshirase");
-			node.innerHTML = xmlHttp.responseText;
-		}
-	}
-}
-
-go_oshirase();
-
-</script>
 
 <center>↓↓【バー 夏の扉】情報。ゆるやかに更新中です。↓↓</center>
 

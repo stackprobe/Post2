@@ -13,8 +13,7 @@ namespace Charlotte.Services.Sample.Uploader
 		public string FileBundleDir;
 		public string AccessKey; // 他のグループと被ってはならない。
 		public string Name;
-		public long TotalFileSizeMax;
-		public FileDueBundle FileDueBundle;
+		public long GroupTotalFileSizeMax;
 
 		public Group(string dir)
 		{
@@ -27,10 +26,8 @@ namespace Charlotte.Services.Sample.Uploader
 				int c = 0;
 
 				this.Name = lines[c++];
-				this.TotalFileSizeMax = long.Parse(lines[c++]);
+				this.GroupTotalFileSizeMax = long.Parse(lines[c++]);
 			}
-
-			this.FileDueBundle = new FileDueBundle(Path.Combine(this.Dir, Consts.FILE_DUE_BUNDLE_LOCAL_FILE));
 		}
 
 		public void Save()
@@ -41,13 +38,11 @@ namespace Charlotte.Services.Sample.Uploader
 				string[] lines = new string[]
 				{
 					this.Name,
-					"" + this.TotalFileSizeMax,
+					"" + this.GroupTotalFileSizeMax,
 				};
 
 				File.WriteAllLines(Path.Combine(this.Dir, Consts.GROUP_INFO_LOCAL_FILE), lines, StringTools.ENCODING_SJIS);
 			}
-
-			this.FileDueBundle.Save(Path.Combine(this.Dir, Consts.FILE_DUE_BUNDLE_LOCAL_FILE));
 		}
 
 		public FileBundle GetFileBundle()

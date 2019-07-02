@@ -59,8 +59,7 @@
     <Compile Include="HTTPRequest.cs" />
     <Compile Include="ServiceDistributor.cs" />
     <Compile Include="Services\Index\Service.cs" />
-    <Compile Include="Services\Sample\Uploader\FileDue.cs" />
-    <Compile Include="Services\Sample\Uploader\FileDueBundle.cs" />
+    <Compile Include="Services\Sample\Uploader\CodeDefinition.cs" />
     <Compile Include="Services\Sample\Uploader\FileBundle.cs" />
     <Compile Include="Services\Sample\Uploader\Group.cs" />
     <Compile Include="Services\Sample\Uploader\GroupUtils.cs" />

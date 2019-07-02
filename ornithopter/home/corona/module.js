@@ -278,6 +278,10 @@ window.onload = function() {
 	Main(); // external
 }
 
+function Rose_Get(id) {
+	return document.getElementById(id);
+}
+
 var Rose_Resize_Events = [];
 
 function Rose_Resize_Add(f) {
