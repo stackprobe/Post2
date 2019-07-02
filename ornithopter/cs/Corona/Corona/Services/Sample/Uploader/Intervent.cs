@@ -16,12 +16,12 @@ namespace Charlotte.Services.Sample.Uploader
 
 			try
 			{
-				string query = StringTools.GetIsland(File.ReadAllLines(BeforeDLIntervent.RECV_FILE, Encoding.ASCII)[0].Split(' ')[1], "?").Right;
+				string query = BeforeDLInterventUtils.RecvFileToQuery();
 
 				if (1000 < query.Length)
 					throw new Exception("クエリが長すぎる。" + query.Length);
 
-				Dictionary<string, string> q = CommonUtils.ParseURLQuery(query);
+				Dictionary<string, string> q = BeforeDLInterventUtils.ParseQuery(query);
 
 				string localDir = JString.ToJString(CommonUtils.DecodeURL(q["group"]), true, false, false, true);
 				string localFile = JString.ToJString(CommonUtils.DecodeURL(q["file"]), true, false, false, true);

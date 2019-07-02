@@ -9,22 +9,6 @@ namespace Charlotte.Utils
 {
 	public class CommonUtils
 	{
-		public static Dictionary<string, string> ParseURLQuery(string query)
-		{
-			Dictionary<string, string> dest = DictionaryTools.CreateIgnoreCase<string>();
-
-			foreach (string qToken in query.Split('&'))
-			{
-				string[] qPair = qToken.Split('=');
-
-				if (qPair.Length == 2)
-				{
-					dest.Add(qPair[0], qPair[1]);
-				}
-			}
-			return dest;
-		}
-
 		public static string DecodeURL(string url)
 		{
 			byte[] bUrl = Encoding.ASCII.GetBytes(url);

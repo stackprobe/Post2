@@ -1,3 +1,3 @@
-GET "<BASE>..\HTT\Get\Release\Get.exe" "<BASE>TestSiteDocRoot.txt"
+GET  "<BASE>..\HTT\Get\Release\Get.exe"    "<BASE>TestSiteDocRoot.txt"
 HEAD "<BASE>..\HTT\Get\Release\Get.exe" /H "<BASE>TestSiteDocRoot.txt"
 POST "<BASE>Post2\Post2.exe" "<BASE>TestSite\bin" 2000000
