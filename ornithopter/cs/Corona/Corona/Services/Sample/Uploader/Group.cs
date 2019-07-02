@@ -43,6 +43,8 @@ namespace Charlotte.Services.Sample.Uploader
 
 				File.WriteAllLines(Path.Combine(this.Dir, Consts.GROUP_INFO_LOCAL_FILE), lines, StringTools.ENCODING_SJIS);
 			}
+
+			// memo: see GroupUtils.CreateGroup()
 		}
 
 		public FileBundle GetFileBundle()

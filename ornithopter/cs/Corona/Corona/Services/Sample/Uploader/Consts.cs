@@ -16,7 +16,7 @@ namespace Charlotte.Services.Sample.Uploader
 		public const string GROUP_INFO_LOCAL_FILE = "info.txt";
 		public const string FILE_BUNDLE_LOCAL_DIR = "oh";
 
-		public const int GROUP_NUM_MAX = 30;
+		public const int GROUP_NUM_MAX = 18;
 		public const int FILE_NUM_MAX = 108;
 
 		public const int GROUP_LOCAL_DIR_LEN_MIN = 20;

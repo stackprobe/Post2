@@ -192,6 +192,9 @@ namespace Charlotte.Services.Sample.Uploader
 				Utilities.CheckRange(groupTotalFileSizeMax, 1L, Consts.TOTAL_FILE_SIZE_MAX, "容量");
 			}
 
+			if (Consts.GROUP_NUM_MAX <= new GroupBundle().LiteGroups.Count)
+				throw new Exception("これ以上グループを作成出来ません。");
+
 			GroupUtils.CreateGroup(name, groupTotalFileSizeMax);
 
 			return "OK";
@@ -449,7 +452,13 @@ namespace Charlotte.Services.Sample.Uploader
 
 		public void DiskYellow()
 		{
-			// TODO ???
+			// memo: HTT を Bind した上で実行する必要がある。
+
+			new Slimdown()
+			{
+				DiskYellowFlag = true,
+			}
+			.Perform();
 		}
 	}
 }

@@ -271,11 +271,14 @@ var Rose_ERROR_PAGE_URL = "error.html";
 function Rose_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
 
-	Rose_Request("load", [ q ], [], function(ret) {
-		reaction(ret);
+	Rose_Request("load", [ q ], null, function(ret) {
+		if(ret == null) {
+			window.location.href =Rose_ERROR_PAGE_URL;
+		}
+		else {
+			reaction(ret);
+		}
 	});
-
-	history.pushState(null, null, Rose_ERROR_PAGE_URL);
 }
 
 window.onload = function() {

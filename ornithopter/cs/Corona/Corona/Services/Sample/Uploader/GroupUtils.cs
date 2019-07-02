@@ -20,7 +20,16 @@ namespace Charlotte.Services.Sample.Uploader
 			File.WriteAllText(Path.Combine(dir, Consts.ACCESS_KEY_LOCAL_FILE), CreateAccessKey(), StringTools.ENCODING_SJIS);
 
 			{
+				string[] lines = new string[]
+				{
+					name,
+					"" + groupTotalFileSizeMax,
+				};
+
+				File.WriteAllLines(Path.Combine(dir, Consts.GROUP_INFO_LOCAL_FILE), lines, StringTools.ENCODING_SJIS);
 			}
+
+			// memo: see Group.Save()
 		}
 
 		private static string CreateLocalDir()

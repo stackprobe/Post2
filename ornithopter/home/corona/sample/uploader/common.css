@@ -1,6 +1,7 @@
 body {
 	font: normal 16px "Yu Gothic";
 	margin: 0px;
+	transition: 0.5s;
 }
 
 div {
@@ -8,10 +9,12 @@ div {
 }
 
 .wb {
+	width: 50px;
 	height: 50px;
 }
 
 .wb-s {
+	width: 5px;
 	height: 5px;
 }
 
@@ -70,4 +73,7 @@ div {
 .input-text:focus {
 	outline: 0;
 	box-shadow: 0 0 10px 5px rgba(0, 128, 255, 0.1);
+}
+
+.input-file {
 }

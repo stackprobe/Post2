@@ -71,6 +71,7 @@
     <Compile Include="Services\Sample\Uploader\GroupBundle.cs" />
     <Compile Include="Services\Sample\Uploader\SessionBundle.cs" />
     <Compile Include="Services\Sample\Uploader\SessionUtils.cs" />
+    <Compile Include="Services\Sample\Uploader\Slimdown.cs" />
     <Compile Include="Services\Sample\Uploader\Utilities.cs" />
     <Compile Include="Services\SaveLoad\Consts.cs" />
     <Compile Include="Services\SaveLoad\Ground.cs" />

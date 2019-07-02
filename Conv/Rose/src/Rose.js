@@ -267,11 +267,14 @@ var @@_ERROR_PAGE_URL = "error.html";
 function @@_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
 
-	@@_Request("load", [ q ], [], function(ret) {
-		reaction(ret);
+	@@_Request("load", [ q ], null, function(ret) {
+		if(ret == null) {
+			window.location.href =@@_ERROR_PAGE_URL;
+		}
+		else {
+			reaction(ret);
+		}
 	});
-
-	history.pushState(null, null, @@_ERROR_PAGE_URL);
 }
 
 window.onload = function() {
