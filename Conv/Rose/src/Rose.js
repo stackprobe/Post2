@@ -257,7 +257,7 @@ function @@_Forward(url, prm) {
 			alert("save error");
 		}
 		else {
-			document.location = url + "?q=" + q;
+			window.location.href = url + "?q=" + q;
 		}
 	});
 }

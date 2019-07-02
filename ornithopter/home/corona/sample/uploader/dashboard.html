@@ -26,13 +26,16 @@ function Main2() {
 
 		Rose_Get("title").innerText = "『" + status[0] + "』のダッシュボード";
 
-		Rose_Get("status").innerHTML = "グループ名 = " + status[0] +
-			"<br/>容量 = " + status[1] + " バイト" +
-			"<br/>使用量 = " + status[2] + " バイト (使用率 = " + (status[2] / status[1]) + ")" +
-			"<br/>空き領域 = " + (status[1] - status[2]) + " バイト" +
-			"<br/>ファイル数 = " + status[3] +
-			"<br/>ローカルディレクトリ名 = " + status[4] +
-			"<br/>アクセスキー = ●●●●●";
+		Rose_Get("status").innerHTML = [
+			"グループ名 = " + status[0],
+			"容量 = " + status[1] + " バイト = " + (status[1] / 1000000000.0) + " GB",
+			"使用量 = " + status[2] + " バイト = " + (status[2] / 1000000000.0) + " GB (使用率 = " + (status[2] / status[1]) + ")",
+			"空き領域 = " + (status[1] - status[2]) + " バイト = " + ((status[1] - status[2]) / 1000000000.0) + " GB",
+			"ファイル数 = " + status[3],
+			"ローカルディレクトリ名 = " + status[4],
+			"アクセスキー = ●●●●●",
+		]
+		.join("<br/>");
 
 		var files = ret[1];
 
@@ -55,7 +58,7 @@ function AddFile(file) {
 		div.className = "label";
 		div.innerHTML = [
 			"ファイル名 = " + file.LocalFile,
-			"サイズ = " + file.Size + " バイト",
+			"サイズ = " + file.Size + " バイト = " + (file.Size / 1000000.0) + " MB",
 			"アップロード日時 = " + file.UploadedDateTime,
 		]
 		.join("<br/>");
@@ -76,7 +79,7 @@ function AddFile(file) {
 
 		button.className = "input-button";
 		button.innerText = "詳細";
-		button.onclick = function() { EditFile(file); };
+		button.onclick = function() { ShowFileDetails(file); };
 
 		var div = document.createElement("div");
 
@@ -141,18 +144,32 @@ function AddFile(file) {
 	}
 }
 
-function EditFile(file) {
+function ShowFileDetails(file) {
 	P.File = file;
 
-	Rose_Forward("edit-file.html", P);
+	Rose_Forward("file-details.html", P);
 }
 
 function OpenFile(file) {
-	// TODO
+	Rose_Request("sample/uploader&c=get-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
+		if(ret == null) {
+			alert("リンクの取得に失敗しました。");
+		}
+		else {
+			window.open(ret);
+		}
+	});
 }
 
 function DownloadFile(file) {
-	// TODO
+	Rose_Request("sample/uploader&c=get-download-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
+		if(ret == null) {
+			alert("ダウンロード・リンクの取得に失敗しました。");
+		}
+		else {
+			window.open(ret);
+		}
+	});
 }
 
 function Upload() {
@@ -165,6 +182,10 @@ function Reload() {
 
 function EditGroup() {
 	// TODO
+}
+
+function Logout() {
+	window.location.href = "index.html";
 }
 
 // @encodeEnd
@@ -220,6 +241,17 @@ function EditGroup() {
 <div class="wb"></div>
 
 <div class="input"><button class="input-button" onclick="EditGroup()">編集</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">その他</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Logout()">ログアウト</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

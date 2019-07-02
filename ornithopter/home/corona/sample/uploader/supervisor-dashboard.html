@@ -19,7 +19,12 @@ function Main2() {
 	Rose_Request("sample/uploader&c=supervisor-dashboard", [ P.SessionKey, null ], [ [ -1, -1, -1 ], [] ], function(ret) {
 		var status = ret[0];
 
-		Rose_Get("status").innerHTML = "現在の総ファイル数 = " + status[0] + "<br/>現在の総ファイルサイズ = " + status[1] + " バイト<br/>現在の総グループ数 = " + status[2];
+		Rose_Get("status").innerHTML = [
+			"現在の総ファイル数 = " + status[0],
+			"現在の総ファイルサイズ = " + status[1] + " バイト = " + (status[1] / 1000000000.0) + " GB",
+			"現在の総グループ数 = " + status[2],
+		]
+		.join("<br/>");
 
 		var groups = ret[1];
 
@@ -41,7 +46,13 @@ function AddGroup(group) {
 		var div = document.createElement("div");
 
 		div.className = "label";
-		div.innerHTML = "ローカルディレクトリ = " + group.LocalDir + "<br/>アクセスキー = " + group.AccessKey + "<br/>グループ名 = " + group.Name + "<br/>容量 = " + group.GroupTotalFileSizeMax + " バイト";
+		div.innerHTML = [
+			"ローカルディレクトリ = " + group.LocalDir,
+			"アクセスキー = " + group.AccessKey,
+			"グループ名 = " + group.Name,
+			"容量 = " + group.GroupTotalFileSizeMax + " バイト = " + (group.GroupTotalFileSizeMax / 1000000000.0) + " GB",
+		]
+		.join("<br/>");
 
 		document.body.insertBefore(div, Rose_Get("end-of-group"));
 	}
@@ -100,6 +111,10 @@ function CreateGroup() {
 	});
 }
 
+function Logout() {
+	window.location.href = "index.html";
+}
+
 // @encodeEnd
 
 </script>
@@ -150,13 +165,24 @@ function CreateGroup() {
 
 <div class="wb"></div>
 
-<div class="label">容量 [Byte]</div>
+<div class="label">容量 [バイト]</div>
 <div class="wb-s"></div>
 <div class="input"><input class="input-text" id="group-total-file-size-max" type="text"></input></div>
 
 <div class="wb"></div>
 
 <div class="input"><button class="input-button" onclick="CreateGroup()">作成</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">その他</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Logout()">ログアウト</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

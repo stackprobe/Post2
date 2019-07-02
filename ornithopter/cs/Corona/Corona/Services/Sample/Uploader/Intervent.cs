@@ -32,10 +32,13 @@ namespace Charlotte.Services.Sample.Uploader
 				ProcMain.WriteLog("downloadFlag: " + downloadFlag);
 
 				string dir = Directory.GetDirectories(Consts.GROUP_BUNDLE_DIR).First(v =>
-					StringTools.CompIgnoreCase(Path.GetFileName(v), localDir) != 0
+					StringTools.CompIgnoreCase(Path.GetFileName(v), localDir) == 0
 					);
+
+				dir = Path.Combine(dir, Consts.FILE_BUNDLE_LOCAL_DIR);
+
 				string file = Directory.GetFiles(dir).First(v =>
-					StringTools.CompIgnoreCase(Path.GetFileName(v), localFile) != 0
+					StringTools.CompIgnoreCase(Path.GetFileName(v), localFile) == 0
 					);
 
 				File.WriteAllText(BeforeDLIntervent.TARGET_FILE, file, StringTools.ENCODING_SJIS);

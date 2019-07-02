@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+// @encodeBgn
+
+var P;
+
+function Main() {
+	Rose_Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	Rose_Get("file-local-file").value = P.File.LocalFile;
+}
+
+function Ok() {
+	// TODO
+}
+
+function Cancel() {
+	Rose_Forward("file-details.html", P);
+}
+
+// @encodeEnd
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
+</head>
+<body>
+
+<div class="title">ファイル名の変更</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">新しいファイル名を入力して下さい。</div>
+
+<div class="wb"></div>
+
+<div class="input"><input class="input-text" id="file-local-file" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Ok()">OK</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Cancel()">キャンセル</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

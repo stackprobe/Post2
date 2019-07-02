@@ -52,7 +52,7 @@ namespace Charlotte.Utils
 				}
 				else
 				{
-					buff.Append(0x25); // '%'
+					buff.Append('%');
 					buff.Append(StringTools.hexadecimal[(int)chr >> 4]);
 					buff.Append(StringTools.hexadecimal[(int)chr & 15]);
 				}

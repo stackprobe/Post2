@@ -1,0 +1,128 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+// @encodeBgn
+
+var P;
+
+function Main() {
+	Rose_Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	Rose_Get("status").innerHTML = [
+		"ファイル名 = " + P.File.LocalFile,
+		"サイズ = " + P.File.Size + " バイト = " + (P.File.Size / 1000000.0) + " MB",
+		"アップロード日時 = " + P.File.UploadedDateTime,
+	]
+	.join("<br/>");
+
+	Rose_Request("sample/uploader&c=get-link", [ P.SessionKey, P.File.LocalFile ], "(エラー：リンクの取得に失敗しました)", function(ret) {
+		Rose_Get("link").innerText = ret;
+	});
+
+	Rose_Request("sample/uploader&c=get-download-link", [ P.SessionKey, P.File.LocalFile ], "(エラー：ダウンロード・リンクの取得に失敗しました)", function(ret) {
+		Rose_Get("download-link").innerText = ret;
+	});
+}
+
+function RenameFile() {
+	Rose_Forward("rename-file.html", P);
+}
+
+function DeleteFile() {
+	Rose_Request("sample/uploader&c=delete-file", [ P.SessionKey, P.File.LocalFile ], null, function(ret) {
+		if(ret == null) {
+			alert("ファイルの削除に失敗しました。");
+		}
+		else {
+			Rose_Forward("dashboard.html", P);
+		}
+	});
+}
+
+function Back() {
+	Rose_Forward("dashboard.html", P);
+}
+
+// @encodeEnd
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
+</head>
+<body>
+
+<div class="title">ファイルの詳細</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">詳細</div>
+
+<div class="wb"></div>
+
+<div class="label" id="status"></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">リンク</div>
+
+<div class="wb"></div>
+
+<div class="label" id="link"></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">ダウンロード・リンク</div>
+
+<div class="wb"></div>
+
+<div class="label" id="download-link"></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="RenameFile()">ファイル名の変更</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="DeleteFile()">このファイルを削除する</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Back()">戻る</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

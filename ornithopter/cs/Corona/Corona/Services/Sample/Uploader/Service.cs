@@ -45,6 +45,18 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				ret = Dashboard();
 			}
+			else if (command == "get-link")
+			{
+				ret = GetDonwloadLink(false);
+			}
+			else if (command == "get-download-link")
+			{
+				ret = GetDonwloadLink(true);
+			}
+			else if (command == "delete-file")
+			{
+				ret = DeleteFile();
+			}
 			else
 			{
 				throw new Exception("不明なコマンド");
@@ -287,6 +299,39 @@ namespace Charlotte.Services.Sample.Uploader
 					};
 				}),
 			};
+		}
+
+		private object GetDonwloadLink(bool downloadFlag)
+		{
+			this.LoggedIn();
+
+			Group group = this.LiteGroup.GetGroup();
+
+			return
+				"http://" +
+				"ornithopter.myhome.cx:58946/corona/sample/uploader/download.alt.txt*/" +
+				CommonUtils.EncodeURL(this.TPrm.StringValue) +
+				"?group=" +
+				CommonUtils.EncodeURL(Path.GetFileName(group.Dir)) +
+				"&file=" +
+				CommonUtils.EncodeURL(this.TPrm.StringValue) +
+				(downloadFlag ? "&download=true" : "");
+		}
+
+		private object DeleteFile()
+		{
+			this.LoggedIn();
+
+			Group group = this.LiteGroup.GetGroup();
+			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
+			string localFile = DenebolaToolkit.GetFairLocalPath(this.TPrm.StringValue, dir);
+			string file = Path.Combine(dir, localFile);
+
+			ProcMain.WriteLog("ファイル削除 ⇒ " + file);
+
+			FileTools.Delete(file);
+
+			return "OK";
 		}
 
 		public void DiskYellow()
