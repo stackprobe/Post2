@@ -27,10 +27,10 @@ function Main2() {
 			var group = groups[i];
 
 			AddGroup({
-				LocalDir         : group[0],
-				AccessKey        : group[1],
-				Name             : group[2],
-				TotalFileSizeMax : group[3],
+				LocalDir              : group[0],
+				AccessKey             : group[1],
+				Name                  : group[2],
+				GroupTotalFileSizeMax : group[3],
 			});
 		}
 	});
@@ -41,7 +41,7 @@ function AddGroup(group) {
 		var div = document.createElement("div");
 
 		div.className = "label";
-		div.innerHTML = "ローカルディレクトリ = " + group.LocalDir + "<br/>アクセスキー = " + group.AccessKey + "<br/>グループ名 = " + group.Name + "<br/>容量 = " + group.TotalFileSizeMax + " バイト";
+		div.innerHTML = "ローカルディレクトリ = " + group.LocalDir + "<br/>アクセスキー = " + group.AccessKey + "<br/>グループ名 = " + group.Name + "<br/>容量 = " + group.GroupTotalFileSizeMax + " バイト";
 
 		document.body.insertBefore(div, Rose_Get("end-of-group"));
 	}
@@ -86,8 +86,8 @@ function EditGroup(group) {
 
 function CreateGroup() {
 	var prm = {
-		Name             : Rose_Get("group-name").value,
-		TotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
+		Name                  : Rose_Get("group-name").value,
+		GroupTotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
 	};
 
 	Rose_Request("sample/uploader&c=supervisor-create-group", [ P.SessionKey, prm ], null, function(ret) {

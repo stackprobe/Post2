@@ -29,31 +29,36 @@ function Main2() {
 		Rose_Get("status").innerHTML = "グループ名 = " + status[0] +
 			"<br/>容量 = " + status[1] + " バイト" +
 			"<br/>使用量 = " + status[2] + " バイト (使用率 = " + (status[2] / status[1]) + ")" +
-			"<br/>空き領域 = " + status[3] + " バイト" +
-			"<br/>ファイル数 = " + status[4] +
-			"<br/>ローカルディレクトリ名 = " + status[5] +
+			"<br/>空き領域 = " + (status[1] - status[2]) + " バイト" +
+			"<br/>ファイル数 = " + status[3] +
+			"<br/>ローカルディレクトリ名 = " + status[4] +
 			"<br/>アクセスキー = ●●●●●";
 
-		var upFiles = ret[1];
+		var files = ret[1];
 
-		for(var i = 0; i < upFiles.length; i++) {
-			var upFile = upFiles[i];
+		for(var i = 0; i < files.length; i++) {
+			var file = files[i];
 
-			AddUpFile({
-				LocalFile        : upFile[0],
-				Size             : upFile[1],
-				UploadedDateTime : upFile[2],
+			AddFile({
+				LocalFile        : file[0],
+				Size             : file[1],
+				UploadedDateTime : file[2],
 			});
 		}
 	});
 }
 
-function AddUpFile(upFile) {
+function AddFile(file) {
 	{
 		var div = document.createElement("div");
 
 		div.className = "label";
-		div.innerHTML = "ファイル名 = " + upFile.LocalFile + "<br/>サイズ = " + upFile.Size + " バイト<br/>アップロード日時 = " + upFile.UploadedDateTime;
+		div.innerHTML = [
+			"ファイル名 = " + file.LocalFile,
+			"サイズ = " + file.Size + " バイト",
+			"アップロード日時 = " + file.UploadedDateTime,
+		]
+		.join("<br/>");
 
 		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
 	}
@@ -71,7 +76,53 @@ function AddUpFile(upFile) {
 
 		button.className = "input-button";
 		button.innerText = "詳細";
-		button.onclick = function() { EditFile(upFile); };
+		button.onclick = function() { EditFile(file); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "開く";
+		button.onclick = function() { OpenFile(file); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "ダウンロード";
+		button.onclick = function() { DownloadFile(file); };
 
 		var div = document.createElement("div");
 
@@ -90,10 +141,18 @@ function AddUpFile(upFile) {
 	}
 }
 
-function EditUpFile(upFile) {
-	P.UpFile = upFile;
+function EditFile(file) {
+	P.File = file;
 
 	Rose_Forward("edit-file.html", P);
+}
+
+function OpenFile(file) {
+	// TODO
+}
+
+function DownloadFile(file) {
+	// TODO
 }
 
 function Upload() {

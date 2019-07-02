@@ -16,19 +16,19 @@ function Main() {
 }
 
 function Main2() {
-	Rose_Get("group-local-dir").value           = P.Group.LocalDir;
-	Rose_Get("group-access-key").value          = P.Group.AccessKey;
-	Rose_Get("group-name").value                = P.Group.Name;
-	Rose_Get("group-total-file-size-max").value = P.Group.TotalFileSizeMax;
+	Rose_Get("group-local-dir").value                 = P.Group.LocalDir;
+	Rose_Get("group-access-key").value                = P.Group.AccessKey;
+	Rose_Get("group-name").value                      = P.Group.Name;
+	Rose_Get("group-group-total-file-size-max").value = P.Group.GroupTotalFileSizeMax;
 }
 
 function Ok() {
 	var prm = {
-		CurrAccessKey    : P.Group.AccessKey,
-		LocalDir         : Rose_Get("group-local-dir").value,
-		AccessKey        : Rose_Get("group-access-key").value,
-		Name             : Rose_Get("group-name").value,
-		TotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
+		CurrAccessKey         : P.Group.AccessKey,
+		LocalDir              : Rose_Get("group-local-dir").value,
+		AccessKey             : Rose_Get("group-access-key").value,
+		Name                  : Rose_Get("group-name").value,
+		GroupTotalFileSizeMax : Rose_Get("group-group-total-file-size-max").value,
 	};
 
 	Rose_Request("sample/uploader&c=supervisor-edit-group", [ P.SessionKey, prm ], null, function(ret) {
@@ -99,7 +99,7 @@ function DeleteGroup() {
 
 <div class="label">—e—Ê [Byte]</div>
 <div class="wb-s"></div>
-<div class="input"><input class="input-text" id="group-total-file-size-max" type="text"></input></div>
+<div class="input"><input class="input-text" id="group-group-total-file-size-max" type="text"></input></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

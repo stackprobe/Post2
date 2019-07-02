@@ -160,7 +160,7 @@ namespace Charlotte.Services.Sample.Uploader
 			this.LoggedIn(true);
 
 			string name = this.TPrm["Name"].StringValue;
-			long groupTotalFileSizeMax = long.Parse(this.TPrm["TotalFileSizeMax"].StringValue);
+			long groupTotalFileSizeMax = long.Parse(this.TPrm["GroupTotalFileSizeMax"].StringValue);
 
 			// チェック・正規化
 			{
@@ -181,7 +181,7 @@ namespace Charlotte.Services.Sample.Uploader
 			string localDir = this.TPrm["LocalDir"].StringValue;
 			string accessKey = this.TPrm["AccessKey"].StringValue;
 			string name = this.TPrm["Name"].StringValue;
-			long groupTotalFileSizeMax = long.Parse(this.TPrm["TotalFileSizeMax"].StringValue);
+			long groupTotalFileSizeMax = long.Parse(this.TPrm["GroupTotalFileSizeMax"].StringValue);
 
 			// チェック・正規化
 			{
@@ -264,16 +264,13 @@ namespace Charlotte.Services.Sample.Uploader
 			Group group = this.LiteGroup.GetGroup();
 			FileBundle fileBundle = group.GetFileBundle();
 
-			long groupTotalFileSize = fileBundle.GetTotalFileSize();
-
 			return new object[]
 			{
 				new object[] // zantei
 				{
 					group.Name,
 					group.GroupTotalFileSizeMax,
-					groupTotalFileSize,
-					group.GroupTotalFileSizeMax - groupTotalFileSize,
+					fileBundle.GetTotalFileSize(),
 					fileBundle.Files.Length,
 					Path.GetFileName(group.Dir),
 				},
