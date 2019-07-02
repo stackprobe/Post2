@@ -262,12 +262,16 @@ function @@_Forward(url, prm) {
 	});
 }
 
+var @@_ERROR_PAGE_URL = "error.html";
+
 function @@_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
 
 	@@_Request("load", [ q ], [], function(ret) {
 		reaction(ret);
 	});
+
+	history.pushState(null, null, @@_ERROR_PAGE_URL);
 }
 
 window.onload = function() {

@@ -19,7 +19,8 @@ namespace Charlotte.Services.Sample.Uploader
 		public const int GROUP_NUM_MAX = 30;
 		public const int FILE_NUM_MAX = 108;
 
-		public const int GROUP_LOCAL_DIR_LEN_MAX = 50; // ダウンロード用 url のパスの一部になる。
+		public const int GROUP_LOCAL_DIR_LEN_MIN = 20;
+		public const int GROUP_LOCAL_DIR_LEN_MAX = 50; // ローカルファイル名の分を侵食しないよう、短めに、
 		public const int GROUP_NAME_LEN_MAX = 300;
 		public const int ACCESS_KEY_LEN_MAX = 300;
 

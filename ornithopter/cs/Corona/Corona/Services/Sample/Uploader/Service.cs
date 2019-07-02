@@ -57,6 +57,18 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				ret = DeleteFile();
 			}
+			else if (command == "rename-file")
+			{
+				ret = RenameFile();
+			}
+			else if (command == "get-group")
+			{
+				ret = GetGroup();
+			}
+			else if (command == "edit-group")
+			{
+				ret = EditGroup();
+			}
 			else
 			{
 				throw new Exception("不明なコマンド");
@@ -217,29 +229,25 @@ namespace Charlotte.Services.Sample.Uploader
 					string dirNew = Path.Combine(Consts.GROUP_BUNDLE_DIR, localDir);
 
 					if (Directory.Exists(dirNew))
-						throw new Exception("ローカルディレクトリ名の重複");
+						throw new Exception("新しいローカルディレクトリは既に存在します。");
 
 					if (File.Exists(dirNew))
 						throw null; // 想定外
 				}
 				if (changeAccessKeyFlag)
 				{
-					if (groupBundle.LiteGroups.Any(v => v.AccessKey == accessKey))
-						throw new Exception("アクセスキーの重複");
+					if (
+						groupBundle.LiteGroups.Any(v => v.AccessKey == accessKey) ||
+						accessKey == Consts.SUPERVISOR_ACCESS_KEY
+						)
+						throw new Exception("新しいアクセスキーは既に存在します。");
 				}
 			}
 
-			File.WriteAllText(Path.Combine(group.Dir, Consts.ACCESS_KEY_LOCAL_FILE), accessKey, StringTools.ENCODING_SJIS);
-
-			{
-				string[] lines = new string[]
-				{
-					name,
-					"" + groupTotalFileSizeMax,
-				};
-
-				File.WriteAllLines(Path.Combine(group.Dir, Consts.GROUP_INFO_LOCAL_FILE), lines, StringTools.ENCODING_SJIS);
-			}
+			group.AccessKey = accessKey;
+			group.Name = name;
+			group.GroupTotalFileSizeMax = groupTotalFileSizeMax;
+			group.Save();
 
 			if (changeLocalDirFlag) // 最後に！
 			{
@@ -332,6 +340,111 @@ namespace Charlotte.Services.Sample.Uploader
 			FileTools.Delete(file);
 
 			return "OK";
+		}
+
+		private object RenameFile()
+		{
+			this.LoggedIn();
+
+			Group group = this.LiteGroup.GetGroup();
+			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
+			string localFileOld = DenebolaToolkit.GetFairLocalPath(this.TPrm[0].StringValue, dir);
+			string localFileNew = DenebolaToolkit.GetFairLocalPath(this.TPrm[1].StringValue, dir);
+			string fileOld = Path.Combine(dir, localFileOld);
+			string fileNew = Path.Combine(dir, localFileNew);
+
+			ProcMain.WriteLog("元ファイル ⇒ " + fileOld);
+			ProcMain.WriteLog("新ファイル ⇒ " + fileNew);
+
+			if (File.Exists(fileOld) == false)
+				throw new Exception("元ファイルが見つかりません。");
+
+			if (File.Exists(fileNew))
+				throw new Exception("新ファイルは既に存在します。");
+
+			File.Move(fileOld, fileNew);
+
+			return "OK";
+		}
+
+		private object GetGroup()
+		{
+			this.LoggedIn();
+
+			Group group = this.LiteGroup.GetGroup();
+
+			return new object[]
+			{
+				Path.GetFileName( group.Dir),
+				group.AccessKey,
+				group.Name,
+			};
+		}
+
+		private object EditGroup()
+		{
+			this.LoggedIn();
+
+			try
+			{
+				string localDir = this.TPrm["LocalDir"].StringValue;
+				string accessKey = this.TPrm["AccessKey"].StringValue;
+				string name = this.TPrm["Name"].StringValue;
+
+				// チェック・正規化
+				{
+					localDir = CodeDefinition.ToFair.GroupLocalDir(localDir);
+					accessKey = CodeDefinition.ToFair.AccessKey(accessKey);
+					name = CodeDefinition.ToFair.GroupName(name);
+				}
+
+				Group group = this.LiteGroup.GetGroup();
+
+				bool changeLocalDirFlag = StringTools.CompIgnoreCase(Path.GetFileName(group.Dir), localDir) != 0;
+				bool changeAccessKeyFlag = group.AccessKey != accessKey;
+
+				// チェック
+				{
+					if (changeLocalDirFlag)
+					{
+						string dirNew = Path.Combine(Consts.GROUP_BUNDLE_DIR, localDir);
+
+						if (Directory.Exists(dirNew))
+							throw new Exception("新しいローカルディレクトリは既に存在します。");
+
+						if (File.Exists(dirNew))
+							throw null; // 想定外
+					}
+					if (changeAccessKeyFlag)
+					{
+						if (
+							new GroupBundle().LiteGroups.Any(v => v.AccessKey == accessKey) ||
+							accessKey == Consts.SUPERVISOR_ACCESS_KEY
+							)
+							//throw new Exception("新しいアクセスキーは既に存在します。");
+							throw new Exception("アクセスキーに問題があります。"); // このアクセスキーが存在するってバレちゃうじゃん...
+					}
+				}
+
+				group.AccessKey = accessKey;
+				group.Name = name;
+				group.Save();
+
+				if (changeLocalDirFlag) // 最後に！
+				{
+					string dirNew = Path.Combine(Consts.GROUP_BUNDLE_DIR, localDir);
+
+					Directory.Move(group.Dir, dirNew);
+				}
+
+				return new object[] { "OK", null };
+			}
+			catch (Exception e)
+			{
+				ProcMain.WriteLog(e);
+
+				return new object[] { "NG", e.Message };
+			}
 		}
 
 		public void DiskYellow()

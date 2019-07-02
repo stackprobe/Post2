@@ -261,10 +261,12 @@ function Rose_Forward(url, prm) {
 			alert("save error");
 		}
 		else {
-			document.location = url + "?q=" + q;
+			window.location.href = url + "?q=" + q;
 		}
 	});
 }
+
+var Rose_ERROR_PAGE_URL = "error.html";
 
 function Rose_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
@@ -272,6 +274,8 @@ function Rose_Forwarded(reaction) {
 	Rose_Request("load", [ q ], [], function(ret) {
 		reaction(ret);
 	});
+
+	history.pushState(null, null, Rose_ERROR_PAGE_URL);
 }
 
 window.onload = function() {

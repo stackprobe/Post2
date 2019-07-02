@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+// @encodeBgn
+
+var P;
+
+function Main() {
+	Rose_Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	if(P.EditGroup_TSD) {
+		Rose_Get("group-local-dir").value  = P.EditGroup_TSD.LocalDir;
+		Rose_Get("group-access-key").value = P.EditGroup_TSD.AccessKey;
+		Rose_Get("group-name").value       = P.EditGroup_TSD.Name;
+
+		P.EditGroup_TSD = null;
+	}
+	else {
+		Rose_Request("sample/uploader&c=get-group", [ P.SessionKey, null ], [ "(エラー：取得出来ません)", "(エラー：取得出来ません)", "(エラー：取得出来ません)" ], function(ret) {
+			Rose_Get("group-local-dir").value  = ret[0];
+			Rose_Get("group-access-key").value = ret[1];
+			Rose_Get("group-name").value       = ret[2];
+		});
+	}
+}
+
+function Logout() {
+	window.location.href = "index.html";
+}
+
+function Ok() {
+	var prm = {
+		LocalDir  : Rose_Get("group-local-dir").value,
+		AccessKey : Rose_Get("group-access-key").value,
+		Name      : Rose_Get("group-name").value,
+	};
+
+	Rose_Request("sample/uploader&c=edit-group", [ P.SessionKey, prm ], [ "NG", "グループの編集に失敗しました。" ], function(ret) {
+		if(ret[0] == "OK") {
+			Logout();
+		}
+		else {
+			alert("グループの編集に失敗しました。\n原因 = " + ret[1]);
+		}
+	});
+}
+
+function Cancel() {
+	Rose_Forward("dashboard.html", P);
+}
+
+function TemporarySave() {
+	P.EditGroup_TSD = {
+		LocalDir  : Rose_Get("group-local-dir").value,
+		AccessKey : Rose_Get("group-access-key").value,
+		Name      : Rose_Get("group-name").value,
+	}
+}
+
+function EditUserPass() {
+	TemporarySave();
+
+	Rose_Forward("edit-group-user-pass.html", P);
+}
+
+// @encodeEnd
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>uploader simple-page</title>
+</head>
+<body>
+
+<div class="title">グループの編集</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">編集項目</div>
+
+<div class="wb"></div>
+
+<div class="label">ローカルディレクトリ名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-local-dir" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">アクセスキー</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-access-key" type="text"></input></div>
+<div class="wb-s"></div>
+<div class="input"><button class="input-button" onclick="EditUserPass()">ユーザー名とパスワードを入力する</button></div>
+
+<div class="wb"></div>
+
+<div class="label">グループ名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="group-name" type="text"></input></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Ok()">OK (適用してログイン画面へ戻る)</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Cancel()">キャンセル</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

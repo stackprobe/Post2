@@ -21,7 +21,7 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			if (str.Length < minlen || maxlen < str.Length)
 			{
-				throw new Exception(description + " --> length error: " + str.Length + ", " + minlen + ", " + maxlen);
+				throw new Exception("『" + description + "』は " + minlen + " 文字以上 " + maxlen + " 文字以下でなければなりません。");
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			if (value < minval || maxval < value)
 			{
-				throw new Exception(description + " --> range error: " + value + ", " + minval + ", " + maxval);
+				throw new Exception("『" + description + "』は " + minval + " 以上 " + maxval + " 以下でなければなりません。");
 			}
 		}
 	}

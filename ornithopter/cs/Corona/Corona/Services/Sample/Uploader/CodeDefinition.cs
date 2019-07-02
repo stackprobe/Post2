@@ -24,7 +24,7 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				localDir = DenebolaToolkit.GetFairLocalPath(localDir, Consts.GROUP_BUNDLE_DIR);
 
-				Utilities.CheckLength(localDir, 1, Consts.GROUP_LOCAL_DIR_LEN_MAX, "グループ・ローカルディレクトリ名");
+				Utilities.CheckLength(localDir, Consts.GROUP_LOCAL_DIR_LEN_MIN, Consts.GROUP_LOCAL_DIR_LEN_MAX, "グループ・ローカルディレクトリ名");
 
 				return localDir;
 			}

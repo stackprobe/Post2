@@ -20,7 +20,19 @@ function Main2() {
 }
 
 function Ok() {
-	// TODO
+	var prm = [
+		P.File.LocalFile,
+		Rose_Get("file-local-file").value,
+	];
+
+	Rose_Request("sample/uploader&c=rename-file", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			alert("ファイル名の変更に失敗しました。\n変更後のファイル名は既に使用されている可能性があります。");
+		}
+		else {
+			Rose_Forward("dashboard.html", P);
+		}
+	});
 }
 
 function Cancel() {
