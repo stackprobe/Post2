@@ -9,10 +9,10 @@
 var P;
 
 function Main() {
-//	Rose_Forwarded(function(prm) {
-//		P = prm;
-//		Main2();
-//	});
+	Rose_Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
 }
 
 function Main2() {
@@ -45,6 +45,32 @@ function Back() {
 	Rose_Forward("dashboard.html", P);
 }
 
+function Error(message) {
+	PrintLog("Error: " + message);
+	alert(message);
+	Back();
+}
+
+function MakeDarkColor() {
+	return "#" + ("00" + Math.floor(Math.random() * 1000.0)).slice(-3);
+}
+
+var Logs = [];
+
+function PrintLog(line) {
+	if(20 < Logs.length) {
+		Logs.shift();
+	}
+	Logs.push("[" + new Date() + "] " + line);
+
+	document.body.innerHTML = Logs.join("<br/>");
+}
+
+function GoNB() {
+	PartSize = 65536;
+	Go();
+}
+
 function Go() {
 	var files = Rose_Get("upload-file").files;
 
@@ -55,13 +81,140 @@ function Go() {
 	var file = files[0];
 	var fileName = Rose_Get("upload-file-name").value;
 
+	document.body.style.transition = "0.5s";
 	document.body.style.color = "#fff";
-	document.body.style.backgroundColor = "#000";
+	document.body.style.backgroundColor = MakeDarkColor();
 	document.body.style.margin = "50px";
+	document.body.style.cursor = "pointer";
 
-	document.body.innerHTML = "アップロードしています...";
+	setTimeout(function() {
+		document.body.style.backgroundColor = MakeDarkColor();
 
-	// TODO
+		document.body.onclick = function() {
+			if(confirm("アップロードを中止しますか？")) {
+				Back();
+			}
+			else {
+				// noop
+			}
+		};
+	},
+	5000
+	);
+
+	PrintLog("アップロードを開始します。");
+
+	Rose_Request("sample/uploader&c=create-file", [ P.SessionKey, "_(アップロード中)_" + fileName + ".tmp" ], null, function(ret) {
+		if(ret == null) {
+			Error("通信エラー(mp)");
+		}
+		else {
+			InputFileBlob  = file;
+			TempFileName   = ret;
+			OutputFileName = fileName;
+
+			UploadPart(0)
+		}
+	});
+}
+
+var PartSize = 1000000;
+
+var InputFileBlob;
+var TempFileName;
+var OutputFileName;
+
+function UploadPart(offset) {
+	var size = Math.min(PartSize, InputFileBlob.size - offset);
+
+	{
+		var pct = offset * 100.0 / InputFileBlob.size;
+
+		PrintLog("pct: " + pct);
+	}
+
+	if(size <= 0) {
+		UploadDone();
+		return;
+	}
+
+	PrintLog("ファイル読み込み.1 -- offset: " + offset + ", size: " + size);
+
+	var reader = new FileReader();
+
+	reader.onload = function(e) {
+		var s = e.target.readyState;
+		var p = e.target.result;
+
+		PrintLog("ファイル読み込み.2 -- s: " + s + ", offset: " + offset + ", p: " + p.length);
+
+		UploadPart2(offset, size, p, 0);
+	}
+
+	reader.onerror = function(e) {
+		Error("ファイル読み込みエラー");
+	}
+
+	var part = InputFileBlob.slice(offset, offset + size);
+
+	reader.readAsBinaryString(part);
+}
+
+function UploadPart2(offset, size, part, retryNo) {
+	var prm = {
+		LocalFile : TempFileName,
+		Offset    : offset,
+		Data      : btoa(part),
+	};
+
+	PrintLog("ファイルデータ送信.1 -- offset: " + offset + ", size: " + size + ", retryNo: " + retryNo);
+
+	Rose_Request("sample/uploader&c=upload", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			if(retryNo < 7) {
+				PrintLog("ファイルデータ送信.2 -- NG -> リトライします。");
+
+				setTimeout(function() {
+					UploadPart2(offset, size, part, retryNo + 1);
+				},
+				7000
+				);
+			}
+			else {
+				Error("ファイル送信エラー");
+			}
+		}
+		else {
+			PrintLog("ファイルデータ送信.2 -- OK");
+
+			UploadPart(offset + size);
+		}
+	});
+}
+
+function UploadDone() {
+	PrintLog("アップロードしたファイルの名前を変更します。");
+
+	var prm = [
+		TempFileName,
+		OutputFileName,
+		true,
+	];
+
+	Rose_Request("sample/uploader&c=rename-file", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			Error("ファイル名の変更に失敗しました。\nアップロードされたファイルは仮ファイル名のままです。");
+		}
+		else {
+			UploadDone2();
+		}
+	});
+}
+
+function UploadDone2() {
+	PrintLog("アップロードは成功しました。");
+	alert("◆◆◆　アップロード完了　◆◆◆");
+	Back();
 }
 
 // @encodeEnd
@@ -112,6 +265,10 @@ function Go() {
 <div class="wb"></div>
 
 <div class="input"><button class="input-button" onclick="Go()">アップロードを開始する</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="GoNB()">アップロードを開始する (低速)</button></div>
 
 <div class="wb"></div>
 

@@ -23,6 +23,7 @@ function Ok() {
 	var prm = [
 		P.File.LocalFile,
 		Rose_Get("file-local-file").value,
+		false,
 	];
 
 	Rose_Request("sample/uploader&c=rename-file", [ P.SessionKey, prm ], null, function(ret) {

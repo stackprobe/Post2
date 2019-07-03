@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Charlotte.Tools;
+using Charlotte.Utils;
+using System.IO;
 
 namespace Charlotte.Services.Sample.Uploader
 {
@@ -31,6 +34,21 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				throw new Exception("『" + description + "』は " + minval + " 以上 " + maxval + " 以下でなければなりません。");
 			}
+		}
+
+		public static string ToCreatableFairFullPath(string path)
+		{
+			path = FileTools.MakeFullPath(path);
+
+			string dir = Path.GetDirectoryName(path);
+			string localPath = Path.GetFileName(path);
+
+			localPath = DenebolaToolkit.GetFairLocalPath(localPath, dir + "0123456789"); // 重複回避のため追加される文字列のためにマージンを取る。
+
+			path = Path.Combine(dir, localPath);
+			path = ExtraTools.ToCreatablePath(path);
+
+			return path;
 		}
 	}
 }

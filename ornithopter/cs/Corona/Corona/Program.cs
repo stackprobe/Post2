@@ -85,8 +85,13 @@ namespace Charlotte
 				IService service = new ServiceDistributor().GetService(serviceName);
 
 				JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
+				JsonTools.DecodeObjectCountMax = 1000; // 適当
 				object prm = JsonTools.Decode(body);
 				string sPrm = JsonTools.Encode(prm);
+
+				if (600 < sPrm.Length)
+					sPrm = sPrm.Substring(0, 500) + "...(省略)"; // 長すぎると表示に時間が掛かるので、
+
 				ProcMain.WriteLog("prm: " + sPrm);
 
 				try

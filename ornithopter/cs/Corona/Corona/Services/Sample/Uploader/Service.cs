@@ -69,6 +69,14 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				ret = EditGroup();
 			}
+			else if (command == "create-file")
+			{
+				ret = CreateFile();
+			}
+			else if (command == "upload")
+			{
+				ret = Upload();
+			}
 			else
 			{
 				throw new Exception("不明なコマンド");
@@ -318,15 +326,13 @@ namespace Charlotte.Services.Sample.Uploader
 
 			Group group = this.LiteGroup.GetGroup();
 
-			return
-				"http://" +
-				"ornithopter.myhome.cx:58946/corona/sample/uploader/download.alt.txt*/" +
-				CommonUtils.EncodeURL(this.TPrm.StringValue) +
-				"?group=" +
-				CommonUtils.EncodeURL(Path.GetFileName(group.Dir)) +
-				"&file=" +
-				CommonUtils.EncodeURL(this.TPrm.StringValue) +
-				(downloadFlag ? "&download=true" : "");
+			return new DownloadURL()
+			{
+				GroupLocalDir = Path.GetFileName(group.Dir),
+				LocalFile = this.TPrm.StringValue,
+				DownloadFlag = downloadFlag,
+			}
+			.GetString();
 		}
 
 		private object DeleteFile()
@@ -355,15 +361,22 @@ namespace Charlotte.Services.Sample.Uploader
 			string localFileNew = DenebolaToolkit.GetFairLocalPath(this.TPrm[1].StringValue, dir);
 			string fileOld = Path.Combine(dir, localFileOld);
 			string fileNew = Path.Combine(dir, localFileNew);
+			bool forceMode = Utilities.GetBoolean(this.TPrm[0].StringValue);
 
-			ProcMain.WriteLog("元ファイル ⇒ " + fileOld);
-			ProcMain.WriteLog("新ファイル ⇒ " + fileNew);
+			ProcMain.WriteLog("元ファイル.1 ⇒ " + fileOld);
+			ProcMain.WriteLog("新ファイル.1 ⇒ " + fileNew);
 
 			if (File.Exists(fileOld) == false)
 				throw new Exception("元ファイルが見つかりません。");
 
 			if (File.Exists(fileNew))
-				throw new Exception("新ファイルは既に存在します。");
+			{
+				if (forceMode)
+					fileNew = Utilities.ToCreatableFairFullPath(fileNew);
+				else
+					throw new Exception("新ファイルは既に存在します。");
+			}
+			ProcMain.WriteLog("新ファイル.2 ⇒ " + fileNew);
 
 			File.Move(fileOld, fileNew);
 
@@ -447,6 +460,71 @@ namespace Charlotte.Services.Sample.Uploader
 				ProcMain.WriteLog(e);
 
 				return new object[] { "NG", e.Message };
+			}
+		}
+
+		private object CreateFile()
+		{
+			this.LoggedIn();
+
+			Group group = this.LiteGroup.GetGroup();
+			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
+			string localFile = DenebolaToolkit.GetFairLocalPath(this.TPrm.StringValue, dir);
+			string file = Path.Combine(dir, localFile);
+
+			ProcMain.WriteLog("ファイル作成.1 ⇒ " + file);
+
+			file = Utilities.ToCreatableFairFullPath(file);
+
+			ProcMain.WriteLog("ファイル作成.2 ⇒ " + file);
+
+			File.WriteAllBytes(file, BinTools.EMPTY);
+
+			return Path.GetFileName(file);
+		}
+
+		private object Upload()
+		{
+			this.LoggedIn();
+
+			TrySlimdown();
+
+			Group group = this.LiteGroup.GetGroup();
+			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
+			string localFile = DenebolaToolkit.GetFairLocalPath(this.TPrm["LocalFile"].StringValue, dir);
+			string file = Path.Combine(dir, localFile);
+
+			if (File.Exists(file) == false)
+				throw new Exception("指定されたファイルは存在しません。");
+
+			long offset = long.Parse(this.TPrm["Offset"].StringValue);
+
+			if (offset < 0L || LongTools.IMAX_64 < offset)
+				throw new Exception("不正なオフセット値です。" + offset);
+
+			byte[] data = new Base64Unit().Decode(this.TPrm["Data"].StringValue);
+			long fileSize = new FileInfo(file).Length;
+
+			if (fileSize < offset)
+				throw new Exception("ファイルサイズより大きなオフセット値です。" + offset);
+
+			// offset < fileSize の場合は、既に正常に書き込まれたと見なす。
+
+			if (offset == fileSize)
+			{
+				using (FileStream writer = new FileStream(file, FileMode.Append, FileAccess.Write))
+				{
+					writer.Write(data, 0, data.Length);
+				}
+			}
+			return "OK";
+		}
+
+		private void TrySlimdown()
+		{
+			if (SecurityTools.CRandom.GetByte() == 0x00) // 1/256 の確率 --> 1000 回連続で実行されない確率 == 0.0199625
+			{
+				new Slimdown().Perform();
 			}
 		}
 
