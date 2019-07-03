@@ -34,6 +34,8 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			Console.WriteLine("Slimdown_Start, DY: " + this.DiskYellowFlag);
 
+			long currDateTime = DateTimeToSec.Now.GetDateTime();
+
 			foreach (LiteGroup liteGroup in new GroupBundle().LiteGroups)
 			{
 				Group group = liteGroup.GetGroup();
@@ -55,7 +57,19 @@ namespace Charlotte.Services.Sample.Uploader
 					upFiles.Add(upFile);
 					total += upFile.Size;
 				}
-				upFiles.Sort((a, b) => LongTools.Comp(a.WroteDateTime, b.WroteDateTime)); // 古い順
+				upFiles.Sort((a, b) =>
+				{
+					int ret = VariantTools.Comp(a, b, v =>
+						v.FilePath.StartsWith(Consts.TMP_LOCAL_FILE_PREFIX) &&
+						v.FilePath.EndsWith(Consts.TMP_LOCAL_FILE_SUFFIX) &&
+						v.WroteDateTime + 10000 < currDateTime ? 0 : 1); // "１時間以上放置された、アップロード作業ファイル" を先に
+
+					if (ret != 0)
+						return ret;
+
+					ret = LongTools.Comp(a.WroteDateTime, b.WroteDateTime); // 古い順
+					return ret;
+				});
 
 				while (1 <= upFiles.Count && group.GroupTotalFileSizeMax < total)
 				{

@@ -19,11 +19,11 @@ namespace Charlotte.Services.Sample.Uploader
 			return
 				"http://" +
 				"ornithopter.myhome.cx:58946/corona/sample/uploader/download.alt.txt*/" +
-				CommonUtils.EncodeURL(this.GroupLocalDir) +
-				"?group=" +
 				CommonUtils.EncodeURL(this.LocalFile) +
-				"&file=" +
+				"?group=" +
 				CommonUtils.EncodeURL(this.GroupLocalDir) +
+				"&file=" +
+				CommonUtils.EncodeURL(this.LocalFile) +
 				(this.DownloadFlag ? "&download=true" : "");
 		}
 	}
