@@ -252,30 +252,32 @@ function Rose_Request(sn, prm, def, reaction) {
 }
 
 function Rose_Forward(url, prm) {
-	Rose_Request("save", prm, [ "" ], function(ret) {
-		var q = ret[0];
-
-		if(q == "") {
+	Rose_Request("save", prm, null, function(ret) {
+		if(ret == null) {
 			alert("save error");
 		}
 		else {
-			window.location.href = url + "?q=" + q;
+			window.location.href = url + "?q=" + ret;
 		}
 	});
 }
 
-var Rose_ERROR_PAGE_URL = "error.html";
-
 function Rose_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
 
-	Rose_Request("load", [ q ], null, function(ret) {
+	Rose_Request("load", q, null, function(ret) {
+		reaction(ret);
+
+// old
+/*
 		if(ret == null) {
-			window.location.href =Rose_ERROR_PAGE_URL;
+			alert("load error");
 		}
 		else {
 			reaction(ret);
 		}
+*/
+
 	});
 }
 

@@ -25,6 +25,10 @@ namespace Charlotte.Services.Sample.Uploader
 			{
 				ret = Login();
 			}
+			else if (command == "heartbeat")
+			{
+				ret = Heartbeat();
+			}
 			else if (command == "supervisor-dashboard")
 			{
 				ret = SupervisorDashboard();
@@ -155,6 +159,13 @@ namespace Charlotte.Services.Sample.Uploader
 
 			this.Session = session;
 			this.LiteGroup = new GroupBundle().LiteGroups.FirstOrDefault(v => v.AccessKey == session.AccessKey);
+		}
+
+		private object Heartbeat()
+		{
+			this.LoggedIn();
+
+			return "OK";
 		}
 
 		private object SupervisorDashboard()

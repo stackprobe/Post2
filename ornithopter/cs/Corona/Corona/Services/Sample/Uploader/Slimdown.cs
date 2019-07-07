@@ -61,7 +61,7 @@ namespace Charlotte.Services.Sample.Uploader
 				{
 					int ret = VariantTools.Comp(a, b, v =>
 						StringTools.EndsWithIgnoreCase(v.FilePath, Consts.TMP_FILE_SUFFIX) &&
-						v.WroteDateTime + 10000 <= currDateTime ? 0 : 1); // "１時間以上放置された作業ファイル" を先に
+						DateTimeToSec.ToSec(v.WroteDateTime) + 3600 <= DateTimeToSec.ToSec(currDateTime) ? 0 : 1); // "１時間以上放置された作業ファイル" を先に
 
 					if (ret != 0)
 						return ret;

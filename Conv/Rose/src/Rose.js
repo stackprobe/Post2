@@ -250,30 +250,32 @@ function @@_Request(sn, prm, def, reaction) {
 }
 
 function @@_Forward(url, prm) {
-	@@_Request("save", prm, [ "" ], function(ret) {
-		var q = ret[0];
-
-		if(q == "") {
+	@@_Request("save", prm, null, function(ret) {
+		if(ret == null) {
 			alert("save error");
 		}
 		else {
-			window.location.href = url + "?q=" + q;
+			window.location.href = url + "?q=" + ret;
 		}
 	});
 }
 
-var @@_ERROR_PAGE_URL = "error.html";
-
 function @@_Forwarded(reaction) {
 	var q = window.location.search.substring(3);
 
-	@@_Request("load", [ q ], null, function(ret) {
+	@@_Request("load", q, null, function(ret) {
+		reaction(ret);
+
+// old
+/*
 		if(ret == null) {
-			window.location.href =@@_ERROR_PAGE_URL;
+			alert("load error");
 		}
 		else {
 			reaction(ret);
 		}
+*/
+
 	});
 }
 

@@ -20,7 +20,7 @@ namespace Charlotte.Services.SaveLoad
 
 				File.WriteAllBytes(file, Encoding.UTF8.GetBytes(JsonTools.Encode(prm)));
 
-				return new string[] { key };
+				return key;
 			}
 
 			public void DiskYellow()
@@ -35,8 +35,7 @@ namespace Charlotte.Services.SaveLoad
 			{
 				Ground.InitDataDir();
 
-				ObjectTree tPrm = new ObjectTree(prm);
-				string key = tPrm[0].StringValue;
+				string key = (string)prm;
 
 				if (StringTools.LiteValidate(key, StringTools.DECIMAL) == false)
 					throw new Exception("不正なキーです。");
