@@ -4,8 +4,6 @@
 <script src="../../module.js" charset="Shift_JIS"></script>
 <script>
 
-// @encodeBgn
-
 var P;
 
 function Main() {
@@ -45,10 +43,18 @@ function Back() {
 	Rose_Forward("dashboard.html", P);
 }
 
+var Back2 = function() {
+	if(confirm("アップロードを中止しますか？")) {
+		Back();
+	}
+	else {
+		// noop
+	}
+}
+
 function Error(message) {
-	PrintLog("Error: " + message);
-	alert(message);
-	Back();
+	PrintLog("エラー：" + message);
+	Done();
 }
 
 function MakeDarkColor() {
@@ -84,27 +90,43 @@ function Go() {
 	document.body.style.transition = "0.5s";
 	document.body.style.color = "#fff";
 	document.body.style.backgroundColor = MakeDarkColor();
-	document.body.style.margin = "50px";
+	document.body.style.margin = "5%";
 	document.body.style.cursor = "pointer";
+
+	if(IsFirefox()) {
+		var tag = document.createElement("div");
+
+		tag.style.position = "fixed";
+		tag.style.left     = "0px";
+		tag.style.top      = "0px";
+		tag.style.width    = "100%";
+		tag.style.height   = "100%";
+		tag.style.opacity  = "0.0";
+
+		document.body.appendChild(tag);
+
+		document.body.style.width  = "90%";
+		document.body.style.height = "90%";
+	}
 
 	setTimeout(function() {
 		document.body.style.backgroundColor = MakeDarkColor();
 
 		document.body.onclick = function() {
-			if(confirm("アップロードを中止しますか？")) {
-				Back();
-			}
-			else {
-				// noop
-			}
-		};
+			Back2();
+		}
 	},
-	5000
+	2000
 	);
+
+	if(IsIE()) {
+		Error("インターネット・エクスプローラには対応していません。");
+		return;
+	}
 
 	PrintLog("アップロードを開始します。");
 
-	Rose_Request("sample/uploader&c=create-file", [ P.SessionKey, "_(アップロード中)_" + fileName + ".tmp" ], null, function(ret) {
+	Rose_Request("sample/uploader&c=create-file", [ P.SessionKey, "_Temporary_" + fileName + ".tmp" ], null, function(ret) {
 		if(ret == null) {
 			Error("通信エラー(mp)");
 		}
@@ -177,7 +199,7 @@ function UploadPart2(offset, size, part, retryNo) {
 				setTimeout(function() {
 					UploadPart2(offset, size, part, retryNo + 1);
 				},
-				7000
+				1000 * (retryNo + 1)
 				);
 			}
 			else {
@@ -212,12 +234,32 @@ function UploadDone() {
 }
 
 function UploadDone2() {
-	PrintLog("アップロードは成功しました。");
-	alert("◆◆◆　アップロード完了　◆◆◆");
-	Back();
+	PrintLog("◆◆◆　アップロードは成功しました　◆◆◆");
+	Done();
 }
 
-// @encodeEnd
+function Done() {
+	PrintLog("どこかクリックすると、ダッシュボードに戻ります。");
+
+	document.body.style.backgroundColor = MakeDarkColor();
+
+	Back2 = Back;
+}
+
+function IsIE() {
+	var ua = window.navigator.userAgent.toLowerCase();
+
+	return (
+		ua.indexOf("msie") != -1 ||
+		ua.indexOf("trident") != -1
+		);
+}
+
+function IsFirefox() {
+	var ua = window.navigator.userAgent.toLowerCase();
+
+	return ua.indexOf("firefox") != -1;
+}
 
 </script>
 <style>
@@ -268,8 +310,9 @@ function UploadDone2() {
 
 <div class="wb"></div>
 
-<div class="input"><button class="input-button" onclick="GoNB()">アップロードを開始する (低速)</button></div>
+<div class="input"><button class="input-button" onclick="GoNB()">アップロードを開始する　(低速, 通信が不安定な場合はこちら)</button></div>
 
+<div class="wb"></div>
 <div class="wb"></div>
 
 <div class="input"><button class="input-button" onclick="Back()">戻る</button></div>

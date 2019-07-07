@@ -24,8 +24,7 @@ namespace Charlotte.Services.Sample.Uploader
 		public const int GROUP_NAME_LEN_MAX = 300;
 		public const int ACCESS_KEY_LEN_MAX = 300;
 
-		public const string TMP_LOCAL_FILE_PREFIX = "_Temporary_";
-		public const string TMP_LOCAL_FILE_SUFFIX = ".tmp";
+		public const string TMP_FILE_SUFFIX = ".tmp";
 
 		public const string SESSION_BUNDLE_FILE = @"C:\appdata\Post2.Corona.Sample.Uploader.Session.txt";
 

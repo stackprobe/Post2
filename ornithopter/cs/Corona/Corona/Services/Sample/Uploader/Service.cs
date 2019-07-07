@@ -361,7 +361,7 @@ namespace Charlotte.Services.Sample.Uploader
 			string localFileNew = DenebolaToolkit.GetFairLocalPath(this.TPrm[1].StringValue, dir);
 			string fileOld = Path.Combine(dir, localFileOld);
 			string fileNew = Path.Combine(dir, localFileNew);
-			bool forceMode = Utilities.GetBoolean(this.TPrm[0].StringValue);
+			bool forceMode = Utilities.GetBoolean(this.TPrm[2].StringValue);
 
 			ProcMain.WriteLog("元ファイル.1 ⇒ " + fileOld);
 			ProcMain.WriteLog("新ファイル.1 ⇒ " + fileNew);
@@ -467,6 +467,8 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			this.LoggedIn();
 
+			TrySlimdown(10);
+
 			Group group = this.LiteGroup.GetGroup();
 			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
 			string localFile = DenebolaToolkit.GetFairLocalPath(this.TPrm.StringValue, dir);
@@ -487,7 +489,7 @@ namespace Charlotte.Services.Sample.Uploader
 		{
 			this.LoggedIn();
 
-			TrySlimdown();
+			TrySlimdown(100);
 
 			Group group = this.LiteGroup.GetGroup();
 			string dir = Path.Combine(group.Dir, Consts.FILE_BUNDLE_LOCAL_DIR);
@@ -520,9 +522,9 @@ namespace Charlotte.Services.Sample.Uploader
 			return "OK";
 		}
 
-		private void TrySlimdown()
+		private void TrySlimdown(int rateDenom)
 		{
-			if (SecurityTools.CRandom.GetByte() == 0x00) // 1/256 の確率 --> 1000 回連続で実行されない確率 == 0.0199625
+			if (SecurityTools.CRandom.GetInt(rateDenom) == 0)
 			{
 				new Slimdown().Perform();
 			}

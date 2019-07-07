@@ -60,9 +60,8 @@ namespace Charlotte.Services.Sample.Uploader
 				upFiles.Sort((a, b) =>
 				{
 					int ret = VariantTools.Comp(a, b, v =>
-						v.FilePath.StartsWith(Consts.TMP_LOCAL_FILE_PREFIX) &&
-						v.FilePath.EndsWith(Consts.TMP_LOCAL_FILE_SUFFIX) &&
-						v.WroteDateTime + 10000 < currDateTime ? 0 : 1); // "１時間以上放置された、アップロード作業ファイル" を先に
+						StringTools.EndsWithIgnoreCase(v.FilePath, Consts.TMP_FILE_SUFFIX) &&
+						v.WroteDateTime + 10000 <= currDateTime ? 0 : 1); // "１時間以上放置された作業ファイル" を先に
 
 					if (ret != 0)
 						return ret;
@@ -71,7 +70,7 @@ namespace Charlotte.Services.Sample.Uploader
 					return ret;
 				});
 
-				while (1 <= upFiles.Count && group.GroupTotalFileSizeMax < total)
+				while (1 <= upFiles.Count && (Consts.FILE_NUM_MAX < this.UploadedFiles.Count || group.GroupTotalFileSizeMax < total))
 				{
 					UploadedFile upFile = upFiles[0];
 
@@ -99,10 +98,13 @@ namespace Charlotte.Services.Sample.Uploader
 				int count = this.UploadedFiles.Count;
 
 				// 10ファイル以上 -> 10%
-				//  9ファイル以下 -> 全て
+				// 1～9ファイル -> 1
+				// 0ファイル -> 0
 				//
 				if (10 <= count)
 					count /= 10;
+				else
+					count = Math.Min(1, count);
 
 				for (int index = 0; index < count; index++)
 				{

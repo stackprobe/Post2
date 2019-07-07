@@ -1,5 +1,6 @@
 body {
-	font: normal 16px "Yu Gothic";
+	font: normal 16px 'ü‡ÉSÉVÉbÉNëÃ', 'Yu Gothic', YuGothic, sans-serif;
+	word-break : break-all;
 	margin: 0px;
 }
 

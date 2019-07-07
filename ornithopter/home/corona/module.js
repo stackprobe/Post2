@@ -1,7 +1,5 @@
 // ššš©“®¶¬ššš
 
-// @encodeBgn
-
 var Rose_IMAX = 1000000000;
 
 var Rose_BINADECIMAL = "01";
@@ -301,5 +299,5 @@ window.resize = function() {
 	}
 }
 
-// @encodeEnd
+// end
 

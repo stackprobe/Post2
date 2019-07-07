@@ -4,8 +4,6 @@
 <script src="../../module.js" charset="Shift_JIS"></script>
 <script>
 
-// @encodeBgn
-
 var P;
 
 function Main() {
@@ -57,7 +55,7 @@ function AddFile(file) {
 
 		div.className = "label";
 		div.innerHTML = [
-			"ファイル名 = " + file.LocalFile,
+			"ファイル名 = " + file.LocalFile + (Rose_EndsWithIgnoreCase(file.LocalFile, ".tmp") ? "　　(*これは作業中のファイルです)" : ""),
 			"サイズ = " + file.Size + " バイト = " + (file.Size / 1000000.0) + " MB",
 			"アップロード日時 = " + file.UploadedDateTime,
 		]
@@ -221,8 +219,6 @@ function EditGroup() {
 function Logout() {
 	window.location.href = "index.html";
 }
-
-// @encodeEnd
 
 </script>
 <style>
