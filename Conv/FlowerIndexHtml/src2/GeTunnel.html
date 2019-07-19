@@ -33,6 +33,35 @@ window.onload = function() {
 
 		document.body.appendChild(tag);
 	}
+
+	{
+		var tag = document.createElement("img");
+
+		tag.src = "res/Skip.png"; // @res
+
+		tag.style.position = "fixed";
+		tag.style.right  = "-300px";
+		tag.style.bottom = "-300px";
+		tag.style.width  = "270px";
+		tag.style.height = "90px";
+		tag.style.opacity = 0.0;
+		tag.style.transition = "all 1s cubic-bezier(0.4, 1.8, 0.4, 0.8)";
+		tag.style.zIndex = 12;
+
+		SetScenario([
+			100,
+			function() {
+				tag.style.right   = "30px";
+				tag.style.opacity = 0.9;
+			},
+			100,
+			function() {
+				tag.style.bottom  = "30px";
+			},
+		]);
+
+		document.body.appendChild(tag);
+	}
 }
 
 var BoxTableLayout = [
