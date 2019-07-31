@@ -189,8 +189,6 @@ window.onload = function() {
 			store.xa += dx;
 			store.ya += dy;
 		}
-
-		window.getSelection().empty();
 	};
 
 	var ff = window.navigator.userAgent.toLowerCase().indexOf("firefox") != -1; // ? firefox
@@ -241,6 +239,8 @@ body {
 	background-color: #000;
 	margin: 0px;
 	cursor: pointer;
+	user-select: none;
+	touch-callout: none;
 }
 
 .panel {
