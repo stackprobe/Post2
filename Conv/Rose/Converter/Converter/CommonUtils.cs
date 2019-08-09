@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Charlotte
 {
-	public class CommonUtils
+	public static class CommonUtils
 	{
 		public static string PathToCoName(string path, string root)
 		{

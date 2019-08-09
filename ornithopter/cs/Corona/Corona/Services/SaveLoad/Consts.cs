@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Charlotte.Services.SaveLoad
 {
-	public class Consts
+	public static class Consts
 	{
 		public const string DATA_DIR = @"C:\appdata\Post2.Corona.Save";
 

@@ -7,7 +7,7 @@ using Charlotte.Tools;
 
 namespace Charlotte
 {
-	public class BeforeDLIntervent
+	public static class BeforeDLIntervent
 	{
 		public const string RECV_FILE = "Recv.httdat";
 		public const string TARGET_FILE = "Target.httgetdat";

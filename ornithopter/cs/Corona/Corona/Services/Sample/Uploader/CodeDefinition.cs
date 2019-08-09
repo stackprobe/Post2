@@ -7,7 +7,7 @@ using Charlotte.Utils;
 
 namespace Charlotte.Services.Sample.Uploader
 {
-	public class CodeDefinition
+	public static class CodeDefinition
 	{
 		public class ToFair
 		{

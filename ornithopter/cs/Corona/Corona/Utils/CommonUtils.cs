@@ -7,7 +7,7 @@ using Charlotte.Tools;
 
 namespace Charlotte.Utils
 {
-	public class CommonUtils
+	public static class CommonUtils
 	{
 		public static string DecodeURL(string url)
 		{

@@ -6,7 +6,7 @@ using Charlotte.Tools;
 
 namespace Charlotte.Services.Sample.Uploader
 {
-	public class SessionUtils
+	public static class SessionUtils
 	{
 		public static string CreateSessionKey()
 		{

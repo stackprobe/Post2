@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Charlotte.Services.Sample.Uploader
 {
-	public class GroupUtils
+	public static class GroupUtils
 	{
 		public static void CreateGroup(string name = "名無しのグループさん", long groupTotalFileSizeMax = 1000000000L)
 		{

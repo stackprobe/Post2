@@ -6,7 +6,7 @@ using Charlotte.Tools;
 
 namespace Charlotte.Services.Sample.Uploader
 {
-	public class Consts
+	public static class Consts
 	{
 		public const string GROUP_BUNDLE_DIR = @"C:\appdata\Post2.Corona.Sample.Uploader";
 

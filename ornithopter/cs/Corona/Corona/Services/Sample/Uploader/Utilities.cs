@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Charlotte.Services.Sample.Uploader
 {
-	public class Utilities
+	public static class Utilities
 	{
 		public static string GetString(bool flag)
 		{

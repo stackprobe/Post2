@@ -8,7 +8,7 @@ using Charlotte.Utils;
 
 namespace Charlotte.Services.SaveLoad
 {
-	public class Ground
+	public static class Ground
 	{
 		public static void InitDataDir()
 		{

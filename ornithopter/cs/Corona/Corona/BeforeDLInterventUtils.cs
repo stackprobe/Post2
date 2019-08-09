@@ -7,7 +7,7 @@ using Charlotte.Tools;
 
 namespace Charlotte
 {
-	public class BeforeDLInterventUtils
+	public static class BeforeDLInterventUtils
 	{
 		public static string RecvFileToQuery()
 		{

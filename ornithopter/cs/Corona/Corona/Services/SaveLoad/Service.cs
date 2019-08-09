@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Charlotte.Services.SaveLoad
 {
-	public class Service
+	public static class Service
 	{
 		public class Save : IService
 		{
