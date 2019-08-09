@@ -10,5 +10,7 @@ C:\Factory\SubTools\nrun.exe /S %mimiko% UpdateGeTunnelHtml
 @echo ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 @echo ■ GeTunnel.html は BlueFish を再起動しないと更新されません ■
 @echo ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+@echo ■ index.html も Post2 の _Release をしないと更新されません ■
+@echo ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
 PAUSE

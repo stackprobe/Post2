@@ -43,8 +43,31 @@ namespace Charlotte
 			}
 			string script = string.Join("\r\n", scriptLines);
 
+#if true
 			script = ScriptToBase64(script);
-			script = "var s=\"" + script.Substring(1) + "\",x=\"" + script.Substring(0, 1) + "\";" + ScriptEscape("eval(decodeURIComponent(escape(atob(x+s))));");
+
+			char m = ArrayTools.Largest((StringTools.DECIMAL + StringTools.ALPHA + StringTools.alpha)
+				.Where(v => script[0] != v && script[script.Length - 1] != v) // 2bs
+				.Select(v => new { c = v, n = script.Where(w => w == v).Count() }), (a, b) => a.n - b.n).c;
+
+			script = string.Join("" + m, script.Split(m).Reverse());
+			script =
+				"var s=\"" +
+				script +
+				"\",m=\"" +
+				m +
+				"\";" +
+				ScriptEscape("eval(decodeURIComponent(escape(atob(s.split(m).reverse().join(m)))));");
+#else // old
+			script = ScriptToBase64(script);
+			script =
+				"var s=\"" +
+				script.Substring(1) +
+				"\",x=\"" +
+				script.Substring(0, 1) +
+				"\";" +
+				ScriptEscape("eval(decodeURIComponent(escape(atob(x+s))));");
+#endif
 
 			dest = new List<string>();
 			dest.AddRange(before);
