@@ -26,7 +26,7 @@ namespace Charlotte
 			// ---- ページ固有 ----
 
 			this.Add("index", new Services.Index.Service());
-			this.Add("sample/uploader", new Services.Sample.Uploader.Service());
+			this.Add("salad/uploader", new Services.Salad.Uploader.Service());
 			this.Add("test-service/echo", new Services.TestService.Echo.Service());
 
 			// ----

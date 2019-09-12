@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script src="common.js" charset="Shift_JIS"></script>
+<script>
+
+var P;
+
+function Main() {
+	Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	var accessKey = P.EditGroup_TSD.AccessKey;
+
+	var i = accessKey.indexOf(":");
+	var user;
+	var pass;
+
+	if(i == -1) {
+		user = accessKey;
+		pass = "";
+	}
+	else {
+		user = accessKey.substring(0, i);
+		pass = accessKey.substring(i + 1);
+	}
+
+	Rose_Get("user").value = user;
+	Rose_Get("pass").value = pass;
+}
+
+function Ok() {
+	var user = Rose_Get("user").value;
+	var pass = Rose_Get("pass").value;
+
+	var accessKey = user + ":" + pass;
+
+	P.EditGroup_TSD.AccessKey = accessKey;
+
+	Rose_Forward("edit-group.html", P);
+}
+
+function Cancel() {
+	Rose_Forward("edit-group.html", P);
+}
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>salad uploader _simple_ / edit group / user password</title>
+</head>
+<body>
+
+<div class="title">ユーザー名・パスワードの編集</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">編集項目</div>
+
+<div class="wb"></div>
+
+<div class="label">ユーザー名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="user" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">パスワード</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="pass" type="text"></input></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Ok()">OK</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Cancel()">キャンセル</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script src="common.js" charset="Shift_JIS"></script>
+<script>
+
+var P;
+
+function Main() {
+	Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	// noop
+}
+
+function UploadFileChanged() {
+	var file = Rose_Get("upload-file").value;
+
+	{
+		var i = file.lastIndexOf('\\');
+
+		if(i != -1) {
+			file = file.substring(i + 1);
+		}
+	}
+
+	{
+		var i = file.lastIndexOf('/');
+
+		if(i != -1) {
+			file = file.substring(i + 1);
+		}
+	}
+
+	Rose_Get("upload-file-name").value = file;
+}
+
+function Back() {
+	Rose_Forward("dashboard.html", P);
+}
+
+var Back2 = function() {
+	if(confirm("アップロードを中止しますか？")) {
+		Back();
+	}
+	else {
+		// noop
+	}
+}
+
+function Error(message) {
+	PrintLog("エラー：" + message);
+	Done();
+}
+
+function MakeDarkColor() {
+	return "#" + ("00" + Math.floor(Math.random() * 1000.0)).slice(-3);
+}
+
+var Logs = [];
+
+function PrintLog(line) {
+	if(20 < Logs.length) {
+		Logs.shift();
+	}
+	Logs.push("[" + new Date() + "] " + line);
+
+	document.body.innerHTML = Logs.join("<br/>");
+}
+
+function GoNB() {
+	PartSize = 65536;
+	Go();
+}
+
+function Go() {
+	var files = Rose_Get("upload-file").files;
+
+	if(files.length <= 0) {
+		alert("ファイルを選択して下さい。");
+		return;
+	}
+	var file = files[0];
+	var fileName = Rose_Get("upload-file-name").value;
+
+	document.body.style.transition = "0.5s";
+	document.body.style.color = "#fff";
+	document.body.style.backgroundColor = MakeDarkColor();
+	document.body.style.margin = "5% 5%";
+	document.body.style.cursor = "pointer";
+
+	if(IsFirefox()) {
+		var tag = document.createElement("div");
+
+		tag.style.position = "fixed";
+		tag.style.left     = "0px";
+		tag.style.top      = "0px";
+		tag.style.width    = "100%";
+		tag.style.height   = "100%";
+		tag.style.opacity  = "0.0";
+
+		document.body.appendChild(tag);
+
+		document.body.style.width  = "90%";
+		document.body.style.height = "90%";
+	}
+
+	setTimeout(function() {
+		document.body.style.backgroundColor = MakeDarkColor();
+
+		document.body.onclick = function() {
+			Back2();
+		}
+	},
+	2000
+	);
+
+	if(IsIE()) {
+		Error("インターネット・エクスプローラには対応していません。");
+		return;
+	}
+
+	PrintLog("アップロードを開始します。");
+
+	Rose_Request("salad/uploader&c=create-file", [ P.SessionKey, "_Temporary_" + fileName + ".tmp" ], null, function(ret) {
+		if(ret == null) {
+			Error("通信エラー(mp)");
+		}
+		else {
+			InputFileBlob  = file;
+			TempFileName   = ret;
+			OutputFileName = fileName;
+
+			UploadPart(0)
+		}
+	});
+}
+
+var PartSize = 1000000;
+
+var InputFileBlob;
+var TempFileName;
+var OutputFileName;
+
+function UploadPart(offset) {
+	var size = Math.min(PartSize, InputFileBlob.size - offset);
+
+	{
+		var pct = offset * 100.0 / InputFileBlob.size;
+
+		PrintLog("pct: " + pct);
+	}
+
+	if(size <= 0) {
+		UploadDone();
+		return;
+	}
+
+	PrintLog("ファイル読み込み.1 -- offset: " + offset + ", size: " + size);
+
+	var reader = new FileReader();
+
+	reader.onload = function(e) {
+		var s = e.target.readyState;
+		var p = e.target.result;
+
+		PrintLog("ファイル読み込み.2 -- s: " + s + ", offset: " + offset + ", p: " + p.length);
+
+		UploadPart2(offset, size, p, 0);
+	}
+
+	reader.onerror = function(e) {
+		Error("ファイル読み込みエラー");
+	}
+
+	var part = InputFileBlob.slice(offset, offset + size);
+
+	reader.readAsBinaryString(part);
+}
+
+function UploadPart2(offset, size, part, retryNo) {
+	var prm = {
+		LocalFile : TempFileName,
+		Offset    : offset,
+		Data      : btoa(part),
+	};
+
+	PrintLog("ファイルデータ送信.1 -- offset: " + offset + ", size: " + size + ", retryNo: " + retryNo);
+
+	Rose_Request("salad/uploader&c=upload", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			if(retryNo < 7) {
+				PrintLog("ファイルデータ送信.2 -- NG -> リトライします。");
+
+				setTimeout(function() {
+					UploadPart2(offset, size, part, retryNo + 1);
+				},
+				1000 * (retryNo + 1)
+				);
+			}
+			else {
+				Error("ファイル送信エラー");
+			}
+		}
+		else {
+			PrintLog("ファイルデータ送信.2 -- OK");
+
+			UploadPart(offset + size);
+		}
+	});
+}
+
+function UploadDone() {
+	PrintLog("アップロードしたファイルの名前を変更します。");
+
+	var prm = [
+		TempFileName,
+		OutputFileName,
+		true,
+	];
+
+	Rose_Request("salad/uploader&c=rename-file", [ P.SessionKey, prm ], null, function(ret) {
+		if(ret == null) {
+			Error("ファイル名の変更に失敗しました。\nアップロードされたファイルは仮ファイル名のままです。");
+		}
+		else {
+			UploadDone2();
+		}
+	});
+}
+
+function UploadDone2() {
+	PrintLog("◆◆◆　アップロードは成功しました　◆◆◆");
+	Done();
+}
+
+function Done() {
+	PrintLog("どこかクリックすると、ダッシュボードに戻ります。");
+
+	document.body.style.backgroundColor = MakeDarkColor();
+
+	Back2 = Back;
+}
+
+function IsIE() {
+	var ua = window.navigator.userAgent.toLowerCase();
+
+	return (
+		ua.indexOf("msie") != -1 ||
+		ua.indexOf("trident") != -1
+		);
+}
+
+function IsFirefox() {
+	var ua = window.navigator.userAgent.toLowerCase();
+
+	return ua.indexOf("firefox") != -1;
+}
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>salad uploader _simple_ / upload</title>
+</head>
+<body>
+
+<div class="title">アップロード</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">ファイル</div>
+
+<div class="wb"></div>
+
+<div class="input"><input class="input-file" id="upload-file" type="file" onchange="UploadFileChanged()"></input></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">ファイルの情報</div>
+
+<div class="wb"></div>
+
+<div class="label">ファイル名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="upload-file-name" type="text"></input></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">操作</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Go()">アップロードを開始する</button></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="GoNB()">アップロードを開始する　(低速, 通信が不安定な場合はこちら)</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Back()">戻る</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

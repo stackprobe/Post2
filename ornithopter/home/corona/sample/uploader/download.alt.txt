@@ -1,1 +1,0 @@
-Charlotte.Services.Sample.Uploader.Intervent

@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script src="common.js" charset="Shift_JIS"></script>
+<script>
+
+function Main() {
+	// noop
+}
+
+function LoginUserPass() {
+	var user = document.getElementById("user").value;
+	var pass = document.getElementById("pass").value;
+
+	var accessKey = user + ":" + pass;
+
+	Login(accessKey);
+}
+
+function LoginAccessKey() {
+	var accessKey = document.getElementById("access-key").value;
+
+	Login(accessKey);
+}
+
+function Login(accessKey) {
+	Rose_Request("salad/uploader&c=login", [ accessKey ], [ "" ], function(ret) {
+		var sessionKey = ret[0];
+		var supervisorMode = ret[1];
+
+		if(sessionKey == "") {
+			alert("ログイン出来ません。");
+		}
+		else {
+			Rose_Forward((supervisorMode ? "supervisor-" : "") + "dashboard.html", {
+				SessionKey: sessionKey,
+			});
+		}
+	});
+}
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>salad uploader _simple_</title>
+</head>
+<body>
+
+<div class="title">ログイン</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">ユーザー名とパスワードでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">ユーザー名</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="user" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="label">パスワード</div>
+<div class="wb-s"></div>
+<div class="input"><input class="input-text" id="pass" type="password"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginUserPass()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">アクセスキーでログイン</div>
+
+<div class="wb"></div>
+
+<div class="label">アクセスキー</div>
+<div class="input"><input class="input-text" id="access-key" type="text"></input></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="LoginAccessKey()">ログイン</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script src="common.js" charset="Shift_JIS"></script>
+<script>
+
+var P;
+
+function Main() {
+	Forwarded(function(prm) {
+		P = prm;
+		Main2();
+	});
+}
+
+function Main2() {
+	Rose_Request("salad/uploader&c=dashboard", [ P.SessionKey, null ], null, function(ret) {
+		if(ret == null) {
+			alert("ダッシュボードの取得に失敗しました。");
+			return;
+		}
+
+		var status = ret[0];
+
+		Rose_Get("title").innerText = "『" + status[0] + "』のダッシュボード";
+
+		Rose_Get("status").innerHTML = [
+			"グループ名 = " + status[0],
+			"容量 = " + status[1] + " バイト = " + (status[1] / 1000000000.0) + " GB",
+			"使用量 = " + status[2] + " バイト = " + (status[2] / 1000000000.0) + " GB (使用率 = " + (status[2] / status[1]) + ")",
+			"空き領域 = " + (status[1] - status[2]) + " バイト = " + ((status[1] - status[2]) / 1000000000.0) + " GB",
+			"ファイル数 = " + status[3] + " (最大 108 ファイル)",
+			"ローカルディレクトリ名 = " + status[4],
+			"アクセスキー = ●●●●●",
+		]
+		.join("<br/>");
+
+		var files = ret[1];
+
+		for(var i = 0; i < files.length; i++) {
+			var file = files[i];
+
+			AddFile({
+				LocalFile        : file[0],
+				Size             : file[1],
+				UploadedDateTime : file[2],
+			});
+		}
+	});
+}
+
+function AddFile(file) {
+	{
+		var div = document.createElement("div");
+
+		div.className = "label";
+		div.innerHTML = [
+			"ファイル名 = " + file.LocalFile + (Rose_EndsWithIgnoreCase(file.LocalFile, ".tmp") ? "　　(*これは作業中のファイルです)" : ""),
+			"サイズ = " + file.Size + " バイト = " + (file.Size / 1000000.0) + " MB",
+			"アップロード日時 = " + file.UploadedDateTime,
+		]
+		.join("<br/>");
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "詳細";
+		button.onclick = function() { ShowFileDetails(file); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		SetFloatFirst(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		SetFloat(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "開く";
+		button.onclick = function() { OpenFile(file); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		SetFloat(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		SetFloat(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var button = document.createElement("button");
+
+		button.className = "input-button";
+		button.innerText = "ダウンロード";
+		button.onclick = function() { DownloadFile(file); };
+
+		var div = document.createElement("div");
+
+		div.className = "input";
+		div.appendChild(button);
+
+		SetFloat(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb-s";
+
+		SetFloatEnd(div);
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+
+	{
+		var div = document.createElement("div");
+
+		div.className = "wb";
+
+		document.body.insertBefore(div, Rose_Get("end-of-uploaded-file"));
+	}
+}
+
+function SetFloatFirst(tag) {
+	tag.style.float = "left";
+}
+
+function SetFloat(tag) {
+	tag.style.float = "left";
+	tag.style.padding =  "0px";
+}
+
+function SetFloatEnd(tag) {
+	tag.style.clear = "both";
+	tag.style.padding =  "0px";
+}
+
+function ShowFileDetails(file) {
+	P.File = file;
+
+	Rose_Forward("file-details.html", P);
+}
+
+function OpenFile(file) {
+	Rose_Request("salad/uploader&c=get-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
+		if(ret == null) {
+			alert("リンクの取得に失敗しました。");
+		}
+		else {
+			window.open(ret);
+		}
+	});
+}
+
+function DownloadFile(file) {
+	Rose_Request("salad/uploader&c=get-download-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
+		if(ret == null) {
+			alert("ダウンロード・リンクの取得に失敗しました。");
+		}
+		else {
+			window.open(ret);
+		}
+	});
+}
+
+function Upload() {
+	Rose_Forward("upload.html", P);
+}
+
+function Reload() {
+	Rose_Forward("dashboard.html", P); // reload
+}
+
+function EditGroup() {
+	Rose_Forward("edit-group.html", P);
+}
+
+function Logout() {
+	window.location.href = "index.html";
+}
+
+</script>
+<style>
+
+@import url("common.css");
+
+</style>
+<title>salad uploader _simple_ / dashboard</title>
+</head>
+<body>
+
+<div class="title" id="title">『』のダッシュボード</div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">アップロード</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Upload()">アップロード</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">アップロードされているファイル</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Reload()">再取得 (ページ再読込)</button></div>
+
+<div class="wb"></div>
+
+<div id="end-of-uploaded-file"></div>
+
+<div class="wb"></div>
+
+
+
+<div class="subtitle">基本情報</div>
+
+<div class="wb"></div>
+
+<div class="label" id="status"></div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="EditGroup()">編集</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+<div class="subtitle">その他</div>
+
+<div class="wb"></div>
+
+<div class="input"><button class="input-button" onclick="Logout()">ログアウト</button></div>
+
+<div class="wb"></div>
+<div class="wb"></div>
+<div class="wb"></div>
+
+
+
+</body>
+</html>
