@@ -43,6 +43,16 @@ namespace Charlotte
 			{
 				HtmlConverter hc = new HtmlConverter()
 				{
+					InputHtmlFile = @"src\Hatena.html",
+					OutputHtmlFile = @"out\Hatena.html",
+				};
+
+				hc.Perform();
+			}
+
+			{
+				HtmlConverter hc = new HtmlConverter()
+				{
 					InputHtmlFile = @"src2\GeTunnel.html",
 					OutputHtmlFile = @"out\GeTunnel.html",
 				};

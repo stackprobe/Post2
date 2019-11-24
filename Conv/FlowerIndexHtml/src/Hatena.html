@@ -1,0 +1,245 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script>
+
+console.log("花の画像に DESIGNALIKIE 様のフリーイラスト素材を使用しています。");
+console.log("Flower illustrations copyright DESIGNALIKIE https://illustimage.com/");
+
+var LoadImageRem = 0;
+
+window.onload = function() {
+	var mCanvas = document.getElementsByClassName("mCanvas")[0];
+	var wiw = -1;
+	var wih = -1;
+	var fwh = 250;
+	var stores = [];
+	var k = 300;
+	var rk = 0.0;
+	var xk = 0.0;
+	var yk = 0.0;
+
+	var imgs = [
+		"flowers/flower301-00.png", // @res
+		"flowers/flower301-10.png", // @res
+		"flowers/flower301-01.png", // @res
+		"flowers/flower301-11.png", // @res
+		"flowers/flower302-00.png", // @res
+		"flowers/flower302-10.png", // @res
+		"flowers/flower302-01.png", // @res
+		"flowers/flower302-11.png", // @res
+	];
+
+	for(var i = 0; i < imgs.length; i++) {
+		var image = new Image();
+
+		image.addEventListener("load", function() {
+			LoadImageRem--;
+		});
+
+		image.src = imgs[i];
+		imgs[i] = image;
+
+		LoadImageRem++;
+	}
+
+	for(var i = 0; i < 100; i++) {
+		var store = {};
+
+		store.r = Math.random() * 360.0;
+		store.x = (window.innerWidth  - fwh) / 2.0;
+		store.y = (window.innerHeight - fwh) / 2.0;
+		store.mxya = 4.0 + Math.random() * 4.0;
+		store.ra = (Math.random() - 0.5) * 4.0;
+		store.xa = (Math.random() - 0.5) * 2.0 * store.mxya;
+		store.ya = (Math.random() - 0.5) * 2.0 * store.mxya;
+		store.img = imgs[Math.floor(Math.random() * 8.0)];
+
+		stores.push(store);
+	}
+
+	SetAnimeLoop(function() {
+		if(1 <= LoadImageRem) {
+			return;
+		}
+
+		var twiw = window.innerWidth;
+		var twih = window.innerHeight;
+
+		if(twiw != wiw || twih != wih) {
+			wiw = twiw;
+			wih = twih;
+
+			mCanvas.width  = wiw;
+			mCanvas.height = wih;
+
+			mCanvas.style.left   = 0   + "px";
+			mCanvas.style.top    = 0   + "px";
+			mCanvas.style.width  = wiw + "px";
+			mCanvas.style.height = wih + "px";
+		}
+
+		var ctx = mCanvas.getContext("2d");
+
+		ctx.fillStyle = "#000";
+		ctx.fillRect(0, 0, wiw, wih);
+
+		var sl = -fwh;
+		var st = -fwh;
+		var sr = wiw;
+		var sb = wih;
+
+		for(var i = 0; i < stores.length; i++) {
+			var store = stores[i];
+
+			store.ra += (Math.random() - 0.5) * 0.15 + rk;
+			store.xa += (Math.random() - 0.5) * 0.15 + xk;
+			store.ya += (Math.random() - 0.5) * 0.15 + yk;
+
+			if(4.0 < Math.abs(store.ra)) {
+				store.ra *= 0.9;
+			}
+			if(store.mxya < Math.abs(store.xa)) {
+				store.xa *= 0.9;
+			}
+			if(store.mxya < Math.abs(store.ya)) {
+				store.ya *= 0.9;
+			}
+
+			store.r += store.ra;
+			store.x += store.xa;
+			store.y += store.ya;
+
+			if(store.x < sl) {
+				store.x = sr;
+			}
+			else if(sr < store.x) {
+				store.x = sl;
+			}
+
+			if(store.y < st) {
+				store.y = sb;
+			}
+			else if(sb < store.y) {
+				store.y = st;
+			}
+
+			if(store.R < 0.0) {
+				store.R += 360.0;
+			}
+			else if(360.0 < store.R) {
+				store.R -= 360.0;
+			}
+
+			ctx.save();
+			ctx.translate(store.x + fwh / 2.0, store.y + fwh / 2.0);
+			ctx.rotate(store.r * Math.PI / 180.0);
+			ctx.drawImage(store.img, -fwh / 2.0, -fwh / 2.0);
+			ctx.restore();
+
+			store.img.style.transform = "rotate(" + store.r + "deg)";
+			store.img.style.left = Math.round(store.x) + "px";
+			store.img.style.top  = Math.round(store.y) + "px";
+		}
+
+		if(1 <= k) {
+			k--;
+		}
+		else {
+			k = 300;
+			rk = Math.random() < 0.1 ? 0.0 : (Math.random() - 0.5) * 0.04;
+			xk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.04;
+			yk = Math.random() < 0.5 ? 0.0 : (Math.random() - 0.5) * 0.04;
+		}
+	});
+
+	document.body.onclick = function(event) {
+		var x = event.pageX;
+		var y = event.pageY;
+
+		for(var i = 0; i < stores.length; i++) {
+			var store = stores[i];
+
+			var ix = store.x + fwh / 2.0;
+			var iy = store.y + fwh / 2.0;
+
+			var dx = ix - x;
+			var dy = iy - y;
+
+			var d = Math.sqrt(dx * dx + dy * dy);
+			var r = 0.0;
+
+			if(d < 1.0) {
+				// noop
+			}
+			else if(d < 100.0) {
+				r = 11.0;
+			}
+			else if(d < 200.0) {
+				r = 9.0;
+			}
+			else if(d < 300.0) {
+				r = 7.0;
+			}
+			else if(d < 400.0) {
+				r = 5.0;
+			}
+			else if(d < 500.0) {
+				r = 3.0;
+			}
+
+			dx /= d;
+			dy /= d;
+
+			dx *= r;
+			dy *= r;
+
+			store.xa += dx;
+			store.ya += dy;
+		}
+	};
+}
+
+var AnimeFrame;
+var AnimeTime = 0;
+
+function SetAnimeLoop(f) {
+	AnimeFrame = f;
+	setTimeout(function() { AnimeLoop(); }, 0);
+}
+
+function AnimeLoop() {
+	var currTime = new Date().getTime();
+
+	AnimeTime = Math.max(AnimeTime, currTime - 100);
+	AnimeTime = Math.min(AnimeTime, currTime + 100);
+
+	if(AnimeTime < currTime) {
+		AnimeFrame();
+		AnimeTime += 16; // target to 60 hz
+	}
+	requestAnimationFrame(AnimeLoop);
+}
+
+</script>
+<style>
+
+body {
+	background-color: #000;
+	margin: 0px;
+	cursor: pointer;
+	user-select: none;
+	touch-callout: none;
+}
+
+.mCanvas {
+	position: fixed;
+}
+
+</style>
+</head>
+<body>
+<canvas class="mCanvas">
+</canvas>
+</body>
+</html>
