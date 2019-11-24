@@ -50,6 +50,8 @@ namespace Charlotte
 				hc.Perform();
 			}
 
+			HtmlToDataUrl(@"out\Hatena.html", @"out\Hatena.html.data-url.txt");
+
 			{
 				HtmlConverter hc = new HtmlConverter()
 				{
@@ -59,6 +61,11 @@ namespace Charlotte
 
 				hc.Perform();
 			}
+		}
+
+		private void HtmlToDataUrl(string rFile, string wFile)
+		{
+			File.WriteAllText(wFile, "data:text/html;base64," + new Base64Unit().Encode(File.ReadAllBytes(rFile)), Encoding.ASCII);
 		}
 	}
 }
