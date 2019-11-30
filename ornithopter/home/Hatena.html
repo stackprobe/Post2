@@ -59,7 +59,7 @@ window.onload = function() {
 	}
 
 	SetAnimeLoop(function() {
-		if(1 <= LoadImageRem) {
+		if(0 < LoadImageRem) {
 			return;
 		}
 
@@ -132,14 +132,11 @@ window.onload = function() {
 			}
 
 			ctx.save();
+			ctx.globalAlpha = 0.8;
 			ctx.translate(store.x + fwh / 2.0, store.y + fwh / 2.0);
 			ctx.rotate(store.r * Math.PI / 180.0);
 			ctx.drawImage(store.img, -fwh / 2.0, -fwh / 2.0);
 			ctx.restore();
-
-			store.img.style.transform = "rotate(" + store.r + "deg)";
-			store.img.style.left = Math.round(store.x) + "px";
-			store.img.style.top  = Math.round(store.y) + "px";
 		}
 
 		if(1 <= k) {
