@@ -541,6 +541,7 @@ namespace Charlotte.Services.Salad.Uploader
 			}
 		}
 
+#if false // del @ 2020.4.1
 		public void DiskYellow()
 		{
 			// memo: HTT を Bind した上で実行する必要がある。
@@ -551,5 +552,6 @@ namespace Charlotte.Services.Salad.Uploader
 			}
 			.Perform();
 		}
+#endif
 	}
 }

@@ -22,11 +22,6 @@ namespace Charlotte.Services.SaveLoad
 
 				return key;
 			}
-
-			public void DiskYellow()
-			{
-				Ground.InitDataDir();
-			}
 		}
 
 		public class Load : IService
@@ -48,11 +43,6 @@ namespace Charlotte.Services.SaveLoad
 				object ret = JsonTools.Decode(File.ReadAllBytes(file));
 				FileTools.Delete(file);
 				return ret;
-			}
-
-			public void DiskYellow()
-			{
-				Ground.InitDataDir();
 			}
 		}
 	}

@@ -23,10 +23,5 @@ namespace Charlotte.Services.Index
 			}
 			throw new Exception("不明なコマンド");
 		}
-
-		public void DiskYellow()
-		{
-			// noop
-		}
 	}
 }

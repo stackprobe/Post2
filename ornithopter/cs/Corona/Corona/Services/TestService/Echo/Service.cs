@@ -11,10 +11,5 @@ namespace Charlotte.Services.TestService.Echo
 		{
 			return prm;
 		}
-
-		public void DiskYellow()
-		{
-			// noop
-		}
 	}
 }

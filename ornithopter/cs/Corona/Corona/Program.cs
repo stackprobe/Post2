@@ -37,11 +37,15 @@ namespace Charlotte
 			}
 			if (ar.ArgIs("/DISK-YELLOW"))
 			{
+#if true
+				throw new Exception("廃止");
+#else // del @ 2020.4.1
 				foreach (IService service in new ServiceDistributor().GetAllService())
 				{
 					service.DiskYellow();
 				}
 				return;
+#endif
 			}
 			if (ar.HasArgs())
 				throw new Exception("不明なコマンド引数");

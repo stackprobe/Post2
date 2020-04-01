@@ -9,7 +9,7 @@ namespace Charlotte.Services.Salad.Uploader
 {
 	public class Slimdown
 	{
-		public bool DiskYellowFlag = false;
+		//public bool DiskYellowFlag = false; // del @ 2020.4.1
 
 		// <---- prm
 
@@ -32,7 +32,8 @@ namespace Charlotte.Services.Salad.Uploader
 
 		public void Perform()
 		{
-			Console.WriteLine("Slimdown_Start, DY: " + this.DiskYellowFlag);
+			Console.WriteLine("Slimdown_Start");
+			//Console.WriteLine("Slimdown_Start, DY: " + this.DiskYellowFlag); // del @ 2020.4.1
 
 			long currDateTime = DateTimeToSec.Now.GetDateTime();
 
@@ -93,6 +94,7 @@ namespace Charlotte.Services.Salad.Uploader
 				FileTools.Delete(upFile.FilePath);
 				this.TotalSize -= upFile.Size;
 			}
+#if false // del @ 2020.4.1
 			if (this.DiskYellowFlag)
 			{
 				int count = this.UploadedFiles.Count;
@@ -113,6 +115,7 @@ namespace Charlotte.Services.Salad.Uploader
 					upFile.Delete();
 				}
 			}
+#endif
 			Console.WriteLine("Slimdown_End");
 		}
 	}

@@ -8,6 +8,6 @@ namespace Charlotte
 	public interface IService
 	{
 		object Perform(object prm);
-		void DiskYellow();
+		//void DiskYellow(); // del @ 2020.4.1
 	}
 }
