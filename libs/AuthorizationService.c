@@ -1,5 +1,5 @@
 /*
-	Password.txt
+	Password_%ComputerName%.txt
 
 		実行ファイルと同じ場所に置くこと。
 
