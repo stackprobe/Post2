@@ -13,7 +13,7 @@ namespace Charlotte
 		{
 			string firstLine;
 
-			using (StreamReader reader = new StreamReader(BeforeDLIntervent.RECV_FILE, Encoding.ASCII))
+			using (StreamReader reader = new StreamReader(BeforeDLIntervent.ACT_RECV_FILE, Encoding.ASCII))
 			{
 				firstLine = reader.ReadLine();
 			}

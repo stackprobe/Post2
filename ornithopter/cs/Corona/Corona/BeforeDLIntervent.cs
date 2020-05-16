@@ -9,7 +9,7 @@ namespace Charlotte
 {
 	public static class BeforeDLIntervent
 	{
-		public const string RECV_FILE = "Recv.httdat";
+		public const string ACT_RECV_FILE = "ActRecv.dat";
 		public const string TARGET_FILE = "Target.httgetdat";
 		public const string TARGET_CONTENT_TYPE_FILE = "TargetContentType.httgetdat";
 
