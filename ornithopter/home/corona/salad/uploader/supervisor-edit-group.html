@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -19,6 +21,8 @@ function Main2() {
 	Rose_Get("group-access-key").value                = P.Group.AccessKey;
 	Rose_Get("group-name").value                      = P.Group.Name;
 	Rose_Get("group-group-total-file-size-max").value = P.Group.GroupTotalFileSizeMax;
+
+	PageLoaded();
 }
 
 function Ok() {

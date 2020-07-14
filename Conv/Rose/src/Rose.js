@@ -286,3 +286,11 @@ window.onload = function() {
 function @@_Get(id) {
 	return document.getElementById(id);
 }
+
+function @@_Append(parentTag, tag) {
+	parentTag.appendChild(tag);
+}
+
+function @@_Remove(tag) {
+	tag.parentNode.removeChild(tag);
+}

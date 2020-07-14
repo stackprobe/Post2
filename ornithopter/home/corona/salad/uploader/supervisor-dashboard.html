@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -37,6 +39,8 @@ function Main2() {
 				GroupTotalFileSizeMax : group[3],
 			});
 		}
+
+		PageLoaded();
 	});
 }
 

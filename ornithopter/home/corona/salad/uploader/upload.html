@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -15,7 +17,7 @@ function Main() {
 }
 
 function Main2() {
-	// noop
+	PageLoaded();
 }
 
 function UploadFileChanged() {

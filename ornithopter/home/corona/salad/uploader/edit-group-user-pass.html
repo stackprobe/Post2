@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -32,6 +34,8 @@ function Main2() {
 
 	Rose_Get("user").value = user;
 	Rose_Get("pass").value = pass;
+
+	PageLoaded();
 }
 
 function Ok() {

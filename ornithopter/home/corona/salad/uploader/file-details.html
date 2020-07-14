@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	// PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -29,6 +31,8 @@ function Main2() {
 	Rose_Request("salad/uploader&c=get-download-link", [ P.SessionKey, P.File.LocalFile ], "(エラー：ダウンロード・リンクの取得に失敗しました)", function(ret) {
 		Rose_Get("download-link").innerText = ret;
 	});
+
+	// PageLoaded();
 }
 
 function RenameFile() {

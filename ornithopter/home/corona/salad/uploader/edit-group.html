@@ -8,6 +8,8 @@
 var P;
 
 function Main() {
+	PageLoading();
+
 	Forwarded(function(prm) {
 		P = prm;
 		Main2();
@@ -21,12 +23,16 @@ function Main2() {
 		Rose_Get("group-name").value       = P.EditGroup_TSD.Name;
 
 		P.EditGroup_TSD = null;
+
+		PageLoaded();
 	}
 	else {
 		Rose_Request("salad/uploader&c=get-group", [ P.SessionKey, null ], [ "(エラー：取得出来ません)", "(エラー：取得出来ません)", "(エラー：取得出来ません)" ], function(ret) {
 			Rose_Get("group-local-dir").value  = ret[0];
 			Rose_Get("group-access-key").value = ret[1];
 			Rose_Get("group-name").value       = ret[2];
+
+			PageLoaded();
 		});
 	}
 }
