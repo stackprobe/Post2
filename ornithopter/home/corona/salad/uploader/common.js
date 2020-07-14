@@ -33,17 +33,18 @@ function PageLoading() {
 	var p = document.createElement("div");
 
 	p.style.position = "fixed";
-	p.style.top = "30%";
-	p.style.left = "10%";
-	p.style.width = "80%";
-	p.style.height = "40%";
+	p.style.top = "calc(50% - 64px)";
+	p.style.left = "0px";
+	p.style.width = "100%";
+	p.style.height = "128px";
 	p.style.backgroundColor = "#ffffff";
 	p.style.opacity = "1.0";
 	p.style.zIndex = "2";
 
-	p.style.font = "normal xx-large 'メイリオ'";
+	b.style.padding = "0px"; // HACK: common.css
+	p.style.padding = "0px"; // HACK: common.css
 
-	p.innerText = "ページの読み込み中...";
+	p.innerHTML = "<div style='padding: 0px; text-align: center'><img src='flat-preloaders/Preloader_2.gif'/></div>";
 
 	Rose_Append(document.body, b);
 	Rose_Append(document.body, p);
