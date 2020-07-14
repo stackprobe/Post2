@@ -238,7 +238,9 @@ function EditGroup() {
 	Rose_Forward("edit-group.html", P);
 }
 
-function Logout() {
+function Logout_ByBtn() {
+	PageLoading();
+
 	window.location.href = "index.html";
 }
 
@@ -303,7 +305,7 @@ function Logout() {
 
 <div class="wb"></div>
 
-<div class="input"><button class="input-button" onclick="Logout()">ログアウト</button></div>
+<div class="input"><button class="input-button" onclick="Logout_ByBtn()">ログアウト</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

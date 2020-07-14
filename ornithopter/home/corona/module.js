@@ -297,6 +297,21 @@ function Rose_Remove(tag) {
 	tag.parentNode.removeChild(tag);
 }
 
+function Rose_Delay_New(count, reaction) {
+	return {
+		Count    : count,
+		Reaction : reaction,
+	};
+}
+
+function Rose_Delay_Kick(m) {
+	m.Count--;
+
+	if(m.Count == 0) {
+		m.Reaction();
+	}
+}
+
 var Rose_Resize_Events = [];
 
 function Rose_Resize_Add(f) {
