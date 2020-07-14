@@ -39,6 +39,8 @@ function Main2() {
 }
 
 function Ok() {
+	PageLoading();
+
 	var user = Rose_Get("user").value;
 	var pass = Rose_Get("pass").value;
 
@@ -50,6 +52,8 @@ function Ok() {
 }
 
 function Cancel() {
+	PageLoading();
+
 	Rose_Forward("edit-group.html", P);
 }
 

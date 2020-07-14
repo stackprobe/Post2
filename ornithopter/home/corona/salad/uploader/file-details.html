@@ -36,13 +36,19 @@ function Main2() {
 }
 
 function RenameFile() {
+	PageLoading();
+
 	Rose_Forward("rename-file.html", P);
 }
 
 function DeleteFile() {
+	PageLoading();
+
 	Rose_Request("salad/uploader&c=delete-file", [ P.SessionKey, P.File.LocalFile ], null, function(ret) {
 		if(ret == null) {
 			alert("ファイルの削除に失敗しました。");
+
+			PageLoaded();
 		}
 		else {
 			Rose_Forward("dashboard.html", P);
@@ -51,6 +57,8 @@ function DeleteFile() {
 }
 
 function Back() {
+	PageLoading();
+
 	Rose_Forward("dashboard.html", P);
 }
 

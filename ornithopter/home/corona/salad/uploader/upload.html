@@ -42,6 +42,12 @@ function UploadFileChanged() {
 	Rose_Get("upload-file-name").value = file;
 }
 
+function Back_ByBtn() {
+	PageLoading();
+
+	Back();
+}
+
 function Back() {
 	Rose_Forward("dashboard.html", P);
 }
@@ -318,7 +324,7 @@ function IsFirefox() {
 <div class="wb"></div>
 <div class="wb"></div>
 
-<div class="input"><button class="input-button" onclick="Back()">–ß‚é</button></div>
+<div class="input"><button class="input-button" onclick="Back_ByBtn()">–ß‚é</button></div>
 
 <div class="wb"></div>
 <div class="wb"></div>

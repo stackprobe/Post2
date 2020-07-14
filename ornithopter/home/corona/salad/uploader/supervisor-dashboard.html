@@ -93,12 +93,16 @@ function AddGroup(group) {
 }
 
 function EditGroup(group) {
+	PageLoading();
+
 	P.Group = group;
 
 	Rose_Forward("supervisor-edit-group.html", P);
 }
 
 function CreateGroup() {
+	PageLoading();
+
 	var prm = {
 		Name                  : Rose_Get("group-name").value,
 		GroupTotalFileSizeMax : Rose_Get("group-total-file-size-max").value,
@@ -107,6 +111,8 @@ function CreateGroup() {
 	Rose_Request("salad/uploader&c=supervisor-create-group", [ P.SessionKey, prm ], null, function(ret) {
 		if(ret == null) {
 			alert("グループの作成に失敗しました。");
+
+			PageLoaded();
 		}
 		else {
 			Rose_Forward("supervisor-dashboard.html", P); // reload

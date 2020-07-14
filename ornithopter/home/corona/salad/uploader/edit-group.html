@@ -42,6 +42,8 @@ function Logout() {
 }
 
 function Ok() {
+	PageLoading();
+
 	var prm = {
 		LocalDir  : Rose_Get("group-local-dir").value,
 		AccessKey : Rose_Get("group-access-key").value,
@@ -54,11 +56,15 @@ function Ok() {
 		}
 		else {
 			alert("グループの編集に失敗しました。\n原因 = " + ret[1]);
+
+			PageLoaded();
 		}
 	});
 }
 
 function Cancel() {
+	PageLoading();
+
 	Rose_Forward("dashboard.html", P);
 }
 
@@ -71,6 +77,8 @@ function TemporarySave() {
 }
 
 function EditUserPass() {
+	PageLoading();
+
 	TemporarySave();
 
 	Rose_Forward("edit-group-user-pass.html", P);

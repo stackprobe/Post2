@@ -6,12 +6,16 @@
 <script>
 
 function Main() {
+	PageLoading();
+
 	// noop
+
+	PageLoaded();
 }
 
 function LoginUserPass() {
-	var user = document.getElementById("user").value;
-	var pass = document.getElementById("pass").value;
+	var user = Rose_Get("user").value;
+	var pass = Rose_Get("pass").value;
 
 	var accessKey = user + ":" + pass;
 
@@ -19,18 +23,22 @@ function LoginUserPass() {
 }
 
 function LoginAccessKey() {
-	var accessKey = document.getElementById("access-key").value;
+	var accessKey = Rose_Get("access-key").value;
 
 	Login(accessKey);
 }
 
 function Login(accessKey) {
-	Rose_Request("salad/uploader&c=login", [ accessKey ], [ "" ], function(ret) {
+	PageLoading();
+
+	Rose_Request("salad/uploader&c=login", [ accessKey ], [ "", false ], function(ret) {
 		var sessionKey = ret[0];
 		var supervisorMode = ret[1];
 
 		if(sessionKey == "") {
 			alert("ログイン出来ません。");
+
+			PageLoaded();
 		}
 		else {
 			Rose_Forward((supervisorMode ? "supervisor-" : "") + "dashboard.html", {

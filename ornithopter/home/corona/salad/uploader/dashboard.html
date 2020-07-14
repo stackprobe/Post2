@@ -183,15 +183,21 @@ function SetFloatEnd(tag) {
 }
 
 function ShowFileDetails(file) {
+	PageLoading();
+
 	P.File = file;
 
 	Rose_Forward("file-details.html", P);
 }
 
 function OpenFile(file) {
+	//PageLoading(); // 別ウィンドウのため
+
 	Rose_Request("salad/uploader&c=get-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
 		if(ret == null) {
 			alert("リンクの取得に失敗しました。");
+
+			//PageLoaded();
 		}
 		else {
 			window.open(ret);
@@ -200,9 +206,13 @@ function OpenFile(file) {
 }
 
 function DownloadFile(file) {
+	//PageLoading(); // 別ウィンドウのため
+
 	Rose_Request("salad/uploader&c=get-download-link", [ P.SessionKey, file.LocalFile ], null, function(ret) {
 		if(ret == null) {
 			alert("ダウンロード・リンクの取得に失敗しました。");
+
+			//PageLoaded();
 		}
 		else {
 			window.open(ret);
@@ -211,14 +221,20 @@ function DownloadFile(file) {
 }
 
 function Upload() {
+	PageLoading();
+
 	Rose_Forward("upload.html", P);
 }
 
 function Reload() {
+	PageLoading();
+
 	Rose_Forward("dashboard.html", P); // reload
 }
 
 function EditGroup() {
+	PageLoading();
+
 	Rose_Forward("edit-group.html", P);
 }
 
