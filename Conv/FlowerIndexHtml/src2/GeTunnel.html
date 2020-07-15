@@ -6,6 +6,11 @@
 // @encodeBgn
 
 window.onload = function() {
+	if(IsBarNatsutobi()) {
+		BNT_Main();
+		return;
+	}
+
 	SetScenario([
 		0,   function() { AddWall(20, 95, 2000, 10); },
 		100, function() { AddWall(15, 90, 2500,  8); },
@@ -62,7 +67,7 @@ window.onload = function() {
 
 		document.body.appendChild(tag);
 	}
-}
+};
 
 var BoxTableLayout = [
 	"### ###   #   ### ### ### # # ###",
@@ -429,20 +434,175 @@ function IsFirefox() {
 	return ua.indexOf("firefox") != -1;
 }
 
+// BNT --->
+
+var BNT_W = 600;
+var BNT_H = 600;
+
+var BNT_Image;
+var BNT_Canvas;
+
+function BNT_Main() {
+	BNT_Image = new Image();
+	BNT_Image.src = "res/irasutoya/beer_cup_bin.png"; // @res
+	BNT_Image.onload = function() {
+		BNT_Main2();
+	};
+}
+
+function BNT_Main2() {
+	BNT_Canvas = document.createElement("canvas");
+
+	BNT_Canvas.style.position = "fixed";
+
+	BNT_Canvas.width  = BNT_W;
+	BNT_Canvas.height = BNT_H;
+
+	document.body.appendChild(BNT_Canvas);
+
+	BNT_Resized();
+
+	window.onresize = function() {
+		clearTimeout(BNT_ResizedTimeoutId);
+		BNT_ResizedTimeoutId = setTimeout(BNT_Resized, 50);
+	};
+
+	BNT_Anime();
+}
+
+var BNT_Time = 0;
+var BNT_Frame = 0;
+
+function BNT_Anime() {
+	var currTime = new Date().getTime();
+
+	BNT_Time = Math.max(BNT_Time, currTime - 100);
+	BNT_Time = Math.min(BNT_Time, currTime + 100);
+
+	if(BNT_Time < currTime) {
+		BNT_Loop();
+		BNT_Time += 16;
+		BNT_Frame++;
+	}
+	requestAnimationFrame(BNT_Anime);
+}
+
+var BNT_ResizedTimeoutId = 0;
+
+function BNT_Resized() {
+	var sw = window.innerWidth;
+	var sh = window.innerHeight;
+
+	var w = sw;
+	var h = Math.round((BNT_H * sw) / BNT_W);
+
+	if(sh < h) {
+		h = sh;
+		w = Math.round((BNT_W * sh) / BNT_H);
+	}
+	var l = Math.round((sw - w) / 2);
+	var t = Math.round((sh - h) / 2);
+
+	BNT_Canvas.style.left   = l + "px";
+	BNT_Canvas.style.top    = t + "px";
+	BNT_Canvas.style.width  = w + "px";
+	BNT_Canvas.style.height = h + "px";
+}
+
+function BNT_Loop() {
+	var ctx = BNT_Canvas.getContext("2d");
+
+	ctx.clearRect(0, 0, BNT_W, BNT_H) ;
+
+	var x = 300;
+	var y = 300;
+	var a = 1.0;
+	var r = 0.0;
+	var z = 1.0;
+
+	{
+		var frmBgn = 0;
+		var frmEnd = 60;
+
+		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+			var frm = BNT_Frame - frmBgn;
+			var end = frmEnd - frmBgn;
+
+			a = frm / end;
+		}
+	}
+
+	{
+		var frmBgn = 80;
+		var frmEnd = 100;
+
+		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+			var frm = BNT_Frame - frmBgn;
+			var end = frmEnd - frmBgn;
+			var rate = frm / end;
+			var iRate = 1.0 - rate;
+
+			r = iRate * 0.1 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
+		}
+	}
+
+	if(BNT_Frame == 120) {
+		Forward();
+	}
+
+	BNT_Draw(ctx, BNT_Image, x, y, a, r, z);
+}
+
+function BNT_Draw(ctx, image, x, y, a, r, z) {
+	var w = image.naturalWidth;
+	var h = image.naturalHeight;
+
+	w *= z;
+	h *= z;
+
+	var l = x - w / 2;
+	var t = y - h / 2;
+
+	ctx.globalAlpha = a;
+
+	ctx.translate(x, y);
+	ctx.rotate(r);
+	ctx.translate(-x, -y);
+
+	ctx.drawImage(BNT_Image, l, t, w, h);
+
+	// restore
+	ctx.translate(x, y);
+	ctx.rotate(-r);
+	ctx.translate(-x, -y);
+
+	ctx.globalAlpha = 1.0; // restore
+}
+
+// <--- BNT
+
 // @encodeEnd
+
+function IsBarNatsutobi() {
+	//return false; // test // @erase
+	return true; // test // @erase
+/* // @erase
+	return "$(DOMAIN)" == "barnatsutobi.dip.jp";
+*/ // @erase
+}
 
 function Forward() {
 	if(IsFirefox()) {
 		alert("FORWARD-FF"); // @erase
 /* // @erase
 		document.location.replace("http://$(DOMAIN):58946/$(PATH)");
-//*/ // @erase
+*/ // @erase
 	}
 	else {
 		alert("FORWARD"); // @erase
 /* // @erase
 		document.location.href = "http://$(DOMAIN):58946/$(PATH)";
-//*/ // @erase
+*/ // @erase
 	}
 }
 
