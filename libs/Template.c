@@ -1,4 +1,6 @@
 /*
+	external:
+
 	char *ProcTemplateVar(char *var);
 
 		var

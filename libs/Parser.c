@@ -1,9 +1,11 @@
 /*
-	Keys, Values, BinKeys ... 表示可能
+	Keys, Values, BinKeys ... 表示可能な文字列である。
 
-		Keys    ... line2JToken(, 1, 1)
-		Values  ... line2JLine(, 1, 1, 1, 1)
-		BinKeys ... line2JToken(, 1, 1)
+	文字列    保証される正規化
+	-----------------------------
+	Keys      line2JToken(, 1, 1)
+	Values    line2JLine(, 1, 1, 1, 1)
+	BinKeys   line2JToken(, 1, 1)
 */
 
 #include "Parser.h"
