@@ -5,11 +5,11 @@ var @@_H = 1080;
 
 // ----
 
-var @@_GameLoop;
+var @@_GameIte;
 var @@_Canvas;
 
-function @@_Main(gameLoop) {
-	@@_GameLoop = gameLoop;
+function @@_Main(gameMain) {
+	@@_GameIte = gameMain();
 
 	@@_Canvas = document.createElement("canvas");
 	@@_Canvas.style.position = "fixed";
@@ -18,30 +18,14 @@ function @@_Main(gameLoop) {
 
 	document.body.appendChild(@@_Canvas);
 
-	window.onresize = function() {
+	Rose_Resize_Add(function() {
 		clearTimeout(@@_ResizedTimeoutId);
-		@@_ResizedTimeoutId = setTimeout(@@_Resized, 50);
-	};
+		@@_ResizedTimeoutId = setTimeout(@@_Resized, 100);
+	});
 
 	@@_Resized();
+	@@_PostEachFrame();
 	@@_Anime();
-}
-
-var @@_Time = 0;
-var @@_Frame = 0;
-
-function @@_Anime() {
-	var currTime = new Date().getTime();
-
-	@@_Time = Math.max(@@_Time, currTime - 100);
-	@@_Time = Math.min(@@_Time, currTime + 100);
-
-	if(@@_Time < currTime) {
-		@@_Loop();
-		@@_Time += 16;
-		@@_Frame++;
-	}
-	requestAnimationFrame(@@_Anime);
 }
 
 var @@_ResizedTimeoutId = 0;
@@ -66,14 +50,35 @@ function @@_Resized() {
 	@@_Canvas.style.height = h + "px";
 }
 
+var @@_Time = 0;
+var @@_Frame = 0;
+
+function @@_Anime() {
+	var currTime = new Date().getTime();
+
+	@@_Time = Math.max(@@_Time, currTime - 100);
+	@@_Time = Math.min(@@_Time, currTime + 100);
+
+	if(@@_Time < currTime) {
+		@@_GameIte.next();
+		@@_Time += 16;
+		@@_Frame++;
+	}
+	requestAnimationFrame(@@_Anime);
+}
+
 var @@_Ctx;
 
-function @@_Loop() {
+function @@_EachFrame() {
+	// none
+
+	// ----
+
+	@@_PostEachFrame();
+}
+
+function @@_PostEachFrame() {
 	@@_Ctx = @@_Canvas.getContext("2d");
-
-	@@_GameLoop();
-
-	@@_Ctx = null;
 }
 
 function @@_Clear() {

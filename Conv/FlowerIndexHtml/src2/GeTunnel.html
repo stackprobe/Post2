@@ -444,11 +444,10 @@ var BNT_Canvas;
 
 function BNT_Main() {
 	BNT_Image = new Image();
+	BNT_Image.src = "res/irasutoya/beer_cup_bin.png"; // @res
 	BNT_Image.onload = function() {
 		BNT_Main2();
 	};
-
-	BNT_Image.src = "res/irasutoya/beer_cup_bin.png"; // @res
 }
 
 function BNT_Main2() {
@@ -463,28 +462,11 @@ function BNT_Main2() {
 
 	window.onresize = function() {
 		clearTimeout(BNT_ResizedTimeoutId);
-		BNT_ResizedTimeoutId = setTimeout(BNT_Resized, 50);
+		BNT_ResizedTimeoutId = setTimeout(BNT_Resized, 100);
 	};
 
 	BNT_Resized();
 	BNT_Anime();
-}
-
-var BNT_Time = 0;
-var BNT_Frame = 0;
-
-function BNT_Anime() {
-	var currTime = new Date().getTime();
-
-	BNT_Time = Math.max(BNT_Time, currTime - 100);
-	BNT_Time = Math.min(BNT_Time, currTime + 100);
-
-	if(BNT_Time < currTime) {
-		BNT_Loop();
-		BNT_Time += 16;
-		BNT_Frame++;
-	}
-	requestAnimationFrame(BNT_Anime);
 }
 
 var BNT_ResizedTimeoutId = 0;
@@ -509,6 +491,23 @@ function BNT_Resized() {
 	BNT_Canvas.style.height = h + "px";
 }
 
+var BNT_Time = 0;
+var BNT_Frame = 0;
+
+function BNT_Anime() {
+	var currTime = new Date().getTime();
+
+	BNT_Time = Math.max(BNT_Time, currTime - 100);
+	BNT_Time = Math.min(BNT_Time, currTime + 100);
+
+	if(BNT_Time < currTime) {
+		BNT_Loop();
+		BNT_Time += 16;
+		BNT_Frame++;
+	}
+	requestAnimationFrame(BNT_Anime);
+}
+
 function BNT_Loop() {
 	var ctx = BNT_Canvas.getContext("2d");
 
@@ -522,7 +521,7 @@ function BNT_Loop() {
 
 	{
 		var frmBgn = 0;
-		var frmEnd = 60;
+		var frmEnd = 40;
 
 		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
 			var frm = BNT_Frame - frmBgn;
@@ -533,8 +532,8 @@ function BNT_Loop() {
 	}
 
 	{
-		var frmBgn = 80;
-		var frmEnd = 100;
+		var frmBgn = 50;
+		var frmEnd = 80;
 
 		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
 			var frm = BNT_Frame - frmBgn;
@@ -542,11 +541,11 @@ function BNT_Loop() {
 			var rate = frm / end;
 			var iRate = 1.0 - rate;
 
-			r = iRate * 0.1 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
+			r = iRate * 0.15 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
 		}
 	}
 
-	if(BNT_Frame == 120) {
+	if(BNT_Frame == 90) {
 		Forward();
 	}
 

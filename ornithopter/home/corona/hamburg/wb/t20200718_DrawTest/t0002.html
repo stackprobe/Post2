@@ -7,11 +7,9 @@
 var Logo;
 
 function Main() {
-	Logo = new Image();
-	Logo.src = "res/web-logo.png";
-	Logo.onload = function() {
-		Main2();
-	};
+	Logo = DD_LoadRes_Image("res/web-logo.png");
+
+	Rose_Visitor_Wait(Main2);
 }
 
 function Main2() {
