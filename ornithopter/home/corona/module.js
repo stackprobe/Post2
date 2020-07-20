@@ -437,6 +437,9 @@ function DD_LoadRes_Audio(url) {
 	var audio = new Audio(url);
 
 	audio.load();
+	audio.addEventListener("canplaythrough", Rose_Visitor_Leave);
+
+	Rose_Visitor_Enter();
 
 	return audio;
 }
