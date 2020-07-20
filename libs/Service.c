@@ -1,13 +1,15 @@
 /*
-	Req ... Body を除いて表示可能文字列である！
+	Req ... Body とフラグ・整数 () を除いて表示可能文字列である。
 
-		IP           ... xcout("%u.%u.%u.%u", ...)
-		Method       ... toAsciiLine(, 0, 0, 0)
-		Path         ... toAsciiLine(, 0, 0, 0)
-		HTTP_Version ... toAsciiLine(, 0, 0, 0)
-		HeaderKeys   ... ucTrimEdge(toAsciiLine(, 0, 1, 1))
-		HeaderValues ... ucTrimEdge(toAsciiLine(, 0, 1, 1)) ★フォルディングされた行は ' ' で連結する。場合によって前後が ' ' になる。
-		Type         ... ucTrimEdge(toAsciiLine(, 0, 1, 1))
+	Req 内の文字列   保証される正規化
+	------------------------------------------
+	IP               xcout("%u.%u.%u.%u", ...)
+	Method           toAsciiLine(, 0, 0, 0)
+	Path             toAsciiLine(, 0, 0, 0)
+	HTTP_Version     toAsciiLine(, 0, 0, 0)
+	HeaderKeys       ucTrimEdge(toAsciiLine(, 0, 1, 1))
+	HeaderValues     ucTrimEdge(toAsciiLine(, 0, 1, 1)) ★フォルディングされた行は ' ' で連結する。
+	Type             ucTrimEdge(toAsciiLine(, 0, 1, 1))
 */
 
 #include "Service.h"

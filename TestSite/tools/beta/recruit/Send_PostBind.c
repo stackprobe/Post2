@@ -14,9 +14,9 @@ static void DoSend(char *host, char *ident, char *mailaddress)
 
 	GS_Clear();
 	GS_AddTo(mailaddress);
-	GS_SetUser("recruit006639@gmail.com");
-	GS_SetFrom("recruit006639@gmail.com");
-	GS_SetPassword("lMG8QYoWYiz7i67NfF8hgX");
+	GS_SetUser("user0001@gmail.com");
+	GS_SetFrom("user0001@gmail.com");
+	GS_SetPassword("9999");
 	GS_SetSubject("これはテストメールです");
 	GS_SetBody_x(xcout(
 		"これはテストメールです。\n"

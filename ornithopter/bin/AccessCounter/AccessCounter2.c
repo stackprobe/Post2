@@ -1,5 +1,5 @@
 /*
-	１時間以内の重複アクセスはカウントしない。
+	一定時間内の同じIPからのアクセスはカウントしない。
 */
 
 #include "C:\Dev\Main\Post2\libs\Service.h"

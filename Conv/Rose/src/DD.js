@@ -1,5 +1,9 @@
+// ---- @@_Main ŒÄ‚Ño‚µ‘O‚É•ÏX‰Â
+
 var @@_W = 1920;
 var @@_H = 1080;
+
+// ----
 
 var @@_GameLoop;
 var @@_Canvas;

@@ -34,6 +34,7 @@ void Post2_Main(void)
 
 		releaseDim(lines, 1);
 	}
+
 	// “¯‚¶IP‚©‚ç‘å—Ê‚Ì“o˜^‚ğŒŸoE‘j~
 	{
 		char *mafile = combine_cx("C:\\temp\\data\\Post2\\recruit\\ip", xcout("[%s].txt", Req.IP));
@@ -45,6 +46,7 @@ void Post2_Main(void)
 
 		memFree(mafile);
 	}
+
 	// “o˜^”ãŒÀƒ`ƒFƒbƒN
 	{
 		uint count =

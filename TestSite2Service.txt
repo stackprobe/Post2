@@ -1,3 +1,0 @@
-GET  "<BASE>..\HTT\Get\Release\Get.exe" /P "<BASE>ornithopter\inside\Corona\BeforeDL.bat"    "<BASE>TestSite2DocRoot.txt"
-HEAD "<BASE>..\HTT\Get\Release\Get.exe" /P "<BASE>ornithopter\inside\Corona\BeforeDL.bat" /H "<BASE>TestSite2DocRoot.txt"
-POST "<BASE>Post2\Post2.exe" "<BASE>ornithopter\bin" 2000000

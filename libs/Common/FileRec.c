@@ -5,7 +5,10 @@ char *LoadFileRec_Def(char *file, char *defval)
 	char *ret;
 
 //	errorCase(m_isEmpty(file));
-	errorCase(!startsWithICase(file, "C:\\appdata\\"));
+	errorCase(
+		!startsWithICase(file, "C:\\appdata\\") &&
+		!startsWithICase(file, "C:\\temp\\") // テスト用
+		);
 	errorCase(!defval);
 
 	if(existFile(file))
@@ -22,7 +25,10 @@ char *LoadFileRec(char *file)
 void SaveFileRec(char *file, char *text)
 {
 //	errorCase(m_isEmpty(file));
-	errorCase(!startsWithICase(file, "C:\\appdata\\"));
+	errorCase(
+		!startsWithICase(file, "C:\\appdata\\") &&
+		!startsWithICase(file, "C:\\temp\\") // テスト用
+		);
 	errorCase(!text);
 
 	if(*text)
