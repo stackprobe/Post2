@@ -75,6 +75,7 @@ function DD_Anime() {
 
 	if(DD_Time < currTime) {
 		DD_GameIte.next();
+		DD_EachFrame();
 		DD_Time += 16;
 		DD_Frame++;
 	}
@@ -84,7 +85,7 @@ function DD_Anime() {
 var DD_Ctx;
 
 function DD_EachFrame() {
-	// none
+	DD_Ctx = null;
 
 	// ----
 

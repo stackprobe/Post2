@@ -73,6 +73,7 @@ function @@_Anime() {
 
 	if(@@_Time < currTime) {
 		@@_GameIte.next();
+		@@_EachFrame();
 		@@_Time += 16;
 		@@_Frame++;
 	}
@@ -82,7 +83,7 @@ function @@_Anime() {
 var @@_Ctx;
 
 function @@_EachFrame() {
-	// none
+	@@_Ctx = null;
 
 	// ----
 
