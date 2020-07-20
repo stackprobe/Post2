@@ -9,6 +9,7 @@ var DD_H = 1080;
 
 var DD_GameIte;
 var DD_Canvas;
+var DD_CanvasBox;
 
 function DD_Main(gameMain) {
 	DD_GameIte = gameMain();
@@ -18,7 +19,13 @@ function DD_Main(gameMain) {
 	DD_Canvas.width  = DD_W;
 	DD_Canvas.height = DD_H;
 
+	DD_CanvasBox = document.createElement("div");
+	DD_CanvasBox.style.position = "fixed";
+
 	document.body.appendChild(DD_Canvas);
+	document.body.appendChild(DD_CanvasBox);
+
+	DD_Mouse_INIT(DD_Canvas);
 
 	Rose_Resize_Add(function() {
 		clearTimeout(DD_ResizedTimeoutId);
@@ -50,6 +57,11 @@ function DD_Resized() {
 	DD_Canvas.style.top    = t + "px";
 	DD_Canvas.style.width  = w + "px";
 	DD_Canvas.style.height = h + "px";
+
+	DD_CanvasBox.style.left   = l + "px";
+	DD_CanvasBox.style.top    = t + "px";
+	DD_CanvasBox.style.width  = w + "px";
+	DD_CanvasBox.style.height = h + "px";
 }
 
 var DD_Time = 0;
@@ -427,6 +439,53 @@ function DD_LoadRes_Audio(url) {
 	audio.load();
 
 	return audio;
+}
+
+var DD_Mouse_Down = false;
+var DD_Mouse_X = 0;
+var DD_Mouse_Y = 0;
+
+function DD_Mouse_TouchStart(x, y) {
+	DD_Mouse_Down = true;
+	DD_Mouse_X = x;
+	DD_Mouse_Y = y;
+}
+
+function DD_Mouse_TouchMove(x, y) {
+	DD_Mouse_X = x;
+	DD_Mouse_Y = y;
+}
+
+function DD_Mouse_TouchEnd(x, y) {
+	DD_Mouse_Down = false;
+	DD_Mouse_X = x;
+	DD_Mouse_Y = y;
+}
+
+function DD_Mouse_GetEvTouch(touch) {
+	return function(event) {
+		touch(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+	}
+}
+
+function DD_Mouse_GetEvMouse(touch) {
+	return function(event) {
+		touch(event.x, event.y);
+	}
+}
+
+function DD_Mouse_INIT() {
+	if(window.ontouchstart === null) {
+		DD_CanvasBox.ontouchstart = DD_Mouse_GetEvTouch(DD_Mouse_TouchStart);
+		DD_CanvasBox.ontouchmove  = DD_Mouse_GetEvTouch(DD_Mouse_TouchMove);
+		DD_CanvasBox.ontouchend   = DD_Mouse_GetEvTouch(DD_Mouse_TouchEnd);
+	}
+	else {
+		DD_CanvasBox.onmousedown  = DD_Mouse_GetEvMouse(DD_Mouse_TouchStart);
+		DD_CanvasBox.onmousemove  = DD_Mouse_GetEvMouse(DD_Mouse_TouchMove);
+		DD_CanvasBox.onmouseup    = DD_Mouse_GetEvMouse(DD_Mouse_TouchEnd);
+		DD_CanvasBox.onmouseleave = DD_Mouse_GetEvMouse(DD_Mouse_TouchEnd);
+	}
 }
 
 var Rose_Resize_Reactions = [];

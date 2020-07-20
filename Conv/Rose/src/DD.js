@@ -7,6 +7,7 @@ var @@_H = 1080;
 
 var @@_GameIte;
 var @@_Canvas;
+var @@_CanvasBox;
 
 function @@_Main(gameMain) {
 	@@_GameIte = gameMain();
@@ -16,7 +17,13 @@ function @@_Main(gameMain) {
 	@@_Canvas.width  = @@_W;
 	@@_Canvas.height = @@_H;
 
+	@@_CanvasBox = document.createElement("div");
+	@@_CanvasBox.style.position = "fixed";
+
 	document.body.appendChild(@@_Canvas);
+	document.body.appendChild(@@_CanvasBox);
+
+	@@_Mouse_INIT(@@_Canvas);
 
 	Rose_Resize_Add(function() {
 		clearTimeout(@@_ResizedTimeoutId);
@@ -48,6 +55,11 @@ function @@_Resized() {
 	@@_Canvas.style.top    = t + "px";
 	@@_Canvas.style.width  = w + "px";
 	@@_Canvas.style.height = h + "px";
+
+	@@_CanvasBox.style.left   = l + "px";
+	@@_CanvasBox.style.top    = t + "px";
+	@@_CanvasBox.style.width  = w + "px";
+	@@_CanvasBox.style.height = h + "px";
 }
 
 var @@_Time = 0;

@@ -1,0 +1,42 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../../module.js" charset="Shift_JIS"></script>
+<script>
+
+var Logo;
+
+function Main() {
+	DD_Main(GameMain);
+}
+
+function* GameMain() {
+	for(; ; ) {
+		DD_Clear();
+
+		DD_Ctx.fillStyle = "#ffffff";
+		DD_Ctx.fillRect(0, 0, DD_W, DD_H);
+
+		DD_Ctx.fillStyle = "#000000";
+		DD_Ctx.font = "30px 'メイリオ'";
+		DD_Ctx.fillText("DD_Mouse_Down: " + DD_Mouse_Down, 50, 80);
+		DD_Ctx.fillText("DD_Mouse_X: " + DD_Mouse_X, 50, 130);
+		DD_Ctx.fillText("DD_Mouse_Y: " + DD_Mouse_Y, 50, 180);
+
+		yield 1;
+	}
+}
+
+</script>
+<style>
+
+body {
+	background-color: #777;
+}
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
