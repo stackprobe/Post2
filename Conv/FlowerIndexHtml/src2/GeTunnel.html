@@ -450,6 +450,8 @@ function BNT_Main() {
 	};
 }
 
+var BNT_Mode;
+
 function BNT_Main2() {
 	BNT_Canvas = document.createElement("canvas");
 
@@ -459,6 +461,15 @@ function BNT_Main2() {
 	BNT_Canvas.height = BNT_H;
 
 	document.body.appendChild(BNT_Canvas);
+
+	BNT_Mode = 1;
+
+	while(Math.random() < 0.333) {
+		BNT_Mode++;
+	}
+
+//BNT_Mode = 2; // test
+//BNT_Mode = 3; // test
 
 	window.onresize = function() {
 		clearTimeout(BNT_ResizedTimeoutId);
@@ -508,6 +519,12 @@ function BNT_Anime() {
 	requestAnimationFrame(BNT_Anime);
 }
 
+var BNT_X = 300;
+var BNT_Y = 300;
+var BNT_A = 1.0;
+var BNT_R = 0.0;
+var BNT_Z = 1.0;
+
 function BNT_Loop() {
 	var ctx = BNT_Canvas.getContext("2d");
 
@@ -519,34 +536,135 @@ function BNT_Loop() {
 	var r = 0.0;
 	var z = 1.0;
 
-	{
-		var frmBgn = 0;
-		var frmEnd = 40;
+	if(BNT_Mode == 1) {
+		{
+			var frmBgn = 0;
+			var frmEnd = 40;
 
-		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
-			var frm = BNT_Frame - frmBgn;
-			var end = frmEnd - frmBgn;
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
 
-			a = frm / end;
+				a = frm / end;
+			}
+		}
+
+		{
+			var frmBgn = 50;
+			var frmEnd = 80;
+
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
+				var rate = frm / end;
+				var iRate = 1.0 - rate;
+
+				r = iRate * 0.15 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
+			}
+		}
+
+		if(BNT_Frame == 90) {
+			Forward();
 		}
 	}
+	else if(BNT_Mode == 2) {
+		{
+			var frmBgn = 0;
+			var frmEnd = 60;
 
-	{
-		var frmBgn = 50;
-		var frmEnd = 80;
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
 
-		if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
-			var frm = BNT_Frame - frmBgn;
-			var end = frmEnd - frmBgn;
-			var rate = frm / end;
-			var iRate = 1.0 - rate;
+				if(frm == 0) {
+					BNT_R = 500.0;
+					BNT_Z = 0.001;
+				}
+				else {
+					BNT_R = BNT_Approach(BNT_R, 0.0, 0.9);
+					BNT_Z = BNT_Approach(BNT_Z, 1.0, 0.97);
+				}
 
-			r = iRate * 0.15 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
+				r = BNT_R;
+				z = BNT_Z;
+			}
+		}
+
+		{
+			var frmBgn = 60;
+			var frmEnd = 80;
+
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
+				var rate = frm / end;
+				var iRate = 1.0 - rate;
+
+				r = iRate * 0.3 * (Math.floor(frm / 2) % 2 == 0 ? 1 : -1);
+			}
+		}
+
+		if(BNT_Frame == 90) {
+			Forward();
 		}
 	}
+	else {
+		if(BNT_Frame == 0) {
+			BNT_Z = 0.4;
+		}
 
-	if(BNT_Frame == 90) {
-		Forward();
+		y += 40;
+
+		{
+			var frmBgn = 20;
+			var frmEnd = 29;
+
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
+				var rate = frm / end;
+
+				y -= Math.sin(rate * Math.PI) * 80.0;
+
+				BNT_Z += 0.02;
+			}
+		}
+
+		{
+			var frmBgn = 30;
+			var frmEnd = 39;
+
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
+				var rate = frm / end;
+
+				y -= Math.sin(rate * Math.PI) * 100.0;
+
+				BNT_Z += 0.03;
+			}
+		}
+
+		{
+			var frmBgn = 40;
+			var frmEnd = 49;
+
+			if(frmBgn <= BNT_Frame && BNT_Frame <= frmEnd) {
+				var frm = BNT_Frame - frmBgn;
+				var end = frmEnd - frmBgn;
+				var rate = frm / end;
+
+				y -= Math.sin(rate * Math.PI) * 120.0;
+
+				BNT_Z += 0.04;
+			}
+		}
+
+		z = BNT_Z;
+
+		if(BNT_Frame == 70) {
+			Forward();
+		}
 	}
 
 	BNT_Draw(ctx, BNT_Image, x, y, a, r, z);
@@ -576,6 +694,14 @@ function BNT_Draw(ctx, image, x, y, a, r, z) {
 	ctx.translate(-x, -y);
 
 	ctx.globalAlpha = 1.0; // restore
+}
+
+function BNT_Approach(v, d, r) {
+	v -= d;
+	v *= r;
+	v += d;
+
+	return v;
 }
 
 // <--- BNT
