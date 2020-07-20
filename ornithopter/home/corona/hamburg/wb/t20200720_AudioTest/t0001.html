@@ -1,0 +1,195 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../../module.js" charset="Shift_JIS"></script>
+<script>
+
+var Mus_BGM_034;
+var Mus_BGM_055;
+var Mus_BGM_085;
+var Mus_BGM_108;
+
+var SE_Hit01;
+var SE_Poka01;
+
+function Main() {
+	Mus_BGM_034 = DD_LoadRes_Audio("res/MusMus/MusMus-BGM-034.mp3");
+	Mus_BGM_055 = DD_LoadRes_Audio("res/MusMus/MusMus-BGM-055.mp3");
+	Mus_BGM_085 = DD_LoadRes_Audio("res/MusMus/MusMus-BGM-085.mp3");
+	Mus_BGM_108 = DD_LoadRes_Audio("res/MusMus/MusMus-BGM-108.mp3");
+
+	SE_Hit01  = DD_LoadRes_Audio("res/komori-taira/hit01.mp3");
+	SE_Poka01 = DD_LoadRes_Audio("res/komori-taira/poka01.mp3");
+
+	Rose_Visitor_Wait(Main2);
+}
+
+function Main2() {
+	DD_Main(GameMain);
+}
+
+var CurrMus = null;
+var FadeOutFlag = false;
+var CurrVolume = 1.0;
+
+function PlayMus(mus) {
+	if(FadeOutFlag) {
+		return;
+	}
+	if(CurrMus != null) {
+		CurrMus.pause();
+	}
+	mus.loop = true;
+	mus.currentTime = 0;
+	mus.volume = 1.0;
+	mus.play();
+
+	CurrMus = mus;
+}
+
+function PlaySE(se) {
+	se.play();
+}
+
+var Buttons = [
+	{
+		L : 100,
+		T : 300,
+		W : 500,
+		H : 100,
+		Text : "Mus_BGM_034",
+		Pressed : function() { PlayMus(Mus_BGM_034); },
+	},
+	{
+		L : 100,
+		T : 450,
+		W : 500,
+		H : 100,
+		Text : "Mus_BGM_055",
+		Pressed : function() { PlayMus(Mus_BGM_055); },
+	},
+	{
+		L : 100,
+		T : 600,
+		W : 500,
+		H : 100,
+		Text : "Mus_BGM_085",
+		Pressed : function() { PlayMus(Mus_BGM_085); },
+	},
+	{
+		L : 100,
+		T : 750,
+		W : 500,
+		H : 100,
+		Text : "Mus_BGM_108",
+		Pressed : function() { PlayMus(Mus_BGM_108); },
+	},
+	{
+		L : 100,
+		T : 900,
+		W : 500,
+		H : 100,
+		Text : "(FadeOut)",
+		Pressed : function() {
+			FadeOutFlag = true;
+			CurrVolume = 1.0;
+		},
+	},
+	{
+		L : 700,
+		T : 300,
+		W : 500,
+		H : 100,
+		Text : "SE_Hit01",
+		Pressed : function() { PlaySE(SE_Hit01); },
+	},
+	{
+		L : 700,
+		T : 450,
+		W : 500,
+		H : 100,
+		Text : "SE_Poka01",
+		Pressed : function() { PlaySE(SE_Poka01); },
+	},
+];
+
+var LastMouseDown = false;
+
+function* GameMain() {
+	for(; ; ) {
+		DD_Clear();
+
+		DD_Ctx.fillStyle = "#ffffff";
+		DD_Ctx.fillRect(0, 0, DD_W, DD_H);
+
+		DD_Ctx.fillStyle = "#000000";
+		DD_Ctx.font = "30px 'メイリオ'";
+
+		DLY = 80;
+
+		DrawLine("●音楽");
+		DrawLine("フリーBGM・音楽素材MusMus http://musmus.main.jp/");
+		DrawLine("●効果音");
+		DrawLine("小森平 http://taira-komori.jpn.org/");
+
+		for(var i = 0; i < Buttons.length; i++) {
+			var b = Buttons[i];
+
+			DD_Ctx.fillStyle = "#ff8000";
+			DD_Ctx.fillRect(b.L, b.T, b.W, b.H);
+
+			DD_Ctx.fillStyle = "#ffffff";
+			DD_Ctx.fillText(b.Text, b.L + 30, b.T + b.H / 2);
+		}
+
+		if(LastMouseDown && !DD_Mouse_Down) {
+			for(var i = 0; i < Buttons.length; i++) {
+				var b = Buttons[i];
+
+				if(
+					b.L < DD_Mouse_X && DD_Mouse_X < b.L + b.W &&
+					b.T < DD_Mouse_Y && DD_Mouse_Y < b.T + b.H
+					)
+					b.Pressed();
+			}
+		}
+		LastMouseDown = DD_Mouse_Down;
+
+		if(FadeOutFlag) {
+			if(CurrMus == null) {
+				FadeOutFlag = false;
+			}
+			else if(0.0 < CurrVolume) {
+				CurrMus.volume = CurrVolume;
+				CurrVolume -= 0.01;
+			}
+			else {
+				CurrMus.pause();
+				FadeOutFlag = false;
+			}
+		}
+
+		yield 1;
+	}
+}
+
+var DLY;
+
+function DrawLine(line) {
+	DD_Ctx.fillText(line, 50, DLY);
+	DLY += 50;
+}
+
+</script>
+<style>
+
+body {
+	background-color: #559;
+}
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
