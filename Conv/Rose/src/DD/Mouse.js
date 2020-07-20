@@ -2,21 +2,36 @@ var @@_Down = false;
 var @@_X = 0;
 var @@_Y = 0;
 
+function @@_ScreenPosToCanvasPos() {
+	var canvasRect = @@^_Canvas.getBoundingClientRect();
+
+	@@_X -= canvasRect.left;
+	@@_Y -= canvasRect.top;
+	@@_X *= @@^_W / canvasRect.width;
+	@@_Y *= @@^_H / canvasRect.height;
+}
+
 function @@_TouchStart(x, y) {
 	@@_Down = true;
 	@@_X = x;
 	@@_Y = y;
+
+	@@_ScreenPosToCanvasPos();
 }
 
 function @@_TouchMove(x, y) {
 	@@_X = x;
 	@@_Y = y;
+
+	@@_ScreenPosToCanvasPos();
 }
 
 function @@_TouchEnd(x, y) {
 	@@_Down = false;
 	@@_X = x;
 	@@_Y = y;
+
+	@@_ScreenPosToCanvasPos();
 }
 
 function @@_GetEvTouch(touch) {

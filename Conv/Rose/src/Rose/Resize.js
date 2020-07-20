@@ -1,7 +1,7 @@
 var @@_Reactions = [];
 
-function @@_Add(f) {
-	@@_Reactions.push(f);
+function @@_Add(reaction) {
+	@@_Reactions.push(reaction);
 }
 
 window.onresize = function() {

@@ -1,6 +1,6 @@
 var @@_Count = 0;
 
-function @@_Enter(f) {
+function @@_Enter() {
 	@@_Count++;
 }
 
