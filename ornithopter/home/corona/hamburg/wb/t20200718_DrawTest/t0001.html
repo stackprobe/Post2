@@ -1,0 +1,39 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../../module.js" charset="Shift_JIS"></script>
+<script>
+
+var Logo;
+
+function Main() {
+	Logo = new Image();
+	Logo.onload = function() {
+		Main2();
+	};
+
+	Logo.src = "res/web-logo.png";
+}
+
+function Main2() {
+	DD_Main(MainLoop);
+}
+
+function MainLoop() {
+	DD_Clear();
+	DD_Draw(Logo, DD_W / 2, DD_H / 2, 1.0, DD_Frame / 100.0, 1.0);
+}
+
+</script>
+<style>
+
+body {
+	background-color: #efe;
+}
+
+</style>
+</head>
+<body>
+
+</body>
+</html>

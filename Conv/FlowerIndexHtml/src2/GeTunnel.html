@@ -444,10 +444,11 @@ var BNT_Canvas;
 
 function BNT_Main() {
 	BNT_Image = new Image();
-	BNT_Image.src = "res/irasutoya/beer_cup_bin.png"; // @res
 	BNT_Image.onload = function() {
 		BNT_Main2();
 	};
+
+	BNT_Image.src = "res/irasutoya/beer_cup_bin.png"; // @res
 }
 
 function BNT_Main2() {
@@ -460,13 +461,12 @@ function BNT_Main2() {
 
 	document.body.appendChild(BNT_Canvas);
 
-	BNT_Resized();
-
 	window.onresize = function() {
 		clearTimeout(BNT_ResizedTimeoutId);
 		BNT_ResizedTimeoutId = setTimeout(BNT_Resized, 50);
 	};
 
+	BNT_Resized();
 	BNT_Anime();
 }
 
@@ -569,7 +569,7 @@ function BNT_Draw(ctx, image, x, y, a, r, z) {
 	ctx.rotate(r);
 	ctx.translate(-x, -y);
 
-	ctx.drawImage(BNT_Image, l, t, w, h);
+	ctx.drawImage(image, l, t, w, h);
 
 	// restore
 	ctx.translate(x, y);
