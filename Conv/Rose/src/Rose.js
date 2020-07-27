@@ -245,7 +245,7 @@ function @@_Request(sn, prm, def, reaction) {
 		}
 	};
 
-	xhr.open("POST", "/corona/corona?sn=" + sn);
+	xhr.open("POST", "/coffee/coffee?sn=" + sn);
 	xhr.send(JSON.stringify(prm));
 }
 
