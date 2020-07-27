@@ -13,17 +13,15 @@ function @@_Main(gameMain) {
 	@@_GameIte = gameMain();
 
 	@@_Canvas = document.createElement("canvas");
-	@@_Canvas.style.zIndex = 1;
 	@@_Canvas.style.position = "fixed";
 	@@_Canvas.width  = @@_W;
 	@@_Canvas.height = @@_H;
 
 	@@_CanvasBox = document.createElement("div");
-	@@_CanvasBox.style.zIndex = 2;
 	@@_CanvasBox.style.position = "fixed";
 
-	document.body.appendChild(@@_Canvas);
-	document.body.appendChild(@@_CanvasBox);
+	Rose_Append(@@_CanvasBox, @@_Canvas);
+	Rose_Append(document.body, @@_CanvasBox);
 
 	@@_Mouse_INIT(@@_Canvas);
 

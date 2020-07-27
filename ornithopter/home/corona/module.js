@@ -15,17 +15,15 @@ function DD_Main(gameMain) {
 	DD_GameIte = gameMain();
 
 	DD_Canvas = document.createElement("canvas");
-	DD_Canvas.style.zIndex = 1;
 	DD_Canvas.style.position = "fixed";
 	DD_Canvas.width  = DD_W;
 	DD_Canvas.height = DD_H;
 
 	DD_CanvasBox = document.createElement("div");
-	DD_CanvasBox.style.zIndex = 2;
 	DD_CanvasBox.style.position = "fixed";
 
-	document.body.appendChild(DD_Canvas);
-	document.body.appendChild(DD_CanvasBox);
+	Rose_Append(DD_CanvasBox, DD_Canvas);
+	Rose_Append(document.body, DD_CanvasBox);
 
 	DD_Mouse_INIT(DD_Canvas);
 
