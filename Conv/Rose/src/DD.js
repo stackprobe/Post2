@@ -13,11 +13,13 @@ function @@_Main(gameMain) {
 	@@_GameIte = gameMain();
 
 	@@_Canvas = document.createElement("canvas");
+	@@_Canvas.style.zIndex = 1;
 	@@_Canvas.style.position = "fixed";
 	@@_Canvas.width  = @@_W;
 	@@_Canvas.height = @@_H;
 
 	@@_CanvasBox = document.createElement("div");
+	@@_CanvasBox.style.zIndex = 2;
 	@@_CanvasBox.style.position = "fixed";
 
 	document.body.appendChild(@@_Canvas);
