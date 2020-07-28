@@ -13,5 +13,3 @@ C:\Factory\SubTools\nrun.exe /S %mimiko% UpdateGeTunnelHtml
 @echo Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°
 @echo Å° index.html Ç‡ Post2 ÇÃ _Release ÇÇµÇ»Ç¢Ç∆çXêVÇ≥ÇÍÇ‹ÇπÇÒ Å°
 @echo Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°Å°
-
-C:\Factory\Tools\PauseEx.exe

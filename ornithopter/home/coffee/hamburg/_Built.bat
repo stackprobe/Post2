@@ -3,5 +3,3 @@ C:\Factory\SubTools\SimpleIndex.exe ^
 	/X #ffbb77 ^
 	/B #664422 ^
 	.
-
-C:\Factory\Tools\PauseEx.exe
