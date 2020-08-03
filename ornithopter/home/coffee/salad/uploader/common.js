@@ -42,8 +42,8 @@ function PageLoading() {
 		p.style.opacity = "1.0";
 		p.style.zIndex = "2";
 
-		b.style.padding = "0px"; // HACK: common.css
-		p.style.padding = "0px"; // HACK: common.css
+		b.style.padding = "0px"; // todo: common.css
+		p.style.padding = "0px"; // todo: common.css
 
 		p.innerHTML = "<div style='padding: 0px; text-align: center'><img src='flat-preloaders/Preloader_2.gif'/></div>";
 
