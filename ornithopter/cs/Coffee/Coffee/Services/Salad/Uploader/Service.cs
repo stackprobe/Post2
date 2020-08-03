@@ -110,7 +110,7 @@ namespace Charlotte.Services.Salad.Uploader
 
 			if (Consts.SESSION_NUM_LMT < sessionBundle.Sessions.Count)
 			{
-				// todo 不要セッションの管理が面倒なので、セッションが増えてきたら、同じグループについては同じセッションを使い回す。
+				// HACK 不要セッションの管理が面倒なので、セッションが増えてきたら、同じグループについては同じセッションを使い回す。
 
 				Session[] sessions = sessionBundle.Sessions.Where(v => v.AccessKey == accessKey).ToArray();
 
