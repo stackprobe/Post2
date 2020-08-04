@@ -15,8 +15,6 @@ CD /D %~dp0.
 CALL qq
 cx **
 
-	CALL AllRemake.bat
-
 CALL Release.bat /-P
 
 MOVE out\* S:\ƒŠƒŠ[ƒX•¨\.
