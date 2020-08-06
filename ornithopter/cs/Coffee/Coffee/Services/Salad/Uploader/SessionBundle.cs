@@ -17,7 +17,7 @@ namespace Charlotte.Services.Salad.Uploader
 			if (File.Exists(Consts.SESSION_BUNDLE_FILE) == false)
 				File.WriteAllBytes(Consts.SESSION_BUNDLE_FILE, BinTools.EMPTY);
 
-			this.Sessions = ArrayTools.ToList(File.ReadAllLines(Consts.SESSION_BUNDLE_FILE, StringTools.ENCODING_SJIS).Select(v =>
+			this.Sessions = File.ReadAllLines(Consts.SESSION_BUNDLE_FILE, StringTools.ENCODING_SJIS).Select(v =>
 			{
 				string[] tokens = v.Split('\t').ToArray();
 
@@ -28,8 +28,8 @@ namespace Charlotte.Services.Salad.Uploader
 					SupervisorMode = Utilities.GetBoolean(tokens[2]),
 					LastAccessedDateTime = long.Parse(tokens[3]),
 				};
-			}
-			));
+			})
+			.ToList();
 
 			this.Sessions.Sort((a, b) =>
 			{

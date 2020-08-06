@@ -9,15 +9,14 @@ namespace Charlotte.Services.Salad.Uploader
 {
 	public class GroupBundle
 	{
-		public List<LiteGroup> LiteGroups = new List<LiteGroup>();
+		public List<LiteGroup> LiteGroups;
 
 		public GroupBundle()
 		{
 			if (Directory.Exists(Consts.GROUP_BUNDLE_DIR) == false)
 				FileTools.CreateDir(Consts.GROUP_BUNDLE_DIR);
 
-			this.LiteGroups = ArrayTools.ToList(Directory.GetDirectories(Consts.GROUP_BUNDLE_DIR).Select(v => new LiteGroup(v)));
-
+			this.LiteGroups = Directory.GetDirectories(Consts.GROUP_BUNDLE_DIR).Select(v => new LiteGroup(v)).ToList();
 			this.LiteGroups.Sort((a, b) => StringTools.Comp(a.AccessKey, b.AccessKey));
 		}
 
