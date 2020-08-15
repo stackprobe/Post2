@@ -30,6 +30,8 @@ static autoList_t *ParseRHtml(char *rHtml)
 		p = strx(p);
 //		p = replaceLine(p, "640x640", "160x160", 0); // del @ 2018.1.21
 
+		p = replaceLine(p, "\\u0026", "&", 0); // add @ 2020.8.14
+
 		addElement(images, (uint)p);
 
 		p = q + 1;
