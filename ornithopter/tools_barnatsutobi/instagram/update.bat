@@ -13,6 +13,8 @@ C:\app\Kit\HGet\HGet.exe ^
 	/RHF C:\appdata\barnatsutobi\instagram\res-header.out ^
 	/RBF C:\appdata\barnatsutobi\instagram\res-body.out
 
+SET @DsUserId=
+
 IF NOT EXIST C:\appdata\barnatsutobi\instagram\successful.flg GOTO END
 mkIndexHtml.exe C:\appdata\barnatsutobi\instagram\res-body.out ..\..\home_barnatsutobi\instagram\index.html
 :END
