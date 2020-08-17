@@ -108,6 +108,8 @@ static void MkIndexHtml(char *rFile, char *wFile)
 		rHtml = readText(rFile);
 		images = ParseRHtml(rHtml);
 
+		cout("★抽出した投稿サムネイル ---> %u\n", getCount(images));
+
 		if(getCount(images))
 		{
 			LOGPOS();
