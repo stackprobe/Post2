@@ -62,19 +62,19 @@ function @@_Resized() {
 	@@_CanvasBox.style.height = h + "px";
 }
 
-var @@_Time = 0;
+var @@_ChaserTime = 0;
 var @@_Frame = 0;
 
 function @@_Anime() {
 	var currTime = new Date().getTime();
 
-	@@_Time = Math.max(@@_Time, currTime - 100);
-	@@_Time = Math.min(@@_Time, currTime + 100);
+	@@_ChaserTime = Math.max(@@_ChaserTime, currTime - 100);
+	@@_ChaserTime = Math.min(@@_ChaserTime, currTime + 100);
 
-	if(@@_Time < currTime) {
+	if(@@_ChaserTime < currTime) {
 		@@_GameIte.next();
 		@@_EachFrame();
-		@@_Time += 16;
+		@@_ChaserTime += 16;
 		@@_Frame++;
 	}
 	requestAnimationFrame(@@_Anime);

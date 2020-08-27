@@ -64,19 +64,19 @@ function DD_Resized() {
 	DD_CanvasBox.style.height = h + "px";
 }
 
-var DD_Time = 0;
+var DD_ChaserTime = 0;
 var DD_Frame = 0;
 
 function DD_Anime() {
 	var currTime = new Date().getTime();
 
-	DD_Time = Math.max(DD_Time, currTime - 100);
-	DD_Time = Math.min(DD_Time, currTime + 100);
+	DD_ChaserTime = Math.max(DD_ChaserTime, currTime - 100);
+	DD_ChaserTime = Math.min(DD_ChaserTime, currTime + 100);
 
-	if(DD_Time < currTime) {
+	if(DD_ChaserTime < currTime) {
 		DD_GameIte.next();
 		DD_EachFrame();
-		DD_Time += 16;
+		DD_ChaserTime += 16;
 		DD_Frame++;
 	}
 	requestAnimationFrame(DD_Anime);
