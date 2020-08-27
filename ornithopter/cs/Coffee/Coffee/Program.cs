@@ -50,6 +50,10 @@ namespace Charlotte
 			if (ar.HasArgs())
 				throw new Exception("不明なコマンド引数");
 
+			JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
+			JsonTools.DecodeNestingLevelMax = 30;
+			JsonTools.DecodeObjectCountMax = 1000;
+
 			HTTPRequest.I = new HTTPRequest();
 
 			HTTPRequest.I.IP = File.ReadAllLines("IP.httdat", Encoding.ASCII)[0]; // 正規化済み @ Post2
@@ -88,8 +92,6 @@ namespace Charlotte
 				string serviceName = HTTPRequest.I.Query["sn"];
 				IService service = new ServiceDistributor().GetService(serviceName);
 
-				JsonTools.DecodeStringFilter = v => JString.ToJString(v, true, true, true, true);
-				JsonTools.DecodeObjectCountMax = 1000; // 適当
 				object prm = JsonTools.Decode(body);
 				string sPrm = JsonTools.Encode(prm);
 
