@@ -23,6 +23,7 @@ function* GameMain() {
 //		DD_Ctx.font = "50px fantasy";
 
 		DLY = 60;
+		DLIdx = 0;
 
 		var t = new Date().getTime();
 
@@ -59,10 +60,22 @@ function* GameMain() {
 }
 
 var DLY;
+var DLIdx;
+var DLLens = [];
 
 function DrawLine(line) {
+	while(DLLens.length <= DLIdx) {
+		DLLens.push(0);
+	}
+	while(line.length < DLLens[DLIdx]) {
+		line += "0";
+	}
+	DLLens[DLIdx] = Math.max(DLLens[DLIdx], line.length);
+
 	DD_Ctx.fillText(line, 10, DLY);
+
 	DLY += 60;
+	DLIdx++;
 }
 
 </script>
