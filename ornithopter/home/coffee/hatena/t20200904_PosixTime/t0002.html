@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+function Main() {
+	DD_W = 1220;
+	DD_H = 1220;
+
+	DD_Main(GameMain);
+}
+
+function* GameMain() {
+	var CHARS = "ijklmnopqrstuvwxyz ./=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh";
+	var CHAR_MID = "A";
+
+	var realLines = [];
+	var trueLines = null;
+	var rates = [];
+
+	for(; ; ) {
+		var t = new Date().getTime();
+
+		t = Math.floor(t / 1000.0);
+
+		var tn = Number(t);
+
+		trueLines = [
+			"POSIX TIME = " + t,
+			"POSIX TIME / 2 = " + t / 2.0,
+			"POSIX TIME / 3 = " + t / 3.0,
+			"POSIX TIME / 5 = " + t / 5.0,
+			"POSIX TIME / 7 = " + t / 7.0,
+			"POSIX TIME / 11 = " + t / 11.0,
+			"POSIX TIME / 13 = " + t / 13.0,
+			"POSIX TIME / 17 = " + t / 17.0,
+			"POSIX TIME / 19 = " + t / 19.0,
+			"POSIX TIME / 23 = " + t / 23.0,
+			"POSIX TIME / 29 = " + t / 29.0,
+			"POSIX TIME / 31 = " + t / 31.0,
+			"POSIX TIME / 37 = " + t / 37.0,
+			"POSIX TIME / 60 = " + t / 60.0,
+			"POSIX TIME / 3600 = " + t / 3600.0,
+			"POSIX TIME / 86400 = " + t / 86400.0,
+			"POSIX TIME / 31556952 = " + t / 31556952.0,
+			"POSIX TIME = 0x" + tn.toString(16),
+			"POSIX TIME = 0o" + tn.toString(8),
+			"POSIX TIME = 0b" + tn.toString(2),
+		];
+
+		while(realLines.length < trueLines.length) { realLines.push(""); }
+//		while(trueLines.length < realLines.length) { trueLines.push(""); } // 行数が変わることは無い。
+		while(rates.length < realLines.length) { rates.push(0.9); }
+
+		for(var i = 0; i < trueLines.length; i++) {
+			var rLine = CHAR_MID + realLines[i];
+			var tLine = CHAR_MID + trueLines[i];
+
+			while(rLine.length < tLine.length) { rLine += CHAR_MID; }
+			while(tLine.length < rLine.length) { tLine += " "; }
+
+			if(rLine == tLine) {
+				rates[i] = Approach(rates[i], 0.1, 0.993);
+			}
+			else {
+				rates[i] = Approach(rates[i], 0.9, 0.997);
+			}
+			for(var d = 0; d < 3; d++) {
+				for(var c = 1; c < rLine.length; c++) {
+					if(Math.random() < rates[i]) {
+						var b = c - 1;
+
+						var rb = CHARS.indexOf(rLine.substring(b, b + 1));
+						var rc = CHARS.indexOf(rLine.substring(c, c + 1));
+						var tc = CHARS.indexOf(tLine.substring(c, c + 1));
+
+						if(rc < tc) {
+							rb = Math.max(rb - 1, 0);
+							rc++;
+						}
+						else if(tc < rc) {
+							rb = Math.min(rb + 1, CHARS.length - 1);
+							rc--;
+						}
+						rLine = rLine.substring(0, b) + CHARS.substring(rb, rb + 1) + CHARS.substring(rc, rc + 1) + rLine.substring(c + 1);
+					}
+				}
+			}
+			realLines[i] = rLine.substring(1);
+		}
+
+		DD_Clear();
+
+		DD_Ctx.font = "50px fantasy";
+
+		DLY = 60;
+
+		for(var i = 0; i < realLines.length; i++) {
+			DrawLine(realLines[i]);
+		}
+		yield 1;
+	}
+}
+
+function Approach(value, dest, rate) {
+	value -= dest;
+	value *= rate;
+	value += dest;
+
+	return value;
+}
+
+var DLY;
+
+function DrawLine(line) {
+	DD_Ctx.fillText(line, 10, DLY);
+	DLY += 60;
+}
+
+</script>
+<style>
+
+body {
+	background-color: #fff;
+}
+
+</style>
+</head>
+<body>
+
+</body>
+</html>

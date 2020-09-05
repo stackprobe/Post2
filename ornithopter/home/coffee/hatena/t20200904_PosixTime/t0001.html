@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<script src="../../module.js" charset="Shift_JIS"></script>
+<script>
+
+function Main() {
+	DD_W = 1220;
+	DD_H = 1220;
+
+	DD_Main(GameMain);
+}
+
+function* GameMain() {
+	for(; ; ) {
+		DD_Clear();
+
+//		DD_Ctx.fillStyle = "#0ff";
+//		DD_Ctx.fillRect(0, 0, DD_W, DD_H);
+//		DD_Ctx.fillStyle = "#000";
+
+		DD_Ctx.font = "50px fantasy";
+
+		DLY = 60;
+
+		var t = new Date().getTime();
+
+		t = Math.floor(t / 1000.0);
+
+		DrawLine("POSIX TIME = " + t);
+		DrawLine("POSIX TIME / 2 = " + t / 2.0);
+		DrawLine("POSIX TIME / 3 = " + t / 3.0);
+		DrawLine("POSIX TIME / 5 = " + t / 5.0);
+		DrawLine("POSIX TIME / 7 = " + t / 7.0);
+		DrawLine("POSIX TIME / 11 = " + t / 11.0);
+		DrawLine("POSIX TIME / 13 = " + t / 13.0);
+		DrawLine("POSIX TIME / 17 = " + t / 17.0);
+		DrawLine("POSIX TIME / 19 = " + t / 19.0);
+		DrawLine("POSIX TIME / 23 = " + t / 23.0);
+		DrawLine("POSIX TIME / 29 = " + t / 29.0);
+		DrawLine("POSIX TIME / 31 = " + t / 31.0);
+		DrawLine("POSIX TIME / 37 = " + t / 37.0);
+		DrawLine("POSIX TIME / 60 = " + t / 60.0);
+		DrawLine("POSIX TIME / 3600 = " + t / 3600.0);
+		DrawLine("POSIX TIME / 86400 = " + t / 86400.0);
+		DrawLine("POSIX TIME / 31556952 = " + t / 31556952.0); // 閏年を考慮した1年間の秒数
+
+		var tn = Number(t);
+
+		DrawLine("POSIX TIME = 0x" + tn.toString(16));
+		DrawLine("POSIX TIME = 0o" + tn.toString(8));
+		DrawLine("POSIX TIME = 0b" + tn.toString(2));
+
+		yield 1;
+	}
+}
+
+var DLY;
+
+function DrawLine(line) {
+	DD_Ctx.fillText(line, 10, DLY);
+	DLY += 60;
+}
+
+</script>
+<style>
+
+body {
+	background-color: #fff;
+}
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
