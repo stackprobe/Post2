@@ -24,6 +24,8 @@ static char *GetTypeByExt(char *ext)
 	if(!_stricmp(ext, "png"))
 		return "image/png";
 
+	// 新しいタイプをここへ追加..
+
 	error(); // 不明な拡張子
 	return NULL; // dummy
 }
@@ -40,14 +42,16 @@ static char *GetOneHtml(char *file, uint depth)
 
 	addCwd_x(getParent_x(makeFullPath(file)));
 	{
-		for(p = text; updateTagRng(p, "src=\"", "\"", 0); )
-		{
-			ab_addBlock(dest, p, (uint)lastTagRng.innerBgn - (uint)p);
-			p = lastTagRng.innerEnd;
-LOGPOS();
+		tagRng_t tagRng;
 
-			srcFile = strxl(lastTagRng.innerBgn, (uint)lastTagRng.innerEnd - (uint)lastTagRng.innerBgn);
+		for(p = text; updateTagRng(p, "src=\"", "\"", 0); p = tagRng.innerEnd)
+		{
+			tagRng = lastTagRng;
+			ab_addBlock(dest, p, (uint)tagRng.innerBgn - (uint)p);
+
+			srcFile = strxl(tagRng.innerBgn, (uint)tagRng.innerEnd - (uint)tagRng.innerBgn);
 			restoreYen(srcFile);
+			errorCase(!isFairHrefPath(srcFile, '\\'));
 			errorCase(!existFile(srcFile));
 			srcExt = getExt(srcFile);
 
@@ -55,7 +59,6 @@ LOGPOS();
 			{
 				char *srcText;
 				autoBlock_t gab;
-LOGPOS();
 
 				srcText = GetOneHtml(srcFile, depth + 1);
 				eText = encodeBase64(gndBlockLineVar(srcText, gab));
@@ -65,12 +68,10 @@ LOGPOS();
 
 				memFree(srcText);
 				releaseAutoBlock(eText);
-LOGPOS();
 			}
 			else
 			{
 				autoBlock_t *srcData = readBinary(srcFile);
-LOGPOS();
 
 				eText = encodeBase64(srcData);
 
@@ -81,15 +82,10 @@ LOGPOS();
 
 				releaseAutoBlock(srcData);
 				releaseAutoBlock(eText);
-LOGPOS();
 			}
-LOGPOS();
 			memFree(srcFile);
-LOGPOS();
 		}
-LOGPOS();
 		ab_addLine(dest, p);
-LOGPOS();
 	}
 	unaddCwd();
 

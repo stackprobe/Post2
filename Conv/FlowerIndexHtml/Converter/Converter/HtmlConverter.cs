@@ -152,7 +152,7 @@ namespace Charlotte
 			if (ext == ".png")
 				return "image/png";
 
-			// ここへ追加
+			// 新しいタイプをここへ追加..
 
 			throw new Exception("Unknown extension: " + ext);
 		}
