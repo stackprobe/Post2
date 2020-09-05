@@ -19,7 +19,8 @@ function* GameMain() {
 //		DD_Ctx.fillRect(0, 0, DD_W, DD_H);
 //		DD_Ctx.fillStyle = "#000";
 
-		DD_Ctx.font = "50px fantasy";
+		DD_Ctx.font = "50px Impact";
+//		DD_Ctx.font = "50px fantasy";
 
 		DLY = 60;
 
@@ -49,7 +50,8 @@ function* GameMain() {
 
 		DrawLine("POSIX TIME = 0x" + tn.toString(16));
 		DrawLine("POSIX TIME = 0o" + tn.toString(8));
-		DD_Ctx.font = "36px fantasy";
+		DD_Ctx.font = "36px Impact";
+//		DD_Ctx.font = "36px fantasy";
 		DrawLine("POSIX TIME = 0b" + tn.toString(2));
 
 		yield 1;
