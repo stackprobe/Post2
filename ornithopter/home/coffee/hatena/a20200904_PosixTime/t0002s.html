@@ -17,7 +17,6 @@ function* GameMain() {
 
 	var realLines = [];
 	var trueLines = null;
-	var rates = [];
 
 	for(; ; ) {
 		var t = new Date().getTime();
@@ -51,7 +50,6 @@ function* GameMain() {
 
 		while(realLines.length < trueLines.length) { realLines.push(""); }
 //		while(trueLines.length < realLines.length) { trueLines.push(""); } // s”‚ª•Ï‚í‚é‚±‚Æ‚Í–³‚¢B
-		while(rates.length < realLines.length) { rates.push(0.1); }
 
 		for(var i = 0; i < trueLines.length; i++) {
 			var rLine = CHAR_MID + realLines[i];
@@ -60,36 +58,25 @@ function* GameMain() {
 			while(rLine.length < tLine.length) { rLine += CHAR_MID; }
 			while(tLine.length < rLine.length) { tLine += " "; }
 
-			if(rLine == tLine) {
-				rates[i] = Math.max(0.1, rates[i] - 0.001);
-			}
-			else {
-				rates[i] = Math.min(0.9, rates[i] + 0.001);
-			}
-			for(var d = 0; d < 3; d++) {
-				for(var c = 1; c < rLine.length; c++) {
-					if(Math.random() < rates[i]) {
-						var b = c - 1;
+			for(var c = 1; c < rLine.length; c++) {
+				var b = c - 1;
 
-						var rb = CHARS.indexOf(rLine.substring(b, b + 1));
-						var rc = CHARS.indexOf(rLine.substring(c, c + 1));
-						var tc = CHARS.indexOf(tLine.substring(c, c + 1));
+				var rb = CHARS.indexOf(rLine.substring(b, b + 1));
+				var rc = CHARS.indexOf(rLine.substring(c, c + 1));
+				var tc = CHARS.indexOf(tLine.substring(c, c + 1));
 
-						if(rc < tc) {
-							rb = Math.max(rb - 1, 0);
-							rc++;
-						}
-						else if(tc < rc) {
-							rb = Math.min(rb + 1, CHARS.length - 1);
-							rc--;
-						}
-						rLine = rLine.substring(0, b) + CHARS.substring(rb, rb + 1) + CHARS.substring(rc, rc + 1) + rLine.substring(c + 1);
-					}
+				if(rc < tc) {
+					rb--;
+					rc++;
 				}
+				else if(tc < rc) {
+					rb++;
+					rc--;
+				}
+				rLine = rLine.substring(0, b) + CHARS.substring(rb, rb + 1) + CHARS.substring(rc, rc + 1) + rLine.substring(c + 1);
 			}
 			realLines[i] = rLine.substring(1);
 		}
-//console.log(rates[0], rates[6]); // test
 
 		DD_Clear();
 

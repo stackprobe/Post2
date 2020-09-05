@@ -1,0 +1,28 @@
+<center>
+* POSIX TIME
+<iframe
+style="border: none; box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); width: min(90vw, 90vh); height: min(90vw, 90vh);"
+src="t0001.html">
+</iframe>
+<MB-SPC>
+<MB-SPC>
+* ミリ秒
+<iframe
+style="border: none; box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); width: min(90vw, 90vh); height: min(90vw, 90vh);"
+src="t0001m.html">
+</iframe>
+<MB-SPC>
+<MB-SPC>
+* 荒ぶる感じの
+<iframe
+style="border: none; box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); width: min(90vw, 90vh); height: min(90vw, 90vh);"
+src="t0002.html">
+</iframe>
+<MB-SPC>
+<MB-SPC>
+* 荒ぶる感じの(2)
+<iframe
+style="border: none; box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); width: min(90vw, 90vh); height: min(90vw, 90vh);"
+src="t0002s.html">
+</iframe>
+</center>
