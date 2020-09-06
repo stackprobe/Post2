@@ -26,3 +26,10 @@ style="border: none; box-shadow: 5px 5px 10px 10px rgba(0, 0, 0, 0.3); width: mi
 src="t0002s.html">
 </iframe>
 </center>
+<MB-SPC>
+<MB-SPC>
+LINK
+[http://ornithopter.myhome.cx:58946/coffee/hatena/a20200904_PosixTime/t0001.html]
+[http://ornithopter.myhome.cx:58946/coffee/hatena/a20200904_PosixTime/t0001m.html]
+[http://ornithopter.myhome.cx:58946/coffee/hatena/a20200904_PosixTime/t0002.html]
+[http://ornithopter.myhome.cx:58946/coffee/hatena/a20200904_PosixTime/t0002s.html]
