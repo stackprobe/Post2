@@ -10,7 +10,7 @@ namespace Charlotte.Services.Salad.Uploader
 	{
 		public const string GROUP_BUNDLE_DIR = @"C:\appdata\Post2.Coffee.Salad.Uploader";
 
-		public const long TOTAL_FILE_SIZE_MAX = 138000000000L; // 138 GB
+		public const long TOTAL_FILE_SIZE_MAX = 275000000000L; // 275 GB (1024 P 3 * 256 -> 274.*)
 
 		public const string ACCESS_KEY_LOCAL_FILE = "access-key.txt";
 		public const string GROUP_INFO_LOCAL_FILE = "info.txt";
