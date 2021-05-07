@@ -18,7 +18,7 @@ namespace Charlotte.Services.Salad.Uploader
 		{
 			return
 				"http://" +
-				"ornithopter.myhome.cx:58946/coffee/salad/uploader/download.alt.txt*/" +
+				"ornithopter.ccsp.mydns.jp:58946/coffee/salad/uploader/download.alt.txt*/" +
 				CommonUtils.EncodeURL(this.LocalFile) +
 				"?group=" +
 				CommonUtils.EncodeURL(this.GroupLocalDir) +
